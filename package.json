@@ -16,7 +16,9 @@
   "license": "MIT",
   "repository": "EdMSL/postcss-color-converter",
   "dependencies": {
-    "postcss": "^7.0.18"
+    "color-convert": "~2.0.1",
+    "postcss": "^7.0.18",
+    "postcss-values-parser": "~3.0.5"
   },
   "devDependencies": {
     "@logux/eslint-config": "^33.0.0",
