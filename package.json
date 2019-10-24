@@ -10,7 +10,7 @@
     "converter"
   ],
   "scripts": {
-    "test": "eslint ."
+    "test": "mocha ./test/index.test.js"
   },
   "author": "EdMSL <eduard2011rus@gmail.com>",
   "license": "MIT",
@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "@logux/eslint-config": "^33.0.0",
+    "chai": "4.2.0",
     "eslint": "^6.5.1",
     "eslint-config-postcss": "^3.0.7",
     "eslint-config-standard": "^14.1.0",
@@ -31,7 +32,8 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-security": "^1.4.0",
     "eslint-plugin-standard": "^4.0.1",
-    "eslint-plugin-unicorn": "^12.1.0"
+    "eslint-plugin-unicorn": "^12.1.0",
+    "mocha": "6.2.2"
   },
   "eslintConfig": {
     "extends": "eslint-config-postcss"
