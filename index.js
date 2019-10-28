@@ -5,6 +5,7 @@ const convert = require('color-convert')
 const regexpHEX = /#([a-f\d]{3}|[a-f\d]{6})/i
 
 const defaultOptions = {
+  syntax: '',
   outputColorFormat: ''
 }
 
