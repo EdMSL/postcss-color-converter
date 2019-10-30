@@ -4,3 +4,4 @@ yarn-error.log
 *.css
 postcss.config.js
 test/test.js
+styles/

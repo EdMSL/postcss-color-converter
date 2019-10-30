@@ -10,8 +10,9 @@
     "converter"
   ],
   "scripts": {
-    "test": "mocha ./test/index.test.js",
-    "postcss": "postcss test.css --config ./postcss.config.js -r"
+    "test": "mocha ./test/*.test.js",
+    "lint": "eslint --config ./.eslintrc-full.js **/*.js --fix",
+    "postcss": "postcss ./styles/test.{css,scss} --config ./postcss.config.js -r"
   },
   "author": "EdMSL <eduard2011rus@gmail.com>",
   "license": "MIT",
