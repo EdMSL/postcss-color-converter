@@ -1,4 +1,4 @@
-# PostCSS Color Converter
+<!-- # PostCSS Color Converter
 
 [PostCSS] plugin for convert colors.
 
@@ -36,4 +36,4 @@ module.exports = {
 If you do not use PostCSS, add it according to [official docs]
 and set this plugin in settings.
 
-[official docs]: https://github.com/postcss/postcss#usage
+[official docs]: https://github.com/postcss/postcss#usage -->
