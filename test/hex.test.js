@@ -13,18 +13,18 @@ describe('postcss-color-converter', function () {
   it('Input color should not be converted', function () {
     assert.equal(transform(
       'body { color: #ffffff; }',
-      {}
+      {},
     ), 'body { color: #ffffff; }');
     assert.equal(transform(
       'body { color: #ffffff; }',
-      { outputColorFormat: 'hex' }
+      { outputColorFormat: 'hex' },
     ), 'body { color: #ffffff; }');
   });
 
   it('Input color must be converted to rgb', function () {
     assert.equal(transform(
       'body { color: #ffffff; }',
-      { outputColorFormat: 'rgb' }
+      { outputColorFormat: 'rgb' },
     ), 'body { color: rgb(255, 255, 255); }');
     assert.equal(transform(
       `ul {
@@ -34,7 +34,7 @@ describe('postcss-color-converter', function () {
           #fff555 100%,
         );
       }`,
-      { outputColorFormat: 'rgb' }
+      { outputColorFormat: 'rgb' },
     ), `ul {
         background: linear-gradient(
           to bottom,
@@ -44,7 +44,7 @@ describe('postcss-color-converter', function () {
       }`);
     assert.equal(transform(
       'body { color: #555; }',
-      { outputColorFormat: 'rgb' }
+      { outputColorFormat: 'rgb' },
     ), 'body { color: rgb(85, 85, 85); }');
   });
 });

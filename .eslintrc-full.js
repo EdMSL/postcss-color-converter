@@ -18,6 +18,7 @@ module.exports = {
       exports: "always-multiline",
       functions: "always-multiline",
     }],
+    "func-style": 0,
     "max-len": [1, 100],
     "semi": [2, "always"],
 
