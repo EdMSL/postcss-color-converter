@@ -5,7 +5,7 @@ const plugin = require('../index');
 
 /* eslint-disable prefer-arrow-callback, func-names */
 
-describe('postcss-color-converter', function () {
+describe('postcss-color-converter for rgb colors', function () {
   function transform (source, opts) {
     return postcss([plugin(opts)]).process(source).css;
   }
