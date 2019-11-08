@@ -12,8 +12,9 @@ const { CSS_COLOR_NAMES, colorFormats } = require('./src/colors');
 
 const regexpHEX = /#([a-f\d]{3}|[a-f\d]{6})($|\s)/i;
 const regexpHEXAlpha = /#([a-f\d]{4}|[a-f\d]{8})($|\s)/i;
-const regexpRGB = /rgb\(/;
-const regexpHSL = /hsl\(/;
+const fullHEXRegExp = /#([a-f\d]{3}|[a-f\d]{4}|[a-f\d]{6}|[a-f\d]{8})($|\s)/i;
+const regexpRGB = /rgb?a\(/;
+const regexpHSL = /hsl?a\(/;
 
 const defaultOptions = {
   syntax: '',
@@ -32,38 +33,37 @@ module.exports = postcss.plugin('postcss-color-converter', (opts = {}) => {
       colorFormats.includes(currentOptions.outputColorFormat)
     ) {
       style.walkDecls(decl => {
-        if (decl.value) {
+        if (
+          decl.value &&
+          (fullHEXRegExp.test(decl.value) ||
+          regexpRGB.test(decl.value) ||
+          regexpHSL.test(decl.value))
+        ) {
           let value = decl.value;
-          let newValue = valueParser.parse(value);
+          let valueObj = valueParser.parse(value);
 
-          if (regexpHEX.test(value)) {
-            newValue.walk(node => {
+          if (fullHEXRegExp) {
+            valueObj.walk(node => {
               if (node.type === 'word' && node.isColor && node.isHex) {
-                if (currentOptions.outputColorFormat === 'rgb') {
-                  node.value = getRGBColorStr(node.value, 'hex');
-                }
-                if (currentOptions.outputColorFormat === 'hsl') {
-                  node.value = getHSLColorStr(node.value, 'hex');
-                }
-              }
-            });
-          }
-
-          if (regexpHEXAlpha.test(value)) {
-            newValue.walk(node => {
-              if (node.type === 'word' && node.isColor && node.isHex) {
-                if (currentOptions.outputColorFormat === 'rgb') {
-                  node.value = getRGBAColorStr(node.value, 'hex');
-                }
-                if (currentOptions.outputColorFormat === 'hsl') {
-                  node.value = getHSLAColorStr(node.value, 'hex');
+                if (regexpHEX.test(node.value)) {
+                  if (currentOptions.outputColorFormat === 'rgb') {
+                    node.value = getRGBColorStr(node.value, 'hex');
+                  } else if (currentOptions.outputColorFormat === 'hsl') {
+                    node.value = getHSLColorStr(node.value, 'hex');
+                  }
+                } else if (regexpHEXAlpha.test(node.value)) {
+                  if (currentOptions.outputColorFormat === 'rgb') {
+                    node.value = getRGBAColorStr(node.value, 'hex');
+                  } else if (currentOptions.outputColorFormat === 'hsl') {
+                    node.value = getHSLAColorStr(node.value, 'hex');
+                  }
                 }
               }
             });
           }
 
           if (regexpRGB.test(value)) {
-            newValue.walk(node => {
+            valueObj.walk(node => {
               if (node.type === 'word' && node.isColor) {
                 if (currentOptions.outputColorFormat === 'hex') {
                   const newNode = node.clone({ type: 'word' });
@@ -78,14 +78,14 @@ module.exports = postcss.plugin('postcss-color-converter', (opts = {}) => {
           }
 
           if (regexpHSL.test(value) && currentOptions.outputColorFormat === 'rgb') {
-            newValue.walk(node => {
+            valueObj.walk(node => {
               if (node.type === 'word' && node.isColor && node.isHex) {
                 node.value = `rgb(${ convert.hex.rgb(node.value).join(', ') })`;
               }
             });
           }
 
-          decl.value = newValue.toString();
+          decl.value = valueObj.toString();
         }
       });
     } else {
