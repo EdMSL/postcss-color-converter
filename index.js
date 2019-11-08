@@ -13,8 +13,8 @@ const { CSS_COLOR_NAMES, colorFormats } = require('./src/colors');
 const regexpHEX = /#([a-f\d]{3}|[a-f\d]{6})($|\s)/i;
 const regexpHEXAlpha = /#([a-f\d]{4}|[a-f\d]{8})($|\s)/i;
 const fullHEXRegExp = /#([a-f\d]{3}|[a-f\d]{4}|[a-f\d]{6}|[a-f\d]{8})($|\s)/i;
-const regexpRGB = /rgb?a\(/;
-const regexpHSL = /hsl?a\(/;
+const regexpRGB = /rgba?\(/;
+const regexpHSL = /hsla?\(/;
 
 const defaultOptions = {
   syntax: '',
@@ -34,15 +34,15 @@ module.exports = postcss.plugin('postcss-color-converter', (opts = {}) => {
     ) {
       style.walkDecls(decl => {
         if (
-          decl.value &&
-          (fullHEXRegExp.test(decl.value) ||
-          regexpRGB.test(decl.value) ||
-          regexpHSL.test(decl.value))
+          decl.value && (
+            fullHEXRegExp.test(decl.value) ||
+            regexpRGB.test(decl.value) ||
+            regexpHSL.test(decl.value)
+          )
         ) {
-          let value = decl.value;
-          let valueObj = valueParser.parse(value);
+          let valueObj = valueParser.parse(decl.value);
 
-          if (fullHEXRegExp) {
+          if (fullHEXRegExp.test(decl.value)) {
             valueObj.walk(node => {
               if (node.type === 'word' && node.isColor && node.isHex) {
                 if (regexpHEX.test(node.value)) {
@@ -62,7 +62,7 @@ module.exports = postcss.plugin('postcss-color-converter', (opts = {}) => {
             });
           }
 
-          if (regexpRGB.test(value)) {
+          if (regexpRGB.test(decl.value)) {
             valueObj.walk(node => {
               if (node.type === 'word' && node.isColor) {
                 if (currentOptions.outputColorFormat === 'hex') {
@@ -77,7 +77,7 @@ module.exports = postcss.plugin('postcss-color-converter', (opts = {}) => {
             });
           }
 
-          if (regexpHSL.test(value) && currentOptions.outputColorFormat === 'rgb') {
+          if (regexpHSL.test(decl.value) && currentOptions.outputColorFormat === 'rgb') {
             valueObj.walk(node => {
               if (node.type === 'word' && node.isColor && node.isHex) {
                 node.value = `rgb(${ convert.hex.rgb(node.value).join(', ') })`;
