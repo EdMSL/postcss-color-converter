@@ -1,20 +1,21 @@
 const postcss = require('postcss');
 const valueParser = require('postcss-values-parser');
-const convert = require('color-convert');
 
 const {
   getRGBColorStr,
   getHSLColorStr,
   getRGBAColorStr,
   getHSLAColorStr,
+  getHEXColorStr,
+  getHEXAColorStr,
 } = require('./src/utils');
 const { CSS_COLOR_NAMES, colorFormats } = require('./src/colors');
 
-const regexpHEX = /#([a-f\d]{3}|[a-f\d]{6})($|\s)/i;
-const regexpHEXA = /#([a-f\d]{4}|[a-f\d]{8})($|\s)/i;
+const HEXRegExp = /#([a-f\d]{3}|[a-f\d]{6})($|\s)/i;
+const HEXARegExp = /#([a-f\d]{4}|[a-f\d]{8})($|\s)/i;
 const fullHEXRegExp = /#([a-f\d]{3}|[a-f\d]{4}|[a-f\d]{6}|[a-f\d]{8})($|\s)/i;
-const regexpRGB = /rgba?\(/;
-const regexpHSL = /hsla?\(/;
+const fullRGBRegExp = /rgba?\(/;
+const fullHSLRegExp = /hsla?\(/;
 
 const defaultOptions = {
   syntax: '',
@@ -37,8 +38,8 @@ module.exports = postcss.plugin('postcss-color-converter', (opts = {}) => {
         if (
           decl.value && (
             fullHEXRegExp.test(decl.value) ||
-            regexpRGB.test(decl.value) ||
-            regexpHSL.test(decl.value)
+            fullRGBRegExp.test(decl.value) ||
+            fullHSLRegExp.test(decl.value)
           )
         ) {
           let valueObj = valueParser.parse(decl.value);
@@ -46,7 +47,7 @@ module.exports = postcss.plugin('postcss-color-converter', (opts = {}) => {
           if (fullHEXRegExp.test(decl.value)) {
             valueObj.walk(node => {
               if (node.type === 'word' && node.isColor && node.isHex) {
-                if (regexpHEX.test(node.value)) {
+                if (HEXRegExp.test(node.value)) {
                   if (currentOptions.outputColorFormat === 'rgb') {
                     node.value = currentOptions.alwaysAlpha
                       ? getRGBAColorStr(node.value, 'hex')
@@ -56,7 +57,7 @@ module.exports = postcss.plugin('postcss-color-converter', (opts = {}) => {
                       ? getHSLAColorStr(node.value, 'hex')
                       : getHSLColorStr(node.value, 'hex');
                   }
-                } else if (regexpHEXA.test(node.value)) {
+                } else if (HEXARegExp.test(node.value)) {
                   if (currentOptions.outputColorFormat === 'rgb') {
                     node.value = getRGBAColorStr(node.value, 'hex');
                   } else if (currentOptions.outputColorFormat === 'hsl') {
@@ -67,13 +68,22 @@ module.exports = postcss.plugin('postcss-color-converter', (opts = {}) => {
             });
           }
 
-          if (regexpRGB.test(decl.value)) {
+          if (fullRGBRegExp.test(decl.value)) {
             valueObj.walk(node => {
-              if (node.type === 'word' && node.isColor) {
+              if (node.type === 'func' && node.isColor) {
                 if (currentOptions.outputColorFormat === 'hex') {
-                  const newNode = node.clone({ type: 'word' });
-                  newNode.value = `#${ convert.rgb.hex(node.nodes[0], node.nodes[2], node.nodes[4]) }`;
-                  node.replaceWith(newNode);
+                  if (node.name === 'rgb') {
+                    node.value = getHEXColorStr(
+                      [+node.nodes[0].value, +node.nodes[2].value, +node.nodes[4].value],
+                      'rgb',
+                    );
+                  } else if (node.name === 'rgba') {
+                    node.value = getHEXAColorStr(
+                      [+node.nodes[0].value, +node.nodes[2].value, +node.nodes[4].value],
+                      +node.nodes[6].value,
+                      'rgb',
+                    );
+                  }
                 }
                 if (currentOptions.outputColorFormat === 'hsl') {
                   node.value = getHSLColorStr(node.value, 'rgb');
@@ -82,10 +92,23 @@ module.exports = postcss.plugin('postcss-color-converter', (opts = {}) => {
             });
           }
 
-          if (regexpHSL.test(decl.value) && currentOptions.outputColorFormat === 'rgb') {
+          if (fullHSLRegExp.test(decl.value)) {
             valueObj.walk(node => {
-              if (node.type === 'word' && node.isColor && node.isHex) {
-                node.value = `rgb(${ convert.hex.rgb(node.value).join(', ') })`;
+              if (node.type === 'func' && node.isColor) {
+                if (currentOptions.outputColorFormat === 'hex') {
+                  if (node.name === 'hsl') {
+                    node.value = getHEXColorStr(
+                      [+node.nodes[0].value, +node.nodes[2].value, +node.nodes[4].value],
+                      'hsl',
+                    );
+                  } else if (node.name === 'hsla') {
+                    node.value = getHEXAColorStr(
+                      [+node.nodes[0].value, +node.nodes[2].value, +node.nodes[4].value],
+                      +node.nodes[6].value,
+                      'hsl',
+                    );
+                  }
+                }
               }
             });
           }

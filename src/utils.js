@@ -27,7 +27,13 @@ const parseHEXAColor = color => {
   };
 };
 
-const getHEXAlphaValue = value => Number((parseInt(value, 16) / 255).toFixed(2));
+const convertHEXAlphaValueToNumber = value => Number((parseInt(value, 16) / 255).toFixed(2));
+
+const convertNumberAlphaValueToHEX = value => Math.round((value * 255)).toString(16);
+
+const getHEXColorStr = (color, inputColorFormat) => `#${ convert[inputColorFormat].hex(color) }`.toLowerCase();
+
+const getHEXAColorStr = (color, alpha, inputColorFormat) => `#${ convert[inputColorFormat].hex(color) }${ convertNumberAlphaValueToHEX(alpha) }`.toLowerCase();
 
 const getRGBColorStr = (color, inputColorFormat) => `rgb(${ convert[inputColorFormat].rgb(color).join(', ') })`;
 
@@ -35,8 +41,10 @@ const getRGBAColorStr = (color, inputColorFormat) => {
   if (inputColorFormat === 'hex') {
     const colorObj = parseHEXAColor(color);
 
-    return `rgba(${ convert[inputColorFormat].rgb(colorObj.hexColor).join(', ') }, ${ getHEXAlphaValue(colorObj.hexAlpha) })`;
+    return `rgba(${ convert[inputColorFormat].rgb(colorObj.hexColor).join(', ') }, ${ convertHEXAlphaValueToNumber(colorObj.hexAlpha) })`;
   }
+
+  return '';
 };
 
 const getHSLStr = (color, inputColorFormat) => {
@@ -51,8 +59,10 @@ const getHSLAColorStr = (color, inputColorFormat) => {
     const colorObj = parseHEXAColor(color);
     const colorStr = getHSLStr(colorObj.hexColor, inputColorFormat);
 
-    return `hsla(${ colorStr }, ${ getHEXAlphaValue(colorObj.hexAlpha) })`;
+    return `hsla(${ colorStr }, ${ convertHEXAlphaValueToNumber(colorObj.hexAlpha) })`;
   }
+
+  return '';
 };
 
 module.exports = {
@@ -60,4 +70,6 @@ module.exports = {
   getRGBAColorStr,
   getHSLColorStr,
   getHSLAColorStr,
+  getHEXColorStr,
+  getHEXAColorStr,
 };
