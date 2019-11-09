@@ -11,7 +11,7 @@ const {
 const { CSS_COLOR_NAMES, colorFormats } = require('./src/colors');
 
 const regexpHEX = /#([a-f\d]{3}|[a-f\d]{6})($|\s)/i;
-const regexpHEXAlpha = /#([a-f\d]{4}|[a-f\d]{8})($|\s)/i;
+const regexpHEXA = /#([a-f\d]{4}|[a-f\d]{8})($|\s)/i;
 const fullHEXRegExp = /#([a-f\d]{3}|[a-f\d]{4}|[a-f\d]{6}|[a-f\d]{8})($|\s)/i;
 const regexpRGB = /rgba?\(/;
 const regexpHSL = /hsla?\(/;
@@ -19,6 +19,7 @@ const regexpHSL = /hsla?\(/;
 const defaultOptions = {
   syntax: '',
   outputColorFormat: '',
+  alwaysAlpha: false,
 };
 
 module.exports = postcss.plugin('postcss-color-converter', (opts = {}) => {
@@ -47,11 +48,15 @@ module.exports = postcss.plugin('postcss-color-converter', (opts = {}) => {
               if (node.type === 'word' && node.isColor && node.isHex) {
                 if (regexpHEX.test(node.value)) {
                   if (currentOptions.outputColorFormat === 'rgb') {
-                    node.value = getRGBColorStr(node.value, 'hex');
+                    node.value = currentOptions.alwaysAlpha
+                      ? getRGBAColorStr(node.value, 'hex')
+                      : getRGBColorStr(node.value, 'hex');
                   } else if (currentOptions.outputColorFormat === 'hsl') {
-                    node.value = getHSLColorStr(node.value, 'hex');
+                    node.value = currentOptions.alwaysAlpha
+                      ? getHSLAColorStr(node.value, 'hex')
+                      : getHSLColorStr(node.value, 'hex');
                   }
-                } else if (regexpHEXAlpha.test(node.value)) {
+                } else if (regexpHEXA.test(node.value)) {
                   if (currentOptions.outputColorFormat === 'rgb') {
                     node.value = getRGBAColorStr(node.value, 'hex');
                   } else if (currentOptions.outputColorFormat === 'hsl') {

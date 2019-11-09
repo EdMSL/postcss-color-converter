@@ -20,6 +20,7 @@ module.exports = {
     }],
     "func-style": 0,
     "max-len": [1, 100],
+    "multiline-ternary": [1, 'always'],
     "semi": [1, "always"],
 
     "prefer-let/prefer-let": 0,

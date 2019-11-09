@@ -62,6 +62,9 @@ describe('postcss-color-converter for hex colors', function () {
       'body { color: #555; }',
       { outputColorFormat: 'rgb' },
     ), 'body { color: rgb(85, 85, 85); }');
+  });
+
+  it('Input color must be converted to rgba', function () {
     assert.equal(transform(
       'body { color: #fff45780; }',
       { outputColorFormat: 'rgb' },
@@ -121,6 +124,8 @@ describe('postcss-color-converter for hex colors', function () {
       'body { color: #ef5; }',
       { outputColorFormat: 'hsl' },
     ), 'body { color: hsl(66, 100%, 67%); }');
+  });
+  it('Input color must be converted to hsla', function () {
     assert.equal(transform(
       'body { color: #ef51; }',
       { outputColorFormat: 'hsl' },

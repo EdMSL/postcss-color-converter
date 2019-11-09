@@ -1,15 +1,24 @@
 const convert = require('color-convert');
 
 const parseHEXAColor = color => {
+  const newColor = color.slice(1);
   let hexColor;
   let hexAlpha;
 
-  if (color.length === 5) {
-    hexAlpha = color.slice(-1) + color.slice(-1);
-    hexColor = color.slice(0, -1);
-  } else if (color.length === 9) {
-    hexAlpha = color.slice(-2);
-    hexColor = color.slice(0, -2);
+  switch (newColor.length) {
+    case 4:
+      hexAlpha = newColor.slice(-1) + newColor.slice(-1);
+      hexColor = newColor.slice(0, -1);
+      break;
+    case 8:
+      hexAlpha = newColor.slice(-2);
+      hexColor = newColor.slice(0, -2);
+      break;
+    case 3:
+    case 6:
+      hexAlpha = 'ff';
+      hexColor = newColor;
+      break;
   }
 
   return {
