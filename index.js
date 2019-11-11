@@ -45,14 +45,10 @@ module.exports = postcss.plugin('postcss-color-converter', (opts = {}) => {
         ) {
           let valueObj = valueParser.parse(decl.value);
 
-          if (fullHEXRegExp.test(decl.value)) {
-            valueObj.walk(node => {
-              if (
-                currentOptions.outputColorFormat !== 'hex' &&
-                node.type === 'word' &&
-                node.isColor &&
-                node.isHex
-              ) {
+          valueObj.walk(node => {
+            if (node.isColor) {
+              console.log(node)
+              if (currentOptions.outputColorFormat !== 'hex' && node.isHex) {
                 const colorObj = parseHEXAColor(node.value);
 
                 if (HEXRegExp.test(node.value)) {
@@ -72,16 +68,47 @@ module.exports = postcss.plugin('postcss-color-converter', (opts = {}) => {
                     node.value = getHSLAColorStr(colorObj.hexColor, colorObj.hexAlpha, 'hex');
                   }
                 }
-              }
-            });
-          }
-
-          if (fullRGBRegExp.test(decl.value)) {
-            valueObj.walk(node => {
-              if (
+              } else if (
                 currentOptions.outputColorFormat !== 'rgb' &&
                 node.type === 'func' &&
-                node.isColor
+                (node.name === 'rgb' || node.name === 'rgba')
+              ) {
+                const newNode = node.clone({ type: 'word' });
+
+                if (currentOptions.outputColorFormat === 'hex') {
+                  if (node.name === 'rgb') {
+                    newNode.value = getHEXColorStr(
+                      [+node.nodes[0].value, +node.nodes[2].value, +node.nodes[4].value],
+                      'rgb',
+                    );
+                  } else if (node.name === 'rgba') {
+                    newNode.value = getHEXAColorStr(
+                      [+node.nodes[0].value, +node.nodes[2].value, +node.nodes[4].value],
+                      +node.nodes[6].value,
+                      'rgb',
+                    );
+                  }
+                }
+                if (currentOptions.outputColorFormat === 'hsl') {
+                  if (node.name === 'rgb') {
+                    newNode.value = getHSLColorStr(
+                      [+node.nodes[0].value, +node.nodes[2].value, +node.nodes[4].value],
+                      'rgb',
+                    );
+                  } else if (node.name === 'rgba') {
+                    newNode.value = getHSLAColorStr(
+                      [+node.nodes[0].value, +node.nodes[2].value, +node.nodes[4].value],
+                      +node.nodes[6].value,
+                      'rgb',
+                    );
+                  }
+                }
+
+                node.replaceWith(newNode);
+              } else if (
+                currentOptions.outputColorFormat !== 'hsl' &&
+                node.type === 'func' &&
+                (node.name === 'hsl' || node.name === 'hsla')
               ) {
                 const newNode = node.clone({ type: 'word' });
 
@@ -116,50 +143,8 @@ module.exports = postcss.plugin('postcss-color-converter', (opts = {}) => {
 
                 node.replaceWith(newNode);
               }
-            });
-          }
-
-          if (fullHSLRegExp.test(decl.value)) {
-            valueObj.walk(node => {
-              if (
-                currentOptions.outputColorFormat !== 'hsl' &&
-                node.type === 'func' &&
-                node.isColor
-              ) {
-                const newNode = node.clone({ type: 'word' });
-
-                if (currentOptions.outputColorFormat === 'hex') {
-                  if (node.name === 'hsl') {
-                    newNode.value = getHEXColorStr(
-                      [+node.nodes[0].value, +node.nodes[2].value, +node.nodes[4].value],
-                      'hsl',
-                    );
-                  } else if (node.name === 'hsla') {
-                    newNode.value = getHEXAColorStr(
-                      [+node.nodes[0].value, +node.nodes[2].value, +node.nodes[4].value],
-                      +node.nodes[6].value,
-                      'hsl',
-                    );
-                  }
-                }
-                if (currentOptions.outputColorFormat === 'rgb') {
-                  if (node.name === 'hsl') {
-                    newNode.value = getRGBColorStr(
-                      [+node.nodes[0].value, +node.nodes[2].value, +node.nodes[4].value],
-                      'hsl',
-                    );
-                  } else if (node.name === 'hsla') {
-                    newNode.value = getRGBAColorStr(
-                      [+node.nodes[0].value, +node.nodes[2].value, +node.nodes[4].value],
-                      +node.nodes[6].value,
-                      'hsl',
-                    );
-                  }
-                }
-                node.replaceWith(newNode);
-              }
-            });
-          }
+            }
+          });
 
           decl.value = valueObj.toString();
         }
