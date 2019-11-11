@@ -15,10 +15,6 @@ describe('postcss-color-converter for rgb colors', function () {
       'body { color: rgb(255, 255, 255); }',
       { outputColorFormat: 'rgb' },
     ), 'body { color: rgb(255, 255, 255); }');
-    assert.equal(transform(
-      'body { color: rgb(255, 255, 255); }',
-      {},
-    ), 'body { color: rgb(255, 255, 255); }');
   });
 
   it('Input color must be converted to hex', function () {

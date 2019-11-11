@@ -63,6 +63,12 @@ const getHSLAColorStr = (color, alpha, inputColorFormat) => {
     return `hsla(${ colorStr }, ${ convertHEXAlphaValueToNumber(alpha) })`;
   }
 
+  if (inputColorFormat === 'rgb') {
+    const colorStr = getHSLStr(color, inputColorFormat);
+
+    return `hsla(${ colorStr }, ${ alpha })`;
+  }
+
   return '';
 };
 

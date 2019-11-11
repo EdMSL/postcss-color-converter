@@ -47,7 +47,12 @@ module.exports = postcss.plugin('postcss-color-converter', (opts = {}) => {
 
           if (fullHEXRegExp.test(decl.value)) {
             valueObj.walk(node => {
-              if (node.type === 'word' && node.isColor && node.isHex) {
+              if (
+                currentOptions.outputColorFormat !== 'hex' &&
+                node.type === 'word' &&
+                node.isColor &&
+                node.isHex
+              ) {
                 const colorObj = parseHEXAColor(node.value);
 
                 if (HEXRegExp.test(node.value)) {
@@ -73,15 +78,21 @@ module.exports = postcss.plugin('postcss-color-converter', (opts = {}) => {
 
           if (fullRGBRegExp.test(decl.value)) {
             valueObj.walk(node => {
-              if (node.type === 'func' && node.isColor) {
+              if (
+                currentOptions.outputColorFormat !== 'rgb' &&
+                node.type === 'func' &&
+                node.isColor
+              ) {
+                const newNode = node.clone({ type: 'word' });
+
                 if (currentOptions.outputColorFormat === 'hex') {
                   if (node.name === 'rgb') {
-                    node.value = getHEXColorStr(
+                    newNode.value = getHEXColorStr(
                       [+node.nodes[0].value, +node.nodes[2].value, +node.nodes[4].value],
                       'rgb',
                     );
                   } else if (node.name === 'rgba') {
-                    node.value = getHEXAColorStr(
+                    newNode.value = getHEXAColorStr(
                       [+node.nodes[0].value, +node.nodes[2].value, +node.nodes[4].value],
                       +node.nodes[6].value,
                       'rgb',
@@ -90,33 +101,41 @@ module.exports = postcss.plugin('postcss-color-converter', (opts = {}) => {
                 }
                 if (currentOptions.outputColorFormat === 'hsl') {
                   if (node.name === 'rgb') {
-                    node.value = getHSLColorStr(
+                    newNode.value = getHSLColorStr(
                       [+node.nodes[0].value, +node.nodes[2].value, +node.nodes[4].value],
                       'rgb',
                     );
                   } else if (node.name === 'rgba') {
-                    node.value = getHSLAColorStr(
+                    newNode.value = getHSLAColorStr(
                       [+node.nodes[0].value, +node.nodes[2].value, +node.nodes[4].value],
                       +node.nodes[6].value,
                       'rgb',
                     );
                   }
                 }
+
+                node.replaceWith(newNode);
               }
             });
           }
 
           if (fullHSLRegExp.test(decl.value)) {
             valueObj.walk(node => {
-              if (node.type === 'func' && node.isColor) {
+              if (
+                currentOptions.outputColorFormat !== 'hsl' &&
+                node.type === 'func' &&
+                node.isColor
+              ) {
+                const newNode = node.clone({ type: 'word' });
+
                 if (currentOptions.outputColorFormat === 'hex') {
                   if (node.name === 'hsl') {
-                    node.value = getHEXColorStr(
+                    newNode.value = getHEXColorStr(
                       [+node.nodes[0].value, +node.nodes[2].value, +node.nodes[4].value],
                       'hsl',
                     );
                   } else if (node.name === 'hsla') {
-                    node.value = getHEXAColorStr(
+                    newNode.value = getHEXAColorStr(
                       [+node.nodes[0].value, +node.nodes[2].value, +node.nodes[4].value],
                       +node.nodes[6].value,
                       'hsl',
@@ -125,18 +144,19 @@ module.exports = postcss.plugin('postcss-color-converter', (opts = {}) => {
                 }
                 if (currentOptions.outputColorFormat === 'rgb') {
                   if (node.name === 'hsl') {
-                    node.value = getRGBColorStr(
+                    newNode.value = getRGBColorStr(
                       [+node.nodes[0].value, +node.nodes[2].value, +node.nodes[4].value],
                       'hsl',
                     );
                   } else if (node.name === 'hsla') {
-                    node.value = getRGBAColorStr(
+                    newNode.value = getRGBAColorStr(
                       [+node.nodes[0].value, +node.nodes[2].value, +node.nodes[4].value],
                       +node.nodes[6].value,
                       'hsl',
                     );
                   }
                 }
+                node.replaceWith(newNode);
               }
             });
           }

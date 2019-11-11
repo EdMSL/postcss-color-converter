@@ -27,6 +27,7 @@ describe('convertion of hex colors', function () {
     assert.equal(getHSLColorStr('#ffffff', 'hex'), 'hsl(0, 0%, 100%)');
     assert.equal(getHSLColorStr('#ffffff44', 'hex'), 'hsl(0, 0%, 100%)');
     assert.equal(getHSLColorStr('#CC55AA', 'hex'), 'hsl(317, 54%, 57%)');
+    assert.equal(getHSLColorStr('#cd56ab', 'hex'), 'hsl(317, 54%, 57%)');
     assert.equal(getHSLColorStr('#3b6', 'hex'), 'hsl(143, 57%, 47%)');
   });
   it('Color must be correct converted to hsla', function () {
@@ -36,8 +37,11 @@ describe('convertion of hex colors', function () {
   });
   it('Color must be correct converted to hex', function () {
     assert.equal(getHEXColorStr([255, 255, 255], 'rgb'), '#ffffff');
+    assert.equal(getHEXColorStr([55, 55, 55], 'rgb'), '#373737');
+    assert.equal(getHEXColorStr([317, 54, 57], 'hsl'), '#cd56ab');
   });
   it('Color must be correct converted to hexa', function () {
     assert.equal(getHEXAColorStr([255, 255, 255], 0.5, 'rgb'), '#ffffff80');
+    assert.equal(getHEXAColorStr([36, 69, 54], 0.63, 'hsl'), '#db9a39a1');
   });
 });
