@@ -37,15 +37,17 @@ const getHEXColorStr = (inputColorFormat, color, alpha) => (
     : `#${ convert[inputColorFormat].hex(color) }`.toLowerCase()
 );
 
-const getRGBColorStr = (color, inputColorFormat) => `rgb(${ convert[inputColorFormat].rgb(color).join(', ') })`;
-
-const getRGBAColorStr = (color, alpha, inputColorFormat) => {
+const getRGBColorStr = (inputColorFormat, color, alpha) => {
   if (inputColorFormat === 'hex') {
-    return `rgba(${ convert[inputColorFormat].rgb(color).join(', ') }, ${ convertHEXAlphaValueToNumber(alpha) })`;
+    return alpha
+      ? `rgba(${ convert[inputColorFormat].rgb(color).join(', ') }, ${ convertHEXAlphaValueToNumber(alpha) })`
+      : `rgb(${ convert[inputColorFormat].rgb(color).join(', ') })`;
   }
 
   if (inputColorFormat === 'hsl') {
-    return `rgba(${ convert[inputColorFormat].rgb(color).join(', ') }, ${ alpha })`;
+    return alpha
+      ? `rgba(${ convert[inputColorFormat].rgb(color).join(', ') }, ${ alpha })`
+      : `rgb(${ convert[inputColorFormat].rgb(color).join(', ') })`;
   }
 
   return '';
@@ -77,7 +79,6 @@ const getHSLAColorStr = (color, alpha, inputColorFormat) => {
 module.exports = {
   parseHEXAColor,
   getRGBColorStr,
-  getRGBAColorStr,
   getHSLColorStr,
   getHSLAColorStr,
   getHEXColorStr,

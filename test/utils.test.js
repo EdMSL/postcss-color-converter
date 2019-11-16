@@ -2,7 +2,6 @@ const { assert } = require('chai');
 
 const {
   getRGBColorStr,
-  getRGBAColorStr,
   getHSLColorStr,
   getHSLAColorStr,
   getHEXColorStr,
@@ -12,17 +11,17 @@ const {
 
 describe('Test convert functions', function () {
   it('Color must be correct converted to rgb', function () {
-    assert.equal(getRGBColorStr('#ffffff', 'hex'), 'rgb(255, 255, 255)');
-    assert.equal(getRGBColorStr('#CC55AA', 'hex'), 'rgb(204, 85, 170)');
-    assert.equal(getRGBColorStr('#37b', 'hex'), 'rgb(51, 119, 187)');
-    assert.equal(getRGBColorStr([0, 0, 100], 'hsl'), 'rgb(255, 255, 255)');
+    assert.equal(getRGBColorStr('hex', '#ffffff'), 'rgb(255, 255, 255)');
+    assert.equal(getRGBColorStr('hex', '#CC55AA'), 'rgb(204, 85, 170)');
+    assert.equal(getRGBColorStr('hex', '#37b'), 'rgb(51, 119, 187)');
+    assert.equal(getRGBColorStr('hsl', [0, 0, 100]), 'rgb(255, 255, 255)');
   });
 
   it('Color must be correct converted to rgba', function () {
-    assert.equal(getRGBAColorStr('#ffffff', 'ff', 'hex'), 'rgba(255, 255, 255, 1)');
-    assert.equal(getRGBAColorStr('#60cd56', '7e', 'hex'), 'rgba(96, 205, 86, 0.49)');
-    assert.equal(getRGBAColorStr('#93b', '66', 'hex'), 'rgba(153, 51, 187, 0.4)');
-    assert.equal(getRGBAColorStr([0, 0, 100], 0.4, 'hsl'), 'rgba(255, 255, 255, 0.4)');
+    assert.equal(getRGBColorStr('hex', '#ffffff', 'ff'), 'rgba(255, 255, 255, 1)');
+    assert.equal(getRGBColorStr('hex', '#60cd56', '7e'), 'rgba(96, 205, 86, 0.49)');
+    assert.equal(getRGBColorStr('hex', '#93b', '66'), 'rgba(153, 51, 187, 0.4)');
+    assert.equal(getRGBColorStr('hsl', [0, 0, 100], 0.4), 'rgba(255, 255, 255, 0.4)');
   });
 
   it('Color must be correct converted to hsl', function () {

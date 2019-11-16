@@ -5,7 +5,6 @@ const {
   parseHEXAColor,
   getRGBColorStr,
   getHSLColorStr,
-  getRGBAColorStr,
   getHSLAColorStr,
   getHEXColorStr,
 } = require('./src/utils');
@@ -52,8 +51,8 @@ module.exports = postcss.plugin('postcss-color-converter', (opts = {}) => {
                 if (HEXRegExp.test(node.value)) {
                   if (currentOptions.outputColorFormat === 'rgb') {
                     node.value = currentOptions.alwaysAlpha
-                      ? getRGBAColorStr(colorObj.hexColor, colorObj.hexAlpha, 'hex')
-                      : getRGBColorStr(colorObj.hexColor, 'hex');
+                      ? getRGBColorStr('hex', colorObj.hexColor, colorObj.hexAlpha)
+                      : getRGBColorStr('hex', colorObj.hexColor);
                   } else if (currentOptions.outputColorFormat === 'hsl') {
                     node.value = currentOptions.alwaysAlpha
                       ? getHSLAColorStr(colorObj.hexColor, colorObj.hexAlpha, 'hex')
@@ -61,7 +60,7 @@ module.exports = postcss.plugin('postcss-color-converter', (opts = {}) => {
                   }
                 } else if (HEXARegExp.test(node.value)) {
                   if (currentOptions.outputColorFormat === 'rgb') {
-                    node.value = getRGBAColorStr(colorObj.hexColor, colorObj.hexAlpha, 'hex');
+                    node.value = getRGBColorStr('hex', colorObj.hexColor, colorObj.hexAlpha);
                   } else if (currentOptions.outputColorFormat === 'hsl') {
                     node.value = getHSLAColorStr(colorObj.hexColor, colorObj.hexAlpha, 'hex');
                   }
@@ -123,14 +122,14 @@ module.exports = postcss.plugin('postcss-color-converter', (opts = {}) => {
                 } else if (currentOptions.outputColorFormat === 'rgb') {
                   if (node.name === 'hsl') {
                     newNode.value = getRGBColorStr(
-                      [+node.nodes[0].value, +node.nodes[2].value, +node.nodes[4].value],
                       'hsl',
+                      [+node.nodes[0].value, +node.nodes[2].value, +node.nodes[4].value],
                     );
                   } else if (node.name === 'hsla') {
-                    newNode.value = getRGBAColorStr(
+                    newNode.value = getRGBColorStr(
+                      'hsl',
                       [+node.nodes[0].value, +node.nodes[2].value, +node.nodes[4].value],
                       +node.nodes[6].value,
-                      'hsl',
                     );
                   }
                 }
