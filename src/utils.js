@@ -31,9 +31,11 @@ const convertHEXAlphaValueToNumber = value => Number((parseInt(value, 16) / 255)
 
 const convertNumberAlphaValueToHEX = value => Math.round((value * 255)).toString(16);
 
-const getHEXColorStr = (color, inputColorFormat) => `#${ convert[inputColorFormat].hex(color) }`.toLowerCase();
-
-const getHEXAColorStr = (color, alpha, inputColorFormat) => `#${ convert[inputColorFormat].hex(color) }${ convertNumberAlphaValueToHEX(alpha) }`.toLowerCase();
+const getHEXColorStr = (inputColorFormat, color, alpha) => (
+  alpha
+    ? `#${ convert[inputColorFormat].hex(color) }${ convertNumberAlphaValueToHEX(alpha) }`.toLowerCase()
+    : `#${ convert[inputColorFormat].hex(color) }`.toLowerCase()
+);
 
 const getRGBColorStr = (color, inputColorFormat) => `rgb(${ convert[inputColorFormat].rgb(color).join(', ') })`;
 
@@ -79,5 +81,4 @@ module.exports = {
   getHSLColorStr,
   getHSLAColorStr,
   getHEXColorStr,
-  getHEXAColorStr,
 };

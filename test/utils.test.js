@@ -6,7 +6,6 @@ const {
   getHSLColorStr,
   getHSLAColorStr,
   getHEXColorStr,
-  getHEXAColorStr,
 } = require('../src/utils');
 
 /* eslint-disable prefer-arrow-callback, func-names */
@@ -41,13 +40,13 @@ describe('Test convert functions', function () {
   });
 
   it('Color must be correct converted to hex', function () {
-    assert.equal(getHEXColorStr([255, 255, 255], 'rgb'), '#ffffff');
-    assert.equal(getHEXColorStr([55, 55, 55], 'rgb'), '#373737');
-    assert.equal(getHEXColorStr([317, 54, 57], 'hsl'), '#cd56ab');
+    assert.equal(getHEXColorStr('rgb', [255, 255, 255]), '#ffffff');
+    assert.equal(getHEXColorStr('rgb', [55, 55, 55]), '#373737');
+    assert.equal(getHEXColorStr('hsl', [317, 54, 57]), '#cd56ab');
   });
 
   it('Color must be correct converted to hexa', function () {
-    assert.equal(getHEXAColorStr([255, 255, 255], 0.5, 'rgb'), '#ffffff80');
-    assert.equal(getHEXAColorStr([36, 69, 54], 0.63, 'hsl'), '#db9a39a1');
+    assert.equal(getHEXColorStr('rgb', [255, 255, 255], 0.5), '#ffffff80');
+    assert.equal(getHEXColorStr('hsl', [36, 69, 54], 0.63), '#db9a39a1');
   });
 });

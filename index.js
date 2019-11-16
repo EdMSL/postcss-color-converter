@@ -8,7 +8,6 @@ const {
   getRGBAColorStr,
   getHSLAColorStr,
   getHEXColorStr,
-  getHEXAColorStr,
 } = require('./src/utils');
 const { CSS_COLOR_NAMES, colorFormats } = require('./src/colors');
 
@@ -76,14 +75,14 @@ module.exports = postcss.plugin('postcss-color-converter', (opts = {}) => {
                 if (currentOptions.outputColorFormat === 'hex') {
                   if (node.name === 'rgb') {
                     newNode.value = getHEXColorStr(
-                      [+node.nodes[0].value, +node.nodes[2].value, +node.nodes[4].value],
                       'rgb',
+                      [+node.nodes[0].value, +node.nodes[2].value, +node.nodes[4].value],
                     );
                   } else if (node.name === 'rgba') {
-                    newNode.value = getHEXAColorStr(
+                    newNode.value = getHEXColorStr(
+                      'rgb',
                       [+node.nodes[0].value, +node.nodes[2].value, +node.nodes[4].value],
                       +node.nodes[6].value,
-                      'rgb',
                     );
                   }
                 } else if (currentOptions.outputColorFormat === 'hsl') {
@@ -111,14 +110,14 @@ module.exports = postcss.plugin('postcss-color-converter', (opts = {}) => {
                 if (currentOptions.outputColorFormat === 'hex') {
                   if (node.name === 'hsl') {
                     newNode.value = getHEXColorStr(
-                      [+node.nodes[0].value, +node.nodes[2].value, +node.nodes[4].value],
                       'hsl',
+                      [+node.nodes[0].value, +node.nodes[2].value, +node.nodes[4].value],
                     );
                   } else if (node.name === 'hsla') {
-                    newNode.value = getHEXAColorStr(
+                    newNode.value = getHEXColorStr(
+                      'hsl',
                       [+node.nodes[0].value, +node.nodes[2].value, +node.nodes[4].value],
                       +node.nodes[6].value,
-                      'hsl',
                     );
                   }
                 } else if (currentOptions.outputColorFormat === 'rgb') {
