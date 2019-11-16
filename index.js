@@ -69,7 +69,6 @@ module.exports = postcss.plugin('postcss-color-converter', (opts = {}) => {
                 }
               } else if (
                 currentOptions.outputColorFormat !== 'rgb' &&
-                node.type === 'func' &&
                 (node.name === 'rgb' || node.name === 'rgba')
               ) {
                 const newNode = node.clone({ type: 'word' });
@@ -105,7 +104,6 @@ module.exports = postcss.plugin('postcss-color-converter', (opts = {}) => {
                 node.replaceWith(newNode);
               } else if (
                 currentOptions.outputColorFormat !== 'hsl' &&
-                node.type === 'func' &&
                 (node.name === 'hsl' || node.name === 'hsla')
               ) {
                 const newNode = node.clone({ type: 'word' });

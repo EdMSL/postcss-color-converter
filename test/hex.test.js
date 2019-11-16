@@ -43,25 +43,13 @@ describe('postcss-color-converter for hex colors', function () {
       { outputColorFormat: 'rgb' },
     ), 'body { color: rgb(255, 255, 255); }');
     assert.equal(transform(
-      `ul {
-        background: linear-gradient(
-          to bottom,
-          #456789 0%,
-          #fff555 100%,
-        );
-      }`,
-      { outputColorFormat: 'rgb' },
-    ), `ul {
-        background: linear-gradient(
-          to bottom,
-          rgb(69, 103, 137) 0%,
-          rgb(255, 245, 85) 100%,
-        );
-      }`);
-    assert.equal(transform(
       'body { color: #555; }',
       { outputColorFormat: 'rgb' },
     ), 'body { color: rgb(85, 85, 85); }');
+    assert.equal(transform(
+      'body { color: #FFF; }',
+      { outputColorFormat: 'rgb' },
+    ), 'body { color: rgb(255, 255, 255); }');
   });
 
   it('Input color must be converted to rgba', function () {
@@ -101,30 +89,15 @@ describe('postcss-color-converter for hex colors', function () {
 
   it('Input color must be converted to hsl', function () {
     assert.equal(transform(
-      'body { color: #c95959; }',
-      { outputColorFormat: 'hsl' },
-    ), 'body { color: hsl(0, 51%, 57%); }');
-    assert.equal(transform(
-      `ul {
-        background: linear-gradient(
-          to bottom,
-          #ef5e 0%,
-          #a42de9 100%,
-        );
-      }`,
-      { outputColorFormat: 'hsl' },
-    ), `ul {
-        background: linear-gradient(
-          to bottom,
-          hsla(66, 100%, 67%, 0.93) 0%,
-          hsl(278, 81%, 55%) 100%,
-        );
-      }`);
-    assert.equal(transform(
       'body { color: #ef5; }',
       { outputColorFormat: 'hsl' },
     ), 'body { color: hsl(66, 100%, 67%); }');
+    assert.equal(transform(
+      'body { color: #c95959; }',
+      { outputColorFormat: 'hsl' },
+    ), 'body { color: hsl(0, 51%, 57%); }');
   });
+
   it('Input color must be converted to hsla', function () {
     assert.equal(transform(
       'body { color: #ef51; }',
@@ -138,5 +111,34 @@ describe('postcss-color-converter for hex colors', function () {
       'body { color: #57C1FF; }',
       { outputColorFormat: 'hsl' },
     ), 'body { color: hsl(202, 100%, 67%); }');
+  });
+
+  it('All input colors must be correct converted to hex(a)', function () {
+    assert.equal(transform(
+      `ul {
+        background: linear-gradient(
+          to bottom,
+          #cd56ab 10%,
+          #cd56ab80 20%,
+          rgb(68, 187, 221) 30%,
+          rgba(68, 188, 221, 0.5) 40%,
+          hsl(56, 69%, 57%) 50%,
+          hsla(56, 69%, 57%, 0.5) 60%,
+          green 100%,
+        );
+      }`,
+      { outputColorFormat: 'hex' },
+    ), `ul {
+        background: linear-gradient(
+          to bottom,
+          #cd56ab 10%,
+          #cd56ab80 20%,
+          #44bbdd 30%,
+          #44bcdd80 40%,
+          #ddd346 50%,
+          #ddd34680 60%,
+          green 100%,
+        );
+      }`);
   });
 });

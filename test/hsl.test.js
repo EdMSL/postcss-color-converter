@@ -5,47 +5,47 @@ const plugin = require('../index');
 
 /* eslint-disable prefer-arrow-callback, func-names */
 
-describe('postcss-color-converter for rgb colors', function () {
+describe('postcss-color-converter for hsl colors', function () {
   function transform (source, opts) {
     return postcss([plugin(opts)]).process(source).css;
   }
 
   it('Input color should not be converted', function () {
     assert.equal(transform(
-      'body { color: rgb(255, 255, 255); }',
-      { outputColorFormat: 'rgb' },
-    ), 'body { color: rgb(255, 255, 255); }');
+      'body { color: hsl(255, 0%, 0%); }',
+      { outputColorFormat: 'hsl' },
+    ), 'body { color: hsl(255, 0%, 0%); }');
   });
 
   it('Input color must be converted to hex', function () {
     assert.equal(transform(
-      'body { color: rgb(255, 255, 255); }',
+      'body { color: hsl(0, 0%, 100%); }',
       { outputColorFormat: 'hex' },
     ), 'body { color: #ffffff; }');
   });
 
   it('Input color must be converted to hexa', function () {
     assert.equal(transform(
-      'body { color: rgba(255, 255, 255, 0.5); }',
+      'body { color: hsla(0, 0%, 100%, 0.5); }',
       { outputColorFormat: 'hex' },
     ), 'body { color: #ffffff80; }');
   });
 
-  it('Input color must be converted to hsl', function () {
+  it('Input color must be converted to rgb', function () {
     assert.equal(transform(
-      'body { color: rgb(255, 255, 255); }',
-      { outputColorFormat: 'hsl' },
-    ), 'body { color: hsl(0, 0%, 100%); }');
+      'body { color: hsl(0, 0%, 100%); }',
+      { outputColorFormat: 'rgb' },
+    ), 'body { color: rgb(255, 255, 255); }');
   });
 
-  it('Input color must be converted to hsla', function () {
+  it('Input color must be converted to rgba', function () {
     assert.equal(transform(
-      'body { color: rgba(255, 255, 255, 0.5); }',
-      { outputColorFormat: 'hsl' },
-    ), 'body { color: hsla(0, 0%, 100%, 0.5); }');
+      'body { color: hsla(0, 0%, 100%, 0.5); }',
+      { outputColorFormat: 'rgb' },
+    ), 'body { color: rgba(255, 255, 255, 0.5); }');
   });
 
-  it('All input colors must be correct converted to rgb(a)', function () {
+  it('All input colors must be correct converted to hex(a)', function () {
     assert.equal(transform(
       `ul {
         background: linear-gradient(
@@ -59,16 +59,16 @@ describe('postcss-color-converter for rgb colors', function () {
           green 100%,
         );
       }`,
-      { outputColorFormat: 'rgb' },
+      { outputColorFormat: 'hsl' },
     ), `ul {
         background: linear-gradient(
           to bottom,
-          rgb(205, 86, 171) 10%,
-          rgba(205, 86, 171, 0.5) 20%,
-          rgb(68, 187, 221) 30%,
-          rgba(68, 188, 221, 0.5) 40%,
-          rgb(221, 211, 70) 50%,
-          rgba(221, 211, 70, 0.5) 60%,
+          hsl(317, 54%, 57%) 10%,
+          hsla(317, 54%, 57%, 0.5) 20%,
+          hsl(193, 69%, 57%) 30%,
+          hsla(193, 69%, 57%, 0.5) 40%,
+          hsl(56, 69%, 57%) 50%,
+          hsla(56, 69%, 57%, 0.5) 60%,
           green 100%,
         );
       }`);
