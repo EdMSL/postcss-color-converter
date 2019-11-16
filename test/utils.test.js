@@ -3,7 +3,6 @@ const { assert } = require('chai');
 const {
   getRGBColorStr,
   getHSLColorStr,
-  getHSLAColorStr,
   getHEXColorStr,
 } = require('../src/utils');
 
@@ -25,17 +24,17 @@ describe('Test convert functions', function () {
   });
 
   it('Color must be correct converted to hsl', function () {
-    assert.equal(getHSLColorStr('#ffffff', 'hex'), 'hsl(0, 0%, 100%)');
-    assert.equal(getHSLColorStr('#CC55AA', 'hex'), 'hsl(317, 54%, 57%)');
-    assert.equal(getHSLColorStr('#3b6', 'hex'), 'hsl(143, 57%, 47%)');
-    assert.equal(getHSLColorStr([255, 255, 255], 'rgb'), 'hsl(0, 0%, 100%)');
+    assert.equal(getHSLColorStr('hex', '#ffffff'), 'hsl(0, 0%, 100%)');
+    assert.equal(getHSLColorStr('hex', '#CC55AA'), 'hsl(317, 54%, 57%)');
+    assert.equal(getHSLColorStr('hex', '#3b6'), 'hsl(143, 57%, 47%)');
+    assert.equal(getHSLColorStr('rgb', [255, 255, 255]), 'hsl(0, 0%, 100%)');
   });
 
   it('Color must be correct converted to hsla', function () {
-    assert.equal(getHSLAColorStr('#ffffff', 'ff', 'hex'), 'hsla(0, 0%, 100%, 1)');
-    assert.equal(getHSLAColorStr('#db9a39', 'a1', 'hex'), 'hsla(36, 69%, 54%, 0.63)');
-    assert.equal(getHSLAColorStr('#7b3', 'dd', 'hex'), 'hsla(90, 57%, 47%, 0.87)');
-    assert.equal(getHSLAColorStr([255, 255, 255], 0.85, 'rgb'), 'hsla(0, 0%, 100%, 0.85)');
+    assert.equal(getHSLColorStr('hex', '#ffffff', 'ff'), 'hsla(0, 0%, 100%, 1)');
+    assert.equal(getHSLColorStr('hex', '#db9a39', 'a1'), 'hsla(36, 69%, 54%, 0.63)');
+    assert.equal(getHSLColorStr('hex', '#7b3', 'dd'), 'hsla(90, 57%, 47%, 0.87)');
+    assert.equal(getHSLColorStr('rgb', [255, 255, 255], 0.85), 'hsla(0, 0%, 100%, 0.85)');
   });
 
   it('Color must be correct converted to hex', function () {

@@ -58,19 +58,21 @@ const getHSLStr = (color, inputColorFormat) => {
   return `${ colorArr[0] }, ${ colorArr[1] }%, ${ colorArr[2] }%`;
 };
 
-const getHSLColorStr = (color, inputColorFormat) => `hsl(${ getHSLStr(color, inputColorFormat) })`;
+// const getHSLColorStr = (color, inputColorFormat) => `hsl(${ getHSLStr(color, inputColorFormat) })`;
 
-const getHSLAColorStr = (color, alpha, inputColorFormat) => {
+const getHSLColorStr = (inputColorFormat, color, alpha) => {
+  const colorStr = getHSLStr(color, inputColorFormat);
+
   if (inputColorFormat === 'hex') {
-    const colorStr = getHSLStr(color, inputColorFormat);
-
-    return `hsla(${ colorStr }, ${ convertHEXAlphaValueToNumber(alpha) })`;
+    return alpha
+      ? `hsla(${ colorStr }, ${ convertHEXAlphaValueToNumber(alpha) })`
+      : `hsl(${ colorStr })`;
   }
 
   if (inputColorFormat === 'rgb') {
-    const colorStr = getHSLStr(color, inputColorFormat);
-
-    return `hsla(${ colorStr }, ${ alpha })`;
+    return alpha
+      ? `hsla(${ colorStr }, ${ alpha })`
+      : `hsl(${ colorStr })`;
   }
 
   return '';
@@ -80,6 +82,5 @@ module.exports = {
   parseHEXAColor,
   getRGBColorStr,
   getHSLColorStr,
-  getHSLAColorStr,
   getHEXColorStr,
 };

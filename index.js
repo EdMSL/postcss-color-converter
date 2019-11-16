@@ -5,7 +5,6 @@ const {
   parseHEXAColor,
   getRGBColorStr,
   getHSLColorStr,
-  getHSLAColorStr,
   getHEXColorStr,
 } = require('./src/utils');
 const { CSS_COLOR_NAMES, colorFormats } = require('./src/colors');
@@ -55,14 +54,14 @@ module.exports = postcss.plugin('postcss-color-converter', (opts = {}) => {
                       : getRGBColorStr('hex', colorObj.hexColor);
                   } else if (currentOptions.outputColorFormat === 'hsl') {
                     node.value = currentOptions.alwaysAlpha
-                      ? getHSLAColorStr(colorObj.hexColor, colorObj.hexAlpha, 'hex')
-                      : getHSLColorStr(colorObj.hexColor, 'hex');
+                      ? getHSLColorStr('hex', colorObj.hexColor, colorObj.hexAlpha)
+                      : getHSLColorStr('hex', colorObj.hexColor);
                   }
                 } else if (HEXARegExp.test(node.value)) {
                   if (currentOptions.outputColorFormat === 'rgb') {
                     node.value = getRGBColorStr('hex', colorObj.hexColor, colorObj.hexAlpha);
                   } else if (currentOptions.outputColorFormat === 'hsl') {
-                    node.value = getHSLAColorStr(colorObj.hexColor, colorObj.hexAlpha, 'hex');
+                    node.value = getHSLColorStr('hex', colorObj.hexColor, colorObj.hexAlpha);
                   }
                 }
               } else if (
@@ -87,14 +86,14 @@ module.exports = postcss.plugin('postcss-color-converter', (opts = {}) => {
                 } else if (currentOptions.outputColorFormat === 'hsl') {
                   if (node.name === 'rgb') {
                     newNode.value = getHSLColorStr(
-                      [+node.nodes[0].value, +node.nodes[2].value, +node.nodes[4].value],
                       'rgb',
+                      [+node.nodes[0].value, +node.nodes[2].value, +node.nodes[4].value],
                     );
                   } else if (node.name === 'rgba') {
-                    newNode.value = getHSLAColorStr(
+                    newNode.value = getHSLColorStr(
+                      'rgb',
                       [+node.nodes[0].value, +node.nodes[2].value, +node.nodes[4].value],
                       +node.nodes[6].value,
-                      'rgb',
                     );
                   }
                 }
