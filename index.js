@@ -60,30 +60,33 @@ module.exports = postcss.plugin('postcss-color-converter', (opts = {}) => {
               ) {
                 const newNode = node.clone({ type: 'word' });
 
+                // same as [+node.nodes[0].value, +node.nodes[2].value, +node.nodes[4].value], +node.nodes[6].value,
+                const [r, , g, , b, , a] = node.nodes;
+
                 if (currentOptions.outputColorFormat === 'hex') {
                   if (node.name === 'rgb') {
                     newNode.value = getHEXColorStr(
                       'rgb',
-                      [+node.nodes[0].value, +node.nodes[2].value, +node.nodes[4].value],
+                      [+r.value, +g.value, +b.value],
                     );
                   } else if (node.name === 'rgba') {
                     newNode.value = getHEXColorStr(
                       'rgb',
-                      [+node.nodes[0].value, +node.nodes[2].value, +node.nodes[4].value],
-                      +node.nodes[6].value,
+                      [+r.value, +g.value, +b.value],
+                      +a.value,
                     );
                   }
                 } else if (currentOptions.outputColorFormat === 'hsl') {
                   if (node.name === 'rgb') {
                     newNode.value = getHSLColorStr(
                       'rgb',
-                      [+node.nodes[0].value, +node.nodes[2].value, +node.nodes[4].value],
+                      [+r.value, +g.value, +b.value],
                     );
                   } else if (node.name === 'rgba') {
                     newNode.value = getHSLColorStr(
                       'rgb',
-                      [+node.nodes[0].value, +node.nodes[2].value, +node.nodes[4].value],
-                      +node.nodes[6].value,
+                      [+r.value, +g.value, +b.value],
+                      +a.value,
                     );
                   }
                 }
@@ -94,31 +97,32 @@ module.exports = postcss.plugin('postcss-color-converter', (opts = {}) => {
                 (node.name === 'hsl' || node.name === 'hsla')
               ) {
                 const newNode = node.clone({ type: 'word' });
+                const [h, , s, , l, , a] = node.nodes;
 
                 if (currentOptions.outputColorFormat === 'hex') {
                   if (node.name === 'hsl') {
                     newNode.value = getHEXColorStr(
                       'hsl',
-                      [+node.nodes[0].value, +node.nodes[2].value, +node.nodes[4].value],
+                      [+h.value, +s.value, +l.value],
                     );
                   } else if (node.name === 'hsla') {
                     newNode.value = getHEXColorStr(
                       'hsl',
-                      [+node.nodes[0].value, +node.nodes[2].value, +node.nodes[4].value],
-                      +node.nodes[6].value,
+                      [+h.value, +s.value, +l.value],
+                      +a.value,
                     );
                   }
                 } else if (currentOptions.outputColorFormat === 'rgb') {
                   if (node.name === 'hsl') {
                     newNode.value = getRGBColorStr(
                       'hsl',
-                      [+node.nodes[0].value, +node.nodes[2].value, +node.nodes[4].value],
+                      [+h.value, +s.value, +l.value],
                     );
                   } else if (node.name === 'hsla') {
                     newNode.value = getRGBColorStr(
                       'hsl',
                       [+node.nodes[0].value, +node.nodes[2].value, +node.nodes[4].value],
-                      +node.nodes[6].value,
+                      +a.value,
                     );
                   }
                 }
