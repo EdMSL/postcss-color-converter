@@ -50,15 +50,15 @@ const getRGBColorStr = (inputColorFormat, color, alpha) => {
       : `rgb(${ convert[inputColorFormat].rgb(color).join(', ') })`;
   }
 
-  return '';
+  return `rgba(${ color.join(', ') }, ${ alpha })`;
 };
 
 const getHSLStr = (color, inputColorFormat) => {
-  const colorArr = convert[inputColorFormat].hsl(color);
+  const colorArr = inputColorFormat !== 'hsl'
+    ? convert[inputColorFormat].hsl(color)
+    : color;
   return `${ colorArr[0] }, ${ colorArr[1] }%, ${ colorArr[2] }%`;
 };
-
-// const getHSLColorStr = (color, inputColorFormat) => `hsl(${ getHSLStr(color, inputColorFormat) })`;
 
 const getHSLColorStr = (inputColorFormat, color, alpha) => {
   const colorStr = getHSLStr(color, inputColorFormat);
@@ -75,7 +75,7 @@ const getHSLColorStr = (inputColorFormat, color, alpha) => {
       : `hsl(${ colorStr })`;
   }
 
-  return '';
+  return `hsla(${ colorStr }, ${ alpha })`;
 };
 
 module.exports = {

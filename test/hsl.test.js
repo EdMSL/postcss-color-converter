@@ -30,8 +30,16 @@ describe('postcss-color-converter for hsl colors', function () {
       { outputColorFormat: 'hex' },
     ), 'body { color: #ffffff80; }');
     assert.equal(transform(
+      'body { color: hsla(0, 0%, 100%, 0.5); }',
+      { outputColorFormat: 'hex', alwaysAlpha: true },
+    ), 'body { color: #ffffff80; }');
+    assert.equal(transform(
       'body { color: hsla(0, 0%, 100%, 1); }',
       { outputColorFormat: 'hex' },
+    ), 'body { color: #ffffffff; }');
+    assert.equal(transform(
+      'body { color: hsl(0, 0%, 100%); }',
+      { outputColorFormat: 'hex', alwaysAlpha: true },
     ), 'body { color: #ffffffff; }');
   });
 
@@ -46,6 +54,14 @@ describe('postcss-color-converter for hsl colors', function () {
     assert.equal(transform(
       'body { color: hsla(0, 0%, 100%, 0.5); }',
       { outputColorFormat: 'rgb' },
+    ), 'body { color: rgba(255, 255, 255, 0.5); }');
+    assert.equal(transform(
+      'body { color: hsl(0, 0%, 100%); }',
+      { outputColorFormat: 'rgb', alwaysAlpha: true },
+    ), 'body { color: rgba(255, 255, 255, 1); }');
+    assert.equal(transform(
+      'body { color: hsla(0, 0%, 100%, 0.5); }',
+      { outputColorFormat: 'rgb', alwaysAlpha: true },
     ), 'body { color: rgba(255, 255, 255, 0.5); }');
   });
 

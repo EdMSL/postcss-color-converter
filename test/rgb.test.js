@@ -30,8 +30,16 @@ describe('postcss-color-converter for rgb colors', function () {
       { outputColorFormat: 'hex' },
     ), 'body { color: #ffffff80; }');
     assert.equal(transform(
+      'body { color: rgba(255, 255, 255, 0.5); }',
+      { outputColorFormat: 'hex', alwaysAlpha: true },
+    ), 'body { color: #ffffff80; }');
+    assert.equal(transform(
       'body { color: rgba(255, 255, 255, 1); }',
       { outputColorFormat: 'hex' },
+    ), 'body { color: #ffffffff; }');
+    assert.equal(transform(
+      'body { color: rgb(255, 255, 255); }',
+      { outputColorFormat: 'hex', alwaysAlpha: true },
     ), 'body { color: #ffffffff; }');
   });
 
@@ -47,6 +55,14 @@ describe('postcss-color-converter for rgb colors', function () {
       'body { color: rgba(255, 255, 255, 0.5); }',
       { outputColorFormat: 'hsl' },
     ), 'body { color: hsla(0, 0%, 100%, 0.5); }');
+    assert.equal(transform(
+      'body { color: rgba(255, 255, 255, 0.5); }',
+      { outputColorFormat: 'hsl', alwaysAlpha: true },
+    ), 'body { color: hsla(0, 0%, 100%, 0.5); }');
+    assert.equal(transform(
+      'body { color: rgb(255, 255, 255); }',
+      { outputColorFormat: 'hsl', alwaysAlpha: true },
+    ), 'body { color: hsla(0, 0%, 100%, 1); }');
   });
 
   it('All input colors must be correct converted to rgb(a)', function () {
