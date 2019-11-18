@@ -29,6 +29,10 @@ describe('postcss-color-converter for hsl colors', function () {
       'body { color: hsla(0, 0%, 100%, 0.5); }',
       { outputColorFormat: 'hex' },
     ), 'body { color: #ffffff80; }');
+    assert.equal(transform(
+      'body { color: hsla(0, 0%, 100%, 1); }',
+      { outputColorFormat: 'hex' },
+    ), 'body { color: #ffffffff; }');
   });
 
   it('Input color must be converted to rgb', function () {
