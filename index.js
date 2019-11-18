@@ -9,8 +9,6 @@ const {
 } = require('./src/utils');
 const { CSS_COLOR_NAMES, colorFormats } = require('./src/colors');
 
-const HEXRegExp = /#([a-f\d]{3}|[a-f\d]{6})($|\s)/i;
-const HEXARegExp = /#([a-f\d]{4}|[a-f\d]{8})($|\s)/i;
 const fullHEXRegExp = /#([a-f\d]{3}|[a-f\d]{4}|[a-f\d]{6}|[a-f\d]{8})($|\s)/i;
 const fullRGBRegExp = /rgba?\(/;
 const fullHSLRegExp = /hsla?\(/;
@@ -47,22 +45,14 @@ module.exports = postcss.plugin('postcss-color-converter', (opts = {}) => {
               if (currentOptions.outputColorFormat !== 'hex' && node.isHex) {
                 const colorObj = parseHEXAColor(node.value);
 
-                if (HEXRegExp.test(node.value)) {
-                  if (currentOptions.outputColorFormat === 'rgb') {
-                    node.value = currentOptions.alwaysAlpha
-                      ? getRGBColorStr('hex', colorObj.hexColor, colorObj.hexAlpha)
-                      : getRGBColorStr('hex', colorObj.hexColor);
-                  } else if (currentOptions.outputColorFormat === 'hsl') {
-                    node.value = currentOptions.alwaysAlpha
-                      ? getHSLColorStr('hex', colorObj.hexColor, colorObj.hexAlpha)
-                      : getHSLColorStr('hex', colorObj.hexColor);
-                  }
-                } else if (HEXARegExp.test(node.value)) {
-                  if (currentOptions.outputColorFormat === 'rgb') {
-                    node.value = getRGBColorStr('hex', colorObj.hexColor, colorObj.hexAlpha);
-                  } else if (currentOptions.outputColorFormat === 'hsl') {
-                    node.value = getHSLColorStr('hex', colorObj.hexColor, colorObj.hexAlpha);
-                  }
+                if (currentOptions.outputColorFormat === 'rgb') {
+                  node.value = currentOptions.alwaysAlpha || colorObj.hexAlpha !== 'ff'
+                    ? getRGBColorStr('hex', colorObj.hexColor, colorObj.hexAlpha)
+                    : getRGBColorStr('hex', colorObj.hexColor);
+                } else if (currentOptions.outputColorFormat === 'hsl') {
+                  node.value = currentOptions.alwaysAlpha || colorObj.hexAlpha !== 'ff'
+                    ? getHSLColorStr('hex', colorObj.hexColor, colorObj.hexAlpha)
+                    : getHSLColorStr('hex', colorObj.hexColor);
                 }
               } else if (
                 currentOptions.outputColorFormat !== 'rgb' &&
