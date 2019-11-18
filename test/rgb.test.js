@@ -92,5 +92,31 @@ describe('postcss-color-converter for rgb colors', function () {
           green 100%,
         );
       }`);
+    assert.equal(transform(
+      `ul {
+        background: linear-gradient(
+          to bottom,
+          #cd56ab 10%,
+          #cd56ab80 20%,
+          rgb(68, 187, 221) 30%,
+          rgba(68, 188, 221, 0.5) 40%,
+          hsl(56, 69%, 57%) 50%,
+          hsla(56, 69%, 57%, 0.5) 60%,
+          green 100%,
+        );
+      }`,
+      { outputColorFormat: 'rgb', alwaysAlpha: true },
+    ), `ul {
+        background: linear-gradient(
+          to bottom,
+          rgba(205, 86, 171, 1) 10%,
+          rgba(205, 86, 171, 0.5) 20%,
+          rgba(68, 187, 221, 1) 30%,
+          rgba(68, 188, 221, 0.5) 40%,
+          rgba(221, 211, 70, 1) 50%,
+          rgba(221, 211, 70, 0.5) 60%,
+          green 100%,
+        );
+      }`);
   });
 });

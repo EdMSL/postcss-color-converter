@@ -92,5 +92,31 @@ describe('postcss-color-converter for hsl colors', function () {
           green 100%,
         );
       }`);
+    assert.equal(transform(
+      `ul {
+        background: linear-gradient(
+          to bottom,
+          #cd56ab 10%,
+          #cd56ab80 20%,
+          rgb(68, 187, 221) 30%,
+          rgba(68, 188, 221, 0.5) 40%,
+          hsl(56, 69%, 57%) 50%,
+          hsla(56, 69%, 57%, 0.5) 60%,
+          green 100%,
+        );
+      }`,
+      { outputColorFormat: 'hsl', alwaysAlpha: true },
+    ), `ul {
+        background: linear-gradient(
+          to bottom,
+          hsla(317, 54%, 57%, 1) 10%,
+          hsla(317, 54%, 57%, 0.5) 20%,
+          hsla(193, 69%, 57%, 1) 30%,
+          hsla(193, 69%, 57%, 0.5) 40%,
+          hsla(56, 69%, 57%, 1) 50%,
+          hsla(56, 69%, 57%, 0.5) 60%,
+          green 100%,
+        );
+      }`);
   });
 });
