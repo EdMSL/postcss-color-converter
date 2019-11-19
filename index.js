@@ -1,5 +1,6 @@
 const postcss = require('postcss');
 const valueParser = require('postcss-values-parser');
+const colors = require('color-name');
 
 const {
   parseHEXAColor,
@@ -7,23 +8,22 @@ const {
   getHSLColorStr,
   getHEXColorStr,
 } = require('./src/utils');
-const { colorNames, colorFormats } = require('./src/colors');
+
+const colorNames = Object.keys(colors);
+const colorFormats = ['hex', 'rgb', 'hsl', 'keyword'];
 
 const DEFAULT_ALPHA = 1;
-const colorPropsRegExp = /(background|border|box-shadow|color|fill|outline)/;
-const fullHEXRegExp = /#([a-f\d]{3}|[a-f\d]{4}|[a-f\d]{6}|[a-f\d]{8})($|\s|,)/i;
-const fullRGBRegExp = /rgba?\(/;
-const fullHSLRegExp = /hsla?\(/;
+const propsWithColorRegExp = /(background|border|box-shadow|color|fill|outline|@|$)/;
 
 const defaultOptions = {
   outputColorFormat: '',
   alwaysAlpha: false,
 };
 
-module.exports = postcss.plugin('postcss-color-converter', (opts = {}) => {
+module.exports = postcss.plugin('postcss-color-converter', (options = {}) => {
   let currentOptions = {
     ...defaultOptions,
-    ...opts,
+    ...options,
   };
 
   return style => {
@@ -33,14 +33,9 @@ module.exports = postcss.plugin('postcss-color-converter', (opts = {}) => {
     ) {
       style.walkDecls(decl => {
         if (
-          decl.prop && colorPropsRegExp.test(decl.prop) && decl.value && (
-            fullHEXRegExp.test(decl.value) ||
-            fullRGBRegExp.test(decl.value) ||
-            fullHSLRegExp.test(decl.value) ||
-            colorNames.includes(decl.value)
-          )
+          decl.prop && propsWithColorRegExp.test(decl.prop) && decl.value
         ) {
-          let valueObj = valueParser.parse(decl.value);
+          let valueObj = valueParser.parse(decl.value, { ignoreUnknownWords: true });
 
           valueObj.walk(node => {
             if (node.isColor) {
