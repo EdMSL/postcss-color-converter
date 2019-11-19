@@ -89,7 +89,7 @@ describe('postcss-color-converter for rgb colors', function () {
           rgba(68, 188, 221, 0.5) 40%,
           rgb(221, 211, 70) 50%,
           rgba(221, 211, 70, 0.5) 60%,
-          green 100%,
+          rgb(0, 128, 0) 100%,
         );
       }`);
     assert.equal(transform(
@@ -115,7 +115,7 @@ describe('postcss-color-converter for rgb colors', function () {
           rgba(68, 188, 221, 0.5) 40%,
           rgba(221, 211, 70, 1) 50%,
           rgba(221, 211, 70, 0.5) 60%,
-          green 100%,
+          rgba(0, 128, 0, 1) 100%,
         );
       }`);
   });

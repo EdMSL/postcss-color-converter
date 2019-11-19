@@ -89,7 +89,7 @@ describe('postcss-color-converter for hsl colors', function () {
           hsla(193, 69%, 57%, 0.5) 40%,
           hsl(56, 69%, 57%) 50%,
           hsla(56, 69%, 57%, 0.5) 60%,
-          green 100%,
+          hsl(120, 100%, 25%) 100%,
         );
       }`);
     assert.equal(transform(
@@ -115,7 +115,7 @@ describe('postcss-color-converter for hsl colors', function () {
           hsla(193, 69%, 57%, 0.5) 40%,
           hsla(56, 69%, 57%, 1) 50%,
           hsla(56, 69%, 57%, 0.5) 60%,
-          green 100%,
+          hsla(120, 100%, 25%, 1) 100%,
         );
       }`);
   });

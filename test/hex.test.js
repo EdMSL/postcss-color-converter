@@ -149,7 +149,7 @@ describe('postcss-color-converter for hex colors', function () {
           #44bcdd80 40%,
           #ddd346 50%,
           #ddd34680 60%,
-          green 100%,
+          #008000 100%,
         );
       }`);
   });

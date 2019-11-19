@@ -50,6 +50,12 @@ const getRGBColorStr = (inputColorFormat, color, alpha) => {
       : `rgb(${ convert[inputColorFormat].rgb(color).join(', ') })`;
   }
 
+  if (inputColorFormat === 'keyword') {
+    return alpha
+      ? `rgba(${ convert[inputColorFormat].rgb(color).join(', ') }, ${ alpha })`
+      : `rgb(${ convert[inputColorFormat].rgb(color).join(', ') })`;
+  }
+
   return `rgba(${ color.join(', ') }, ${ alpha })`;
 };
 
@@ -70,6 +76,12 @@ const getHSLColorStr = (inputColorFormat, color, alpha) => {
   }
 
   if (inputColorFormat === 'rgb') {
+    return alpha
+      ? `hsla(${ colorStr }, ${ alpha })`
+      : `hsl(${ colorStr })`;
+  }
+
+  if (inputColorFormat === 'keyword') {
     return alpha
       ? `hsla(${ colorStr }, ${ alpha })`
       : `hsl(${ colorStr })`;
