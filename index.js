@@ -56,8 +56,6 @@ module.exports = postcss.plugin('postcss-color-converter', (options = {}) => {
                 (node.name === 'rgb' || node.name === 'rgba')
               ) {
                 const newNode = node.clone({ type: 'word' });
-                // same as [+node.nodes[0].value, +node.nodes[2].value, +node.nodes[4].value], +node.nodes[6].value,
-                // but node.nodes[6].value can be only in rgba or hsla otherwise undefined
                 const [r, , g, , b, , a] = node.nodes;
 
                 if (currentOptions.outputColorFormat === 'hex') {
