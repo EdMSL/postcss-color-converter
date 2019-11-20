@@ -92,7 +92,14 @@ body {
 }
 ```
 
-Checkout [tests](test) for more examples.
+Checkout [tests](test) for more examples or clone this repository and use:
+
+```console
+$ npm i
+$ npm run postcss
+```
+
+Go to `test/fixtures` folder to see resault.
 
 ---
 

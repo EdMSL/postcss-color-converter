@@ -7,4 +7,3 @@ yarn.lock
 yarn-error.log
 postcss.config.js
 test/
-styles/
