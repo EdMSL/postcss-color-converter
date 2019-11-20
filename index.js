@@ -9,10 +9,12 @@ const {
   getHEXColorStr,
 } = require('./src/utils');
 
+const DEFAULT_ALPHA = 1;
+const DEFAULT_HEX_ALPHA = 'ff';
+
 const colorNames = Object.keys(colors);
 const colorFormats = ['hex', 'rgb', 'hsl', 'keyword'];
 
-const DEFAULT_ALPHA = 1;
 const propsWithColorRegExp = /(background|border|box-shadow|color|fill|outline|@|$)/;
 
 const defaultOptions = {
@@ -48,11 +50,11 @@ module.exports = postcss.plugin('postcss-color-converter', (options = {}) => {
                 const colorObj = parseHEXAColor(node.value);
 
                 if (currentOptions.outputColorFormat === 'rgb') {
-                  node.value = currentOptions.alwaysAlpha || colorObj.hexAlpha !== 'ff'
+                  node.value = currentOptions.alwaysAlpha || colorObj.hexAlpha !== DEFAULT_HEX_ALPHA
                     ? getRGBColorStr('hex', colorObj.hexColor, colorObj.hexAlpha)
                     : getRGBColorStr('hex', colorObj.hexColor);
                 } else if (currentOptions.outputColorFormat === 'hsl') {
-                  node.value = currentOptions.alwaysAlpha || colorObj.hexAlpha !== 'ff'
+                  node.value = currentOptions.alwaysAlpha || colorObj.hexAlpha !== DEFAULT_HEX_ALPHA
                     ? getHSLColorStr('hex', colorObj.hexColor, colorObj.hexAlpha)
                     : getHSLColorStr('hex', colorObj.hexColor);
                 }
@@ -148,7 +150,7 @@ module.exports = postcss.plugin('postcss-color-converter', (options = {}) => {
         }
       });
     } else {
-      console.log('Сolor output format not provided or not supported, the plugin will do nothing');
+      console.log('Сolor output format not provided or not supported, the postcss-color-converter plugin will do nothing');
     }
   };
 });
