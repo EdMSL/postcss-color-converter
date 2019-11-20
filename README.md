@@ -32,17 +32,25 @@ var output = postcss()
 Type: `String`<br>
 _Required_<br>
 Available values: `hex, rgb, hsl`<br>
-Default: ``<br>
+Default: ''<br>
 Set output color format. Don't forget set this parameter.
+
+#### `ignore`
+Type: `String[]`<br>
+Available values: `hex, rgb, hsl, keyword`<br>
+Default: `[]`<br>
+Array of colors, which you do not want to convert.
 
 #### `alwaysAlpha`
 Type: `Boolean`<br>
 Default: `false`<br>
-If `true`, output RGB and HSL colors will always have alpha chanel value (which will be equal to 1), even if converted from color without alpha chanel.
+If `true`, output RGB and HSL colors will always have alpha chanel value (which will be equal to 1), even if converted from color without alpha chanel. This parameter does not apply to HEX color.<br>
+If `ignore` includes `outputColorFormat`, this parameter will be ignore.
 
 ```js
 colorConverter({
   outputColorFormat: 'hsl',
+  ignore: ['hex'],
   alwaysAlpha: true,
 });
 ```

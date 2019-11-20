@@ -42,7 +42,7 @@ module.exports = postcss.plugin('postcss-color-converter', (options = {}) => {
             if (node.isColor) {
               if (
                 !currentOptions.ignore.includes('hex') &&
-                (currentOptions.alwaysAlpha || currentOptions.outputColorFormat !== 'hex') &&
+                currentOptions.outputColorFormat !== 'hex' &&
                 node.isHex
               ) {
                 const colorObj = parseHEXAColor(node.value);
