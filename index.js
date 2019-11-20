@@ -82,7 +82,7 @@ module.exports = postcss.plugin('postcss-color-converter', (options = {}) => {
                   newNode.value = getRGBColorStr(
                     'rgb',
                     [+r.value, +g.value, +b.value],
-                    (a && +a.value) || DEFAULT_ALPHA,
+                    (a && +a.value) || (currentOptions.alwaysAlpha && DEFAULT_ALPHA),
                   );
                 }
 
@@ -113,7 +113,7 @@ module.exports = postcss.plugin('postcss-color-converter', (options = {}) => {
                   newNode.value = getHSLColorStr(
                     'hsl',
                     [+h.value, +s.value, +l.value],
-                    (a && +a.value) || DEFAULT_ALPHA,
+                    (a && +a.value) || (currentOptions.alwaysAlpha && DEFAULT_ALPHA),
                   );
                 }
 

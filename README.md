@@ -99,7 +99,7 @@ $ npm i
 $ npm run postcss
 ```
 
-Go to `test/fixtures` folder to see resault.
+Go to `test/fixtures` folder and see `common.test.scss` file.
 
 ---
 
