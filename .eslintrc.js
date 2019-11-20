@@ -11,6 +11,7 @@ module.exports = {
     "eslint-config-postcss",
   ],
   rules: {
+    "arrow-parens": 0,
     "comma-dangle": [1, {
       arrays: "always-multiline",
       objects: "always-multiline",

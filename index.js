@@ -3,17 +3,20 @@ const valueParser = require('postcss-values-parser');
 const colors = require('color-name');
 
 const {
-  parseHEXAColor,
-  getRGBColorStr,
-  getHSLColorStr,
-  getHEXColorStr,
-} = require('./src/utils');
-
-const DEFAULT_ALPHA = 1;
-const DEFAULT_HEX_ALPHA = 'ff';
+  convertingHEXColor,
+  convertingRGBColor,
+  convertingHSLColor,
+  convertingKeywordColor,
+} = require('./src/converts');
+const {
+  HEX_COLOR,
+  RGB_COLOR,
+  HSL_COLOR,
+  KEYWORD_COLOR,
+} = require('./src/constants');
 
 const colorNames = Object.keys(colors);
-const colorFormats = ['hex', 'rgb', 'hsl', 'keyword'];
+const colorFormats = [HEX_COLOR, RGB_COLOR, HSL_COLOR, KEYWORD_COLOR];
 
 const propsWithColorRegExp = /(background|border|box-shadow|color|fill|outline|@|$)/;
 
@@ -43,105 +46,32 @@ module.exports = postcss.plugin('postcss-color-converter', (options = {}) => {
           valueObj.walk(node => {
             if (node.isColor) {
               if (
-                !currentOptions.ignore.includes('hex') &&
-                currentOptions.outputColorFormat !== 'hex' &&
+                !currentOptions.ignore.includes(HEX_COLOR) &&
+                currentOptions.outputColorFormat !== HEX_COLOR &&
                 node.isHex
               ) {
-                const colorObj = parseHEXAColor(node.value);
-
-                if (currentOptions.outputColorFormat === 'rgb') {
-                  node.value = currentOptions.alwaysAlpha || colorObj.hexAlpha !== DEFAULT_HEX_ALPHA
-                    ? getRGBColorStr('hex', colorObj.hexColor, colorObj.hexAlpha)
-                    : getRGBColorStr('hex', colorObj.hexColor);
-                } else if (currentOptions.outputColorFormat === 'hsl') {
-                  node.value = currentOptions.alwaysAlpha || colorObj.hexAlpha !== DEFAULT_HEX_ALPHA
-                    ? getHSLColorStr('hex', colorObj.hexColor, colorObj.hexAlpha)
-                    : getHSLColorStr('hex', colorObj.hexColor);
-                }
+                node = convertingHEXColor(node, currentOptions);
               } else if (
                 (
-                  !currentOptions.ignore.includes('rgb') &&
-                  (currentOptions.alwaysAlpha || currentOptions.outputColorFormat !== 'rgb')
+                  !currentOptions.ignore.includes(RGB_COLOR) &&
+                  (currentOptions.alwaysAlpha || currentOptions.outputColorFormat !== RGB_COLOR)
                 ) &&
                 (node.name === 'rgb' || node.name === 'rgba')
               ) {
-                const newNode = node.clone({ type: 'word' });
-                const [r, , g, , b, , a] = node.nodes;
-
-                if (currentOptions.outputColorFormat === 'hex') {
-                  newNode.value = getHEXColorStr(
-                    'rgb',
-                    [+r.value, +g.value, +b.value],
-                    ((a && +a.value !== DEFAULT_ALPHA && +a.value)),
-                  );
-                } else if (currentOptions.outputColorFormat === 'hsl') {
-                  newNode.value = getHSLColorStr(
-                    'rgb',
-                    [+r.value, +g.value, +b.value],
-                    ((a && +a.value) || (currentOptions.alwaysAlpha && DEFAULT_ALPHA)),
-                  );
-                } else if (currentOptions.outputColorFormat === 'rgb') {
-                  newNode.value = getRGBColorStr(
-                    'rgb',
-                    [+r.value, +g.value, +b.value],
-                    (a && +a.value) || (currentOptions.alwaysAlpha && DEFAULT_ALPHA),
-                  );
-                }
-
-                node.replaceWith(newNode);
+                node = convertingRGBColor(node, currentOptions);
               } else if (
                 (
-                  !currentOptions.ignore.includes('hsl') &&
-                  (currentOptions.alwaysAlpha || currentOptions.outputColorFormat !== 'hsl')
+                  !currentOptions.ignore.includes(HSL_COLOR) &&
+                  (currentOptions.alwaysAlpha || currentOptions.outputColorFormat !== HSL_COLOR)
                 ) &&
                 (node.name === 'hsl' || node.name === 'hsla')
               ) {
-                const newNode = node.clone({ type: 'word' });
-                const [h, , s, , l, , a] = node.nodes;
-
-                if (currentOptions.outputColorFormat === 'hex') {
-                  newNode.value = getHEXColorStr(
-                    'hsl',
-                    [+h.value, +s.value, +l.value],
-                    ((a && +a.value !== DEFAULT_ALPHA && +a.value)),
-                  );
-                } else if (currentOptions.outputColorFormat === 'rgb') {
-                  newNode.value = getRGBColorStr(
-                    'hsl',
-                    [+h.value, +s.value, +l.value],
-                    ((a && +a.value) || (currentOptions.alwaysAlpha && DEFAULT_ALPHA)),
-                  );
-                } else if (currentOptions.outputColorFormat === 'hsl') {
-                  newNode.value = getHSLColorStr(
-                    'hsl',
-                    [+h.value, +s.value, +l.value],
-                    (a && +a.value) || (currentOptions.alwaysAlpha && DEFAULT_ALPHA),
-                  );
-                }
-
-                node.replaceWith(newNode);
+                node = convertingHSLColor(node, currentOptions);
               } else if (
-                !currentOptions.ignore.includes('keyword') &&
+                !currentOptions.ignore.includes(KEYWORD_COLOR) &&
                 colorNames.includes(node.value)
               ) {
-                if (currentOptions.outputColorFormat === 'hex') {
-                  node.value = getHEXColorStr(
-                    'keyword',
-                    node.value,
-                  );
-                } else if (currentOptions.outputColorFormat === 'rgb') {
-                  node.value = getRGBColorStr(
-                    'keyword',
-                    node.value,
-                    currentOptions.alwaysAlpha && DEFAULT_ALPHA,
-                  );
-                } else if (currentOptions.outputColorFormat === 'hsl') {
-                  node.value = getHSLColorStr(
-                    'keyword',
-                    node.value,
-                    currentOptions.alwaysAlpha && DEFAULT_ALPHA,
-                  );
-                }
+                node = convertingKeywordColor(node, currentOptions);
               }
             }
           });

@@ -1,5 +1,13 @@
 const convert = require('color-convert');
 
+const {
+  DEFAULT_HEX_ALPHA,
+  HEX_COLOR,
+  RGB_COLOR,
+  HSL_COLOR,
+  KEYWORD_COLOR,
+} = require('./constants');
+
 const parseHEXAColor = color => {
   const newColor = color.slice(1);
   let hexColor;
@@ -16,7 +24,7 @@ const parseHEXAColor = color => {
       break;
     case 3:
     case 6:
-      hexAlpha = 'ff';
+      hexAlpha = DEFAULT_HEX_ALPHA;
       hexColor = newColor;
       break;
   }
@@ -38,13 +46,13 @@ const getHEXColorStr = (inputColorFormat, color, alpha) => (
 );
 
 const getRGBColorStr = (inputColorFormat, color, alpha) => {
-  if (inputColorFormat === 'hex') {
+  if (inputColorFormat === HEX_COLOR) {
     return alpha
       ? `rgba(${ convert[inputColorFormat].rgb(color).join(', ') }, ${ convertHEXAlphaValueToNumber(alpha) })`
       : `rgb(${ convert[inputColorFormat].rgb(color).join(', ') })`;
   }
 
-  if (inputColorFormat === 'hsl' || inputColorFormat === 'keyword') {
+  if (inputColorFormat === HSL_COLOR || inputColorFormat === KEYWORD_COLOR) {
     return alpha
       ? `rgba(${ convert[inputColorFormat].rgb(color).join(', ') }, ${ alpha })`
       : `rgb(${ convert[inputColorFormat].rgb(color).join(', ') })`;
@@ -54,7 +62,7 @@ const getRGBColorStr = (inputColorFormat, color, alpha) => {
 };
 
 const getHSLStr = (color, inputColorFormat) => {
-  const colorArr = inputColorFormat !== 'hsl'
+  const colorArr = inputColorFormat !== HSL_COLOR
     ? convert[inputColorFormat].hsl(color)
     : color;
   return `${ colorArr[0] }, ${ colorArr[1] }%, ${ colorArr[2] }%`;
@@ -63,13 +71,13 @@ const getHSLStr = (color, inputColorFormat) => {
 const getHSLColorStr = (inputColorFormat, color, alpha) => {
   const colorStr = getHSLStr(color, inputColorFormat);
 
-  if (inputColorFormat === 'hex') {
+  if (inputColorFormat === HEX_COLOR) {
     return alpha
       ? `hsla(${ colorStr }, ${ convertHEXAlphaValueToNumber(alpha) })`
       : `hsl(${ colorStr })`;
   }
 
-  if (inputColorFormat === 'rgb' || inputColorFormat === 'keyword') {
+  if (inputColorFormat === RGB_COLOR || inputColorFormat === KEYWORD_COLOR) {
     return alpha
       ? `hsla(${ colorStr }, ${ alpha })`
       : `hsl(${ colorStr })`;
