@@ -18,6 +18,7 @@ const propsWithColorRegExp = /(background|border|box-shadow|color|fill|outline|@
 const defaultOptions = {
   outputColorFormat: '',
   alwaysAlpha: false,
+  ignore: [],
 };
 
 module.exports = postcss.plugin('postcss-color-converter', (options = {}) => {
@@ -39,7 +40,11 @@ module.exports = postcss.plugin('postcss-color-converter', (options = {}) => {
 
           valueObj.walk(node => {
             if (node.isColor) {
-              if (currentOptions.outputColorFormat !== 'hex' && node.isHex) {
+              if (
+                !currentOptions.ignore.includes('hex') &&
+                (currentOptions.alwaysAlpha || currentOptions.outputColorFormat !== 'hex') &&
+                node.isHex
+              ) {
                 const colorObj = parseHEXAColor(node.value);
 
                 if (currentOptions.outputColorFormat === 'rgb') {
@@ -52,7 +57,10 @@ module.exports = postcss.plugin('postcss-color-converter', (options = {}) => {
                     : getHSLColorStr('hex', colorObj.hexColor);
                 }
               } else if (
-                (currentOptions.alwaysAlpha || currentOptions.outputColorFormat !== 'rgb') &&
+                (
+                  !currentOptions.ignore.includes('rgb') &&
+                  (currentOptions.alwaysAlpha || currentOptions.outputColorFormat !== 'rgb')
+                ) &&
                 (node.name === 'rgb' || node.name === 'rgba')
               ) {
                 const newNode = node.clone({ type: 'word' });
@@ -62,7 +70,7 @@ module.exports = postcss.plugin('postcss-color-converter', (options = {}) => {
                   newNode.value = getHEXColorStr(
                     'rgb',
                     [+r.value, +g.value, +b.value],
-                    ((a && +a.value) || (currentOptions.alwaysAlpha && DEFAULT_ALPHA)),
+                    ((a && +a.value !== DEFAULT_ALPHA && +a.value)),
                   );
                 } else if (currentOptions.outputColorFormat === 'hsl') {
                   newNode.value = getHSLColorStr(
@@ -80,7 +88,10 @@ module.exports = postcss.plugin('postcss-color-converter', (options = {}) => {
 
                 node.replaceWith(newNode);
               } else if (
-                (currentOptions.alwaysAlpha || currentOptions.outputColorFormat !== 'hsl') &&
+                (
+                  !currentOptions.ignore.includes('hsl') &&
+                  (currentOptions.alwaysAlpha || currentOptions.outputColorFormat !== 'hsl')
+                ) &&
                 (node.name === 'hsl' || node.name === 'hsla')
               ) {
                 const newNode = node.clone({ type: 'word' });
@@ -90,7 +101,7 @@ module.exports = postcss.plugin('postcss-color-converter', (options = {}) => {
                   newNode.value = getHEXColorStr(
                     'hsl',
                     [+h.value, +s.value, +l.value],
-                    ((a && +a.value) || (currentOptions.alwaysAlpha && DEFAULT_ALPHA)),
+                    ((a && +a.value !== DEFAULT_ALPHA && +a.value)),
                   );
                 } else if (currentOptions.outputColorFormat === 'rgb') {
                   newNode.value = getRGBColorStr(
@@ -107,12 +118,14 @@ module.exports = postcss.plugin('postcss-color-converter', (options = {}) => {
                 }
 
                 node.replaceWith(newNode);
-              } else if (colorNames.includes(node.value)) {
+              } else if (
+                !currentOptions.ignore.includes('keyword') &&
+                colorNames.includes(node.value)
+              ) {
                 if (currentOptions.outputColorFormat === 'hex') {
                   node.value = getHEXColorStr(
                     'keyword',
                     node.value,
-                    currentOptions.alwaysAlpha && DEFAULT_ALPHA,
                   );
                 } else if (currentOptions.outputColorFormat === 'rgb') {
                   node.value = getRGBColorStr(
