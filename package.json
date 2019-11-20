@@ -5,6 +5,7 @@
   "keywords": [
     "postcss",
     "css",
+    "scss",
     "postcss-plugin",
     "color",
     "converter"
@@ -12,11 +13,20 @@
   "scripts": {
     "test": "mocha ./test/*.test.js",
     "lint": "eslint --config ./.eslintrc-full.js **/*.js --fix",
-    "postcss": "postcss ./styles/test.{css,scss} --config ./postcss.config.js -r"
+    "postcss": "postcss ./styles/test.{css,scss} --config ./postcss.config.js -r",
+    "pack": "npm pack",
+    "release": "npm publish"
   },
-  "author": "EdMSL <eduard2011rus@gmail.com>",
+  "author": "Eduard Trayt <eduard2011rus@gmail.com> (https://github.com/EdMSL)",
   "license": "MIT",
-  "repository": "EdMSL/postcss-color-converter",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/EdMSL/postcss-color-converter.git"
+  },
+  "homepage": "https://github.com/EdMSL/postcss-color-converter#readme",
+  "bugs": {
+    "url": "https://github.com/EdMSL/postcss-color-converter/issues"
+  },
   "dependencies": {
     "color-convert": "~2.0.1",
     "color-name": "~1.1.4",
@@ -48,5 +58,9 @@
   },
   "engines": {
     "node": ">=8.3.0"
-  }
+  },
+  "files": [
+    "index.js",
+    "src"
+  ]
 }

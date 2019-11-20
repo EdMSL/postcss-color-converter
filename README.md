@@ -38,7 +38,7 @@ Set output color format. Don't forget set this parameter.
 #### `alwaysAlpha`
 Type: `Boolean`<br>
 Default: `false`<br>
-If `true`, output RGB and HSL colors will always have alpha chanel value, even if converted from color without alpha chanel.
+If `true`, output RGB and HSL colors will always have alpha chanel value (which will be equal to 1), even if converted from color without alpha chanel.
 
 ```js
 colorConverter({
