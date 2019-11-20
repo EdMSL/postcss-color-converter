@@ -13,7 +13,7 @@
   "scripts": {
     "test": "mocha ./test/*.test.js",
     "lint": "eslint --config ./.eslintrc-full.js **/*.js --fix",
-    "postcss": "postcss ./styles/test.{css,scss} --config ./postcss.config.js -r",
+    "postcss": "postcss ./styles/*.test.{css,scss} --config ./postcss.config.js -r",
     "pack": "npm pack",
     "release": "npm publish"
   },

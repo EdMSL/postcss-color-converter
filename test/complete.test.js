@@ -117,7 +117,7 @@ describe('Various complete test', function () {
       `);
   });
 
-  it('All colors except keyword must be correct converted to hex', function () {
+  it('All colors except keyword must be correct converted to hex(a)', function () {
     assert.equal(transform(
       `
       color: red;
