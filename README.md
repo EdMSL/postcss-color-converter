@@ -8,7 +8,6 @@ $ npm install postcss-color-converter
 ```
 ## Usage
 
----
 ```js
 // dependencies
 var fs = require("fs")
@@ -57,7 +56,7 @@ npm run postcss
 Please refer to [PostCSS documentation](https://github.com/postcss/postcss#usage) for you current environment.
 
 ## Options
----
+
 #### `outputColorFormat`
 Type: `String`<br>
 _Required_<br>
@@ -86,7 +85,7 @@ colorConverter({
 ```
 
 ## Examples
----
+
 Using this `input.css` and `input.scss` with option `outputColorFormat`: 'rgb':
 
 ```css
@@ -140,7 +139,7 @@ $ npm run postcss
 Then go to `test/fixtures` folder and see `common.test.scss` file.
 
 ## Contributing
----
+
 This is my first open-source work and my English is not very good, so if you find inaccuracies or errors in the documentation, then let me know.
 Pull requests are always welcome. Pull requests must be accompanied by passing automated tests (`$ npm test`). For bugs and feature requests, please create an issue.
 
