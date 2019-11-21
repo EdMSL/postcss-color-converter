@@ -7,6 +7,7 @@
 $ npm install postcss-color-converter
 ```
 ## Usage
+
 ---
 ```js
 // dependencies
