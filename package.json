@@ -1,11 +1,8 @@
 {
   "name": "postcss-color-converter",
   "version": "1.0.0",
-  "description": "PostCSS plugin for convert colors",
+  "description": "PostCSS plugin for convert colors.",
   "keywords": [
-    "postcss",
-    "css",
-    "scss",
     "postcss-plugin",
     "color",
     "converter"

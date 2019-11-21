@@ -41,7 +41,7 @@ const convertNumberAlphaValueToHEX = value => Math.round((value * 255)).toString
 
 const getHEXColorStr = (inputColorFormat, color, alpha) => (
   alpha
-    ? `#${ convert[inputColorFormat].hex(color) }${ convertNumberAlphaValueToHEX(alpha) }`.toLowerCase()
+    ? `#${ convert[inputColorFormat].hex(color) }${ convertNumberAlphaValueToHEX(+alpha) }`.toLowerCase()
     : `#${ convert[inputColorFormat].hex(color) }`.toLowerCase()
 );
 

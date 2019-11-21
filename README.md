@@ -3,13 +3,11 @@
 > [PostCSS](https://github.com/postcss/postcss) plugin for transform HEX, RGB, HSL and keyword colors between themselves (without transform to keyword color). Uses [color-convert](https://www.npmjs.com/package/color-convert) under hood. Support Sass, Less ([postcss-scss](https://www.npmjs.com/package/postcss-scss) or [postcss-less](https://www.npmjs.com/package/postcss-less) need) and CSS variables.
 
 ## Installation
-
 ```console
 $ npm install postcss-color-converter
 ```
-
 ## Usage
-
+---
 ```js
 // dependencies
 var fs = require("fs")
@@ -26,8 +24,39 @@ var output = postcss()
   .css
 ```
 
-## Options
+More preferable to use it through the PostCSS CLI
+```console
+npm install postcss-cli --save-dev
+```
+Use plugin in your postcss.config.js configuration file:
+```js
+var colorConverter = require('postcss-color-converter');
 
+module.exports = {
+  /* set syntax option, if you use it for scss or less files */
+  syntax: 'postcss-scss',
+  plugins: [
+    colorConverter(/* pluginOptions */)
+  ]
+}
+```
+Use npm script in `package.json`, such as:
+```json
+{
+  "scripts": {
+    "postcss": "postcss ./src/styles/*.css --config ./postcss.config.js -r"
+  }
+}
+```
+Then:
+```console
+npm run postcss
+```
+
+Please refer to [PostCSS documentation](https://github.com/postcss/postcss#usage) for you current environment.
+
+## Options
+---
 #### `outputColorFormat`
 Type: `String`<br>
 _Required_<br>
@@ -56,13 +85,13 @@ colorConverter({
 ```
 
 ## Examples
-
+---
 Using this `input.css` and `input.scss` with option `outputColorFormat`: 'rgb':
 
 ```css
 body {
   --blue: blue;
-  color: red;
+  color: #ef51;
   background-color: #ffffff;
   fill: hsla(56, 69%, 57%, 0.3);
   box-shadow:
@@ -83,7 +112,7 @@ you will get:
 ```css
 body {
   --blue: rgb(0, 0, 255);
-  color: rgb(255, 0, 0);
+  color: rgba(238, 255, 85, 0.07);
   background-color: rgb(255, 255, 255);
   fill: rgba(221, 211, 70, 0.3);
   box-shadow:
@@ -107,9 +136,13 @@ $ npm i
 $ npm run postcss
 ```
 
-Go to `test/fixtures` folder and see `common.test.scss` file.
+Then go to `test/fixtures` folder and see `common.test.scss` file.
 
+## Contributing
 ---
+This is my first open-source work and my English is not very good, so if you find inaccuracies or errors in the documentation, then let me know.
+Pull requests are always welcome. Pull requests must be accompanied by passing automated tests (`$ npm test`). For bugs and feature requests, please create an issue.
+
 
 ## [Changelog](CHANGELOG.md)
 

@@ -38,6 +38,10 @@ describe('postcss-color-converter for rgb colors', function () {
       { outputColorFormat: 'hex' },
     ), 'body { color: #ffffff80; }');
     assert.equal(transform(
+      'body { color: rgba(255, 255, 255, .5); }',
+      { outputColorFormat: 'hex' },
+    ), 'body { color: #ffffff80; }');
+    assert.equal(transform(
       'body { color: rgba(255, 255, 255, 0.5); }',
       { outputColorFormat: 'hex', alwaysAlpha: true },
     ), 'body { color: #ffffff80; }');
