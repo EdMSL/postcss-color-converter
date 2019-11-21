@@ -1,6 +1,6 @@
 # postcss-color-converter
 
-> [PostCSS](https://github.com/postcss/postcss) plugin for transform HEX, RGB, HSL and keyword colors between themselves (without transform to keyword color). Uses [color-convert](https://www.npmjs.com/package/color-convert) under hood. Support Sass, Less and CSS variables.
+> [PostCSS](https://github.com/postcss/postcss) plugin for transform HEX, RGB, HSL and keyword colors between themselves (without transform to keyword color). Uses [color-convert](https://www.npmjs.com/package/color-convert) under hood. Support Sass, Less ([postcss-scss](https://www.npmjs.com/package/postcss-scss) or [postcss-less](https://www.npmjs.com/package/postcss-less) need) and CSS variables.
 
 ## Installation
 
@@ -39,13 +39,13 @@ Set output color format. Don't forget set this parameter.
 Type: `String[]`<br>
 Available values: `hex, rgb, hsl, keyword`<br>
 Default: `[]`<br>
-Array of colors, which you do not want to convert.
+Array of color formats, which you do not want to convert.
 
 #### `alwaysAlpha`
 Type: `Boolean`<br>
 Default: `false`<br>
 If `true`, output RGB and HSL colors will always have alpha chanel value (which will be equal to 1), even if converted from color without alpha chanel. This parameter does not apply to HEX color.<br>
-If `ignore` includes `outputColorFormat`, this parameter will be ignore.
+If `ignore` includes `outputColorFormat` color format, this parameter will be ignore.
 
 ```js
 colorConverter({
@@ -57,12 +57,11 @@ colorConverter({
 
 ## Examples
 
-Using this `input.css` and option `outputColorFormat`: 'rgb':
+Using this `input.css` and `input.scss` with option `outputColorFormat`: 'rgb':
 
-```scss
+```css
 body {
   --blue: blue;
-  $darkRed: #6009;
   color: red;
   background-color: #ffffff;
   fill: hsla(56, 69%, 57%, 0.3);
@@ -72,15 +71,18 @@ body {
     20px 20px 0 0 #00000080,
     30px 30px 0 0 rgb(123, 123, 123);
 }
-
+```
+```scss
+p {
+  $darkRed: #6009;
+}
 ```
 
 you will get:
 
-```scss
+```css
 body {
   --blue: rgb(0, 0, 255);
-  $darkRed: rgba(102, 0, 0, 0.6);
   color: rgb(255, 0, 0);
   background-color: rgb(255, 255, 255);
   fill: rgba(221, 211, 70, 0.3);
@@ -89,6 +91,12 @@ body {
     10px 10px 0 0 rgb(0, 128, 0),
     20px 20px 0 0 rgba(0, 0, 0, 0.5),
     30px 30px 0 0 rgb(123, 123, 123);
+}
+```
+
+```scss
+p {
+  $darkRed: rgba(102, 0, 0, 0.6);
 }
 ```
 

@@ -18,7 +18,7 @@ const {
 const colorNames = Object.keys(colors);
 const colorFormats = [HEX_COLOR, RGB_COLOR, HSL_COLOR, KEYWORD_COLOR];
 
-const propsWithColorRegExp = /(background|border|box-shadow|color|fill|outline|@|$)/;
+const propsWithColorRegExp = /(background|border|shadow|color|fill|outline|@|$)/;
 
 const defaultOptions = {
   outputColorFormat: '',
@@ -79,8 +79,6 @@ module.exports = postcss.plugin('postcss-color-converter', (options = {}) => {
           decl.value = valueObj.toString();
         }
       });
-    } else {
-      console.log('Сolor output format not provided or not supported, the postcss-color-converter plugin will do nothing');
     }
   };
 });

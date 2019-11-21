@@ -125,6 +125,7 @@ describe('Various complete test', function () {
       box-shadow: 0 0 0 red, 0 0 0 rgba(255, 0, 0, 0.5);
       border-color: #fcc;
       fill: rgb(140, 90, 20);
+      text-decoration-color: rgba(0, 0, 0);
       `,
       { outputColorFormat: 'hex', ignore: ['keyword'], alwaysAlpha: true },
     ), `
@@ -133,6 +134,7 @@ describe('Various complete test', function () {
       box-shadow: 0 0 0 red, 0 0 0 #ff000080;
       border-color: #fcc;
       fill: #8c5a14;
+      text-decoration-color: #000000;
       `);
   });
 });
