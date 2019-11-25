@@ -6,6 +6,7 @@
   list-style: none;
 }
 
+$gray: lighten(black, 50%);
 $lightMatteTurq: #ef51;
 $brightRed: #ed5564c4;
 $almostBlack: rgb(62, 74, 86);
@@ -27,7 +28,7 @@ $green: hsla(168, 75%, 37%, 0.747);
   outline-color: $darkred;
 
   @media (min-width: 300px) {
-    color: rgb(17, 34, 204);
+    color: rgba($darkred, 50%);
     background-color: hsl(180, 100%, 50%);
   }
 }
@@ -46,7 +47,7 @@ $green: hsla(168, 75%, 37%, 0.747);
 }
 
 .h {
-  color: red;
+  color: #c69;
   fill: blue;
 }
 
@@ -59,6 +60,7 @@ $green: hsla(168, 75%, 37%, 0.747);
   background-image: linear-gradient(#1122cc 0%, hsl(240, 100%, 67%) 100%);
   background-color: hsla(74, 60%, 16%, 0.4);
   box-shadow: 0 0 0 0 greenyellow, 0 0 0 0 springgreen;
+  -webkit-box-shadow: 0 0 0 0 greenyellow, 0 0 0 0 springgreen;
 }
 
 .n {

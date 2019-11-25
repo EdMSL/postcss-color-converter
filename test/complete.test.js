@@ -71,6 +71,8 @@ describe('Various complete test', function () {
       color: red;
       $abc: #ffffff80;
       box-shadow: 0 0 0 red, 0 0 0 rgba(255, 0, 0, 0.5);
+      -webkit-box-shadow: 0 0 0 red, 0 0 0 rgba(255, 0, 0, 0.5);
+      border: 1px dotted saturate(#c69, 20%);
       `,
       { outputColorFormat: 'hsl' },
     ), `
@@ -78,6 +80,8 @@ describe('Various complete test', function () {
       color: hsl(0, 100%, 50%);
       $abc: hsla(0, 0%, 100%, 0.5);
       box-shadow: 0 0 0 hsl(0, 100%, 50%), 0 0 0 hsla(0, 100%, 50%, 0.5);
+      -webkit-box-shadow: 0 0 0 hsl(0, 100%, 50%), 0 0 0 hsla(0, 100%, 50%, 0.5);
+      border: 1px dotted saturate(hsl(330, 50%, 60%), 20%);
       `);
   });
 
@@ -88,6 +92,7 @@ describe('Various complete test', function () {
       outline-color: hsla(0, 0%, 100%, 0.5);
       box-shadow: 0 0 0 red, 0 0 0 rgba(255, 0, 0, 0.5);
       border-color: #fcc;
+      border-right-color: lighten(black, 50%);
       `,
       { outputColorFormat: 'rgb', ignore: ['hex', 'rgb', 'hsl'] },
     ), `
@@ -95,6 +100,7 @@ describe('Various complete test', function () {
       outline-color: hsla(0, 0%, 100%, 0.5);
       box-shadow: 0 0 0 rgb(255, 0, 0), 0 0 0 rgba(255, 0, 0, 0.5);
       border-color: #fcc;
+      border-right-color: lighten(rgb(0, 0, 0), 50%);
       `);
   });
 

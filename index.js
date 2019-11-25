@@ -27,7 +27,7 @@ const defaultOptions = {
 };
 
 module.exports = postcss.plugin('postcss-color-converter', (options = {}) => {
-  let currentOptions = {
+  const currentOptions = {
     ...defaultOptions,
     ...options,
   };

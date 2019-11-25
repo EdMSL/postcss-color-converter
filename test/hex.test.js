@@ -62,6 +62,10 @@ describe('postcss-color-converter for hex colors', function () {
       'body { color: #FFF; }',
       { outputColorFormat: 'rgb' },
     ), 'body { color: rgb(255, 255, 255); }');
+    assert.equal(transform(
+      'body { color: lighten(black, 50%); }',
+      { outputColorFormat: 'rgb' },
+    ), 'body { color: lighten(rgb(0, 0, 0), 50%); }');
   });
 
   it('Input color must be converted to rgba', function () {
