@@ -1,6 +1,6 @@
 # postcss-color-converter
 
-> [PostCSS](https://github.com/postcss/postcss) plugin for transform HEX, RGB, HSL and keyword colors between themselves (without transform to keyword color format). Uses [color-convert](https://www.npmjs.com/package/color-convert) under hood. Support Sass(SCSS) ([postcss-scss](https://www.npmjs.com/package/postcss-scss) or [postcss-sass](https://www.npmjs.com/package/postcss-sass) need) and CSS variables.
+> [PostCSS](https://github.com/postcss/postcss) plugin to convert HEX, RGB, HSL and keyword colors between themselves (without transform to keyword color format). Uses [color-convert](https://www.npmjs.com/package/color-convert) under hood. Support Sass(SCSS) ([postcss-scss](https://www.npmjs.com/package/postcss-scss) or [postcss-sass](https://www.npmjs.com/package/postcss-sass) need) and CSS variables.
 
 ## Installation
 ```console
