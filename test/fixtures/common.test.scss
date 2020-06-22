@@ -6,16 +6,28 @@
   list-style: none;
 }
 
+:root {
+  --margin: 10px;
+  --padding: 20%;
+  --red: red;
+  --green: #008000;
+  --blue: hsl(240, 100%, 50%);
+  --black: rgb(0, 0, 0);
+}
+
+$red: red;
+$green: #008000;
+$blue: hsl(240, 100%, 50%);
+$black: rgb(0, 0, 0);
 $gray: lighten(black, 50%);
 $lightMatteTurq: #ef51;
 $brightRed: #ed5564c4;
 $almostBlack: rgb(62, 74, 86);
 $dodgerBlue: rgba(51, 121, 183, 0.589);
-$red: hsl(3, 48%, 55%);
-$green: hsla(168, 75%, 37%, 0.747);
+$redlight: hsl(3, 48%, 55%);
+$greenlight: hsla(168, 75%, 37%, 0.747);
 
 .a {
-  --red: red;
   $darkred: rgba(102, 0, 0, 0.6);
   border: 1px solid #fff457;
   border-color: #fff45780;

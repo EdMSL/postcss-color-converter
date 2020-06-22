@@ -18,7 +18,7 @@ const {
 const colorNames = Object.keys(colors);
 const colorFormats = [HEX_COLOR, RGB_COLOR, HSL_COLOR, KEYWORD_COLOR];
 
-const propsWithColorRegExp = /(background|border|shadow|color|fill|outline|@|\$)/;
+const propsWithColorRegExp = /(background|border|shadow|color|fill|outline|@|--|\$)/;
 const specValuesInParamsRegExp = /(\$|calc|var)/;
 
 const defaultOptions = {
