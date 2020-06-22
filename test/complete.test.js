@@ -143,4 +143,58 @@ describe('Various complete test', function () {
       text-decoration-color: #000000;
       `);
   });
+
+  it('All input colors except with spec values must be correct converted to rgb(a)', function () {
+    assert.equal(transform(
+      `p {
+        background: linear-gradient(
+          to bottom,
+          #cd56ab 10%,
+          rgb(68, 187, 221) 30%,
+          hsl(56, var(--green), 57%) 50%,
+          hsla(56, 69%, 57%, 0.5) 60%,
+          green 100%,
+        );
+      }`,
+      { outputColorFormat: 'rgb' },
+    ), `p {
+        background: linear-gradient(
+          to bottom,
+          rgb(205, 86, 171) 10%,
+          rgb(68, 187, 221) 30%,
+          hsl(56, var(--green), 57%) 50%,
+          rgba(221, 211, 70, 0.5) 60%,
+          rgb(0, 128, 0) 100%,
+        );
+      }`);
+  });
+
+  it('All input colors except with special values must be correct converted to hsl(a)', function () {
+    assert.equal(transform(
+      `div {
+        background: linear-gradient(
+          to bottom,
+          #cd56ab 10%,
+          #cd56ab80 20%,
+          rgb(68, 187, calc(30 +20)) 30%,
+          rgba(68, 188, 221, var(--alpha)) 40%,
+          hsl(56, 69%, 57%) 50%,
+          hsla(56, 69%, 57%, 0.5) 60%,
+          green 100%,
+        );
+      }`,
+      { outputColorFormat: 'hsl' },
+    ), `div {
+        background: linear-gradient(
+          to bottom,
+          hsl(317, 54%, 57%) 10%,
+          hsla(317, 54%, 57%, 0.5) 20%,
+          rgb(68, 187, calc(30 +20)) 30%,
+          rgba(68, 188, 221, var(--alpha)) 40%,
+          hsl(56, 69%, 57%) 50%,
+          hsla(56, 69%, 57%, 0.5) 60%,
+          hsl(120, 100%, 25%) 100%,
+        );
+      }`);
+  });
 });

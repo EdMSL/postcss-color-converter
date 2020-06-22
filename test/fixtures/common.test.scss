@@ -47,8 +47,11 @@ $green: hsla(168, 75%, 37%, 0.747);
 }
 
 .h {
+  --hue: 50;
   color: #c69;
   fill: blue;
+  border-color: hsl(50%, calc(10 + 20), 10%);
+  background-color: hsl(var(--hue), 100%, 20%);
 }
 
 .i {
@@ -75,6 +78,9 @@ $green: hsla(168, 75%, 37%, 0.747);
   font-size: 20px;
   line-height: 30px;
   font-weight: 700;
+  fill: rgba(calc(50 + 95), 100, 10, 0.5);
+  background-color: rgba(50, 100, 10, calc(0 + 0.5));
+  background-image: linear-gradient(#1122cc 0%, hsl(240, 100%, 67%) 50%, rgba(105, 200, var(--blue), 0.5) 100%);
 }
 
 .z {

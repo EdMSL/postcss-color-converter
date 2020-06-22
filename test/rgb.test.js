@@ -15,6 +15,22 @@ describe('postcss-color-converter for rgb colors', function () {
       'body { color: rgb(255, 255, 255); }',
       { outputColorFormat: 'rgb' },
     ), 'body { color: rgb(255, 255, 255); }');
+    assert.equal(transform(
+      'body { color: rgb($red, 50, 10); }',
+      { outputColorFormat: 'hex' },
+    ), 'body { color: rgb($red, 50, 10); }');
+    assert.equal(transform(
+      'body { color: rgb(100, 50, calc(40 + 20)); }',
+      { outputColorFormat: 'rgb' },
+    ), 'body { color: rgb(100, 50, calc(40 + 20)); }');
+    assert.equal(transform(
+      'body { color: rgba(100, 50, 56, var(--alpha)); }',
+      { outputColorFormat: 'rgb' },
+    ), 'body { color: rgba(100, 50, 56, var(--alpha)); }');
+    assert.equal(transform(
+      'body { color: rgba(100, $green, 56, 0.6); }',
+      { outputColorFormat: 'rgb' },
+    ), 'body { color: rgba(100, $green, 56, 0.6); }');
   });
 
   it('Input color must be converted to hex', function () {

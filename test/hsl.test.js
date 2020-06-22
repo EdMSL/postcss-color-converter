@@ -12,6 +12,22 @@ describe('postcss-color-converter for hsl colors', function () {
 
   it('Input color should not be converted', function () {
     assert.equal(transform(
+      'body { color: hsl(var(--color), 50%, 10%); }',
+      { outputColorFormat: 'rgb' },
+    ), 'body { color: hsl(var(--color), 50%, 10%); }');
+    assert.equal(transform(
+      'body { color: hsl(100%, 50%, calc(40 + 20)); }',
+      { outputColorFormat: 'rgb' },
+    ), 'body { color: hsl(100%, 50%, calc(40 + 20)); }');
+    assert.equal(transform(
+      'body { color: hsla(100%, 50%, 56%, var(--alpha)); }',
+      { outputColorFormat: 'rgb' },
+    ), 'body { color: hsla(100%, 50%, 56%, var(--alpha)); }');
+    assert.equal(transform(
+      'body { color: hsla(100%, $saturate, 56%, 0.6); }',
+      { outputColorFormat: 'rgb' },
+    ), 'body { color: hsla(100%, $saturate, 56%, 0.6); }');
+    assert.equal(transform(
       'body { color: hsl(255, 0%, 0%); }',
       { outputColorFormat: 'hsl' },
     ), 'body { color: hsl(255, 0%, 0%); }');
