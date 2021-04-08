@@ -12,7 +12,7 @@
     "lint": "eslint --config ./.eslintrc-full.js **/*.js --fix",
     "postcss": "postcss ./test/fixtures/*.test.{css,scss} --config ./test/fixtures/postcss.config.js -r",
     "pack": "npm pack",
-    "release": "npm publish"
+    "release": "npm login && npm publish"
   },
   "author": "Eduard Trayt <eduard2011rus@gmail.com> (https://github.com/EdMSL)",
   "license": "MIT",
