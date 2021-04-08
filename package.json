@@ -27,7 +27,7 @@
   "dependencies": {
     "color-convert": "~2.0.1",
     "color-name": "~1.1.4",
-    "postcss": "^7.0.18",
+    "postcss": "^8.2.9",
     "postcss-values-parser": "^5.0.0"
   },
   "devDependencies": {

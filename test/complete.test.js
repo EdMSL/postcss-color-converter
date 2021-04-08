@@ -181,6 +181,8 @@ describe('Various complete test', function () {
           hsl(56, 69%, 57%) 50%,
           hsla(56, 69%, 57%, 0.5) 60%,
           green 100%,
+          hsl(var(--hue), 10%, 10%),
+          hsl(calc(10 + 20), 10%, 10%),
         );
       }`,
       { outputColorFormat: 'hsl' },
@@ -194,6 +196,8 @@ describe('Various complete test', function () {
           hsl(56, 69%, 57%) 50%,
           hsla(56, 69%, 57%, 0.5) 60%,
           hsl(120, 100%, 25%) 100%,
+          hsl(var(--hue), 10%, 10%),
+          hsl(calc(10 + 20), 10%, 10%),
         );
       }`);
   });

@@ -78,6 +78,11 @@ $greenlight: hsla(168, 75%, 37%, 0.747);
   -webkit-box-shadow: 0 0 0 0 greenyellow, 0 0 0 0 springgreen;
 }
 
+.m {
+  color: hsl(var(--hue), 10%, 10%);
+  background-color: hsl(calc(10 + 20), 10%, 10%);
+}
+
 .n {
   font-size: 14px;
 }
