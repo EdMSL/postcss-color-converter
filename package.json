@@ -1,6 +1,6 @@
 {
   "name": "postcss-color-converter",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "PostCSS plugin for convert colors.",
   "keywords": [
     "postcss-plugin",
@@ -27,7 +27,7 @@
   "dependencies": {
     "color-convert": "~2.0.1",
     "color-name": "~1.1.4",
-    "postcss": "^8.2.9",
+    "postcss": "^8.2.10",
     "postcss-values-parser": "^5.0.0"
   },
   "devDependencies": {
@@ -47,7 +47,7 @@
     "eslint-plugin-unicorn": "^12.1.0",
     "mocha": "^8.3.2",
     "postcss-cli": "^8.3.1",
-    "postcss-scss": "2.0.0"
+    "postcss-scss": "^3.0.5"
   },
   "eslintConfig": {
     "extends": "eslint-config-postcss"

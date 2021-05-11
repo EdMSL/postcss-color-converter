@@ -9,3 +9,6 @@ Disabled conversion for rgb(a) and hsl(a) colors with calc, var or $ keywords in
 
 ## 1.0.2 (April 8, 2021)
 Update packages to fix secure vulnerabilities.
+
+## 1.0.3 (May 11, 2021)
+Update packages to fix secure vulnerabilities.
