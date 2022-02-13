@@ -12,3 +12,6 @@ Update packages to fix secure vulnerabilities.
 
 ## 1.0.3 (May 11, 2021)
 Update packages to fix secure vulnerabilities.
+
+## 1.0.4 (February 13, 2022)
+Update packages to fix secure vulnerabilities.
