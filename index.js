@@ -1,4 +1,3 @@
-const postcss = require('postcss');
 const valueParser = require('postcss-values-parser');
 const colors = require('color-name');
 
@@ -27,62 +26,68 @@ const defaultOptions = {
   ignore: [],
 };
 
-module.exports = postcss.plugin('postcss-color-converter', (options = {}) => {
+module.exports = (options = {}) => {
   const currentOptions = {
     ...defaultOptions,
     ...options,
   };
 
-  return style => {
-    if (
-      currentOptions.outputColorFormat &&
-      colorFormats.includes(currentOptions.outputColorFormat)
-    ) {
-      style.walkDecls(decl => {
-        if (
-          decl.prop && propsWithColorRegExp.test(decl.prop) && decl.value
-        ) {
-          let valueObj = valueParser.parse(decl.value, { ignoreUnknownWords: true });
+  if (!currentOptions.outputColorFormat) {
+    throw new Error(`'outputColorFormat' option is undefined.`)
+  }
 
-          valueObj.walk(node => {
-            if (node.isColor) {
-              if (
-                !currentOptions.ignore.includes(HEX_COLOR) &&
-                currentOptions.outputColorFormat !== HEX_COLOR &&
-                node.isHex
-              ) {
-                node = convertingHEXColor(node, currentOptions);
-              } else if (
-                (
-                  !currentOptions.ignore.includes(RGB_COLOR) &&
-                  (currentOptions.alwaysAlpha || currentOptions.outputColorFormat !== RGB_COLOR)
-                ) &&
-                (node.name === 'rgb' || node.name === 'rgba') &&
-                !specValuesInParamsRegExp.test(node.params)
+  if (!colorFormats.includes(currentOptions.outputColorFormat)) {
+    throw new Error(`The specified value of 'outputColorFormat' is not contained in [${colorFormats.join()}].`)
+  }
 
-              ) {
-                node = convertingRGBColor(node, currentOptions);
-              } else if (
-                (
-                  !currentOptions.ignore.includes(HSL_COLOR) &&
-                  (currentOptions.alwaysAlpha || currentOptions.outputColorFormat !== HSL_COLOR)
-                ) &&
-                (node.name === 'hsl' || node.name === 'hsla') &&
-                !specValuesInParamsRegExp.test(node.params)
-              ) {
-                node = convertingHSLColor(node, currentOptions);
-              } else if (
-                !currentOptions.ignore.includes(KEYWORD_COLOR) &&
-                colorNames.includes(node.value)
-              ) {
-                node = convertingKeywordColor(node, currentOptions);
-              }
+  return {
+    postcssPlugin: 'postcss-color-converter',
+    Declaration (decl) {
+      if (
+        decl.prop && propsWithColorRegExp.test(decl.prop) && decl.value
+      ) {
+        let valueObj = valueParser.parse(decl.value, { ignoreUnknownWords: true });
+
+        valueObj.walk(node => {
+          if (node.isColor) {
+            if (
+              !currentOptions.ignore.includes(HEX_COLOR) &&
+              currentOptions.outputColorFormat !== HEX_COLOR &&
+              node.isHex
+            ) {
+              node = convertingHEXColor(node, currentOptions);
+            } else if (
+              (
+                !currentOptions.ignore.includes(RGB_COLOR) &&
+                (currentOptions.alwaysAlpha || currentOptions.outputColorFormat !== RGB_COLOR)
+              ) &&
+              (node.name === 'rgb' || node.name === 'rgba') &&
+              !specValuesInParamsRegExp.test(node.params)
+
+            ) {
+              node = convertingRGBColor(node, currentOptions);
+            } else if (
+              (
+                !currentOptions.ignore.includes(HSL_COLOR) &&
+                (currentOptions.alwaysAlpha || currentOptions.outputColorFormat !== HSL_COLOR)
+              ) &&
+              (node.name === 'hsl' || node.name === 'hsla') &&
+              !specValuesInParamsRegExp.test(node.params)
+            ) {
+              node = convertingHSLColor(node, currentOptions);
+            } else if (
+              !currentOptions.ignore.includes(KEYWORD_COLOR) &&
+              colorNames.includes(node.value)
+            ) {
+              node = convertingKeywordColor(node, currentOptions);
             }
-          });
+          }
+        });
 
-          decl.value = valueObj.toString();
-        }
-      });
+        decl.value = valueObj.toString();
+      }
     }
   };
-});
+};
+
+module.exports.postcss = true;
