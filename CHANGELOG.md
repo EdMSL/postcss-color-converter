@@ -15,3 +15,6 @@ Update packages to fix secure vulnerabilities.
 
 ## 1.0.4 (February 13, 2022)
 Update packages to fix secure vulnerabilities.
+
+## 1.1.0 (April 2, 2022)
+Migrate to PostCSS 8.0 API.

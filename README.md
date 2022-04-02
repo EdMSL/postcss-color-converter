@@ -4,7 +4,7 @@
 
 ## Installation
 ```console
-$ npm install postcss-color-converter
+$ npm install postcss postcss-color-converter --save-dev
 ```
 ## Usage
 
