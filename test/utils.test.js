@@ -4,6 +4,7 @@ const {
   getRGBColorStr,
   getHSLColorStr,
   getHEXColorStr,
+  convertHEXAlphaValueToNumber,
 } = require('../src/utils');
 
 /* eslint-disable prefer-arrow-callback, func-names */
@@ -18,9 +19,9 @@ describe('Test convert functions', function () {
   });
 
   it('Color must be correct converted to rgba', function () {
-    assert.equal(getRGBColorStr('hex', '#ffffff', 'ff'), 'rgba(255, 255, 255, 1)');
-    assert.equal(getRGBColorStr('hex', '#60cd56', '7e'), 'rgba(96, 205, 86, 0.49)');
-    assert.equal(getRGBColorStr('hex', '#93b', '66'), 'rgba(153, 51, 187, 0.4)');
+    assert.equal(getRGBColorStr('hex', '#ffffff', convertHEXAlphaValueToNumber('ff')), 'rgba(255, 255, 255, 1)');
+    assert.equal(getRGBColorStr('hex', '#60cd56', convertHEXAlphaValueToNumber('7e')), 'rgba(96, 205, 86, 0.49)');
+    assert.equal(getRGBColorStr('hex', '#93b', convertHEXAlphaValueToNumber('66')), 'rgba(153, 51, 187, 0.4)');
     assert.equal(getRGBColorStr('hsl', [0, 0, 100], 0.4), 'rgba(255, 255, 255, 0.4)');
     assert.equal(getRGBColorStr('keyword', 'red', 1), 'rgba(255, 0, 0, 1)');
   });
@@ -34,9 +35,9 @@ describe('Test convert functions', function () {
   });
 
   it('Color must be correct converted to hsla', function () {
-    assert.equal(getHSLColorStr('hex', '#ffffff', 'ff'), 'hsla(0, 0%, 100%, 1)');
-    assert.equal(getHSLColorStr('hex', '#db9a39', 'a1'), 'hsla(36, 69%, 54%, 0.63)');
-    assert.equal(getHSLColorStr('hex', '#7b3', 'dd'), 'hsla(90, 57%, 47%, 0.87)');
+    assert.equal(getHSLColorStr('hex', '#ffffff', convertHEXAlphaValueToNumber('ff')), 'hsla(0, 0%, 100%, 1)');
+    assert.equal(getHSLColorStr('hex', '#db9a39', convertHEXAlphaValueToNumber('a1')), 'hsla(36, 69%, 54%, 0.63)');
+    assert.equal(getHSLColorStr('hex', '#7b3', convertHEXAlphaValueToNumber('dd')), 'hsla(90, 57%, 47%, 0.87)');
     assert.equal(getHSLColorStr('rgb', [255, 255, 255], 0.85), 'hsla(0, 0%, 100%, 0.85)');
     assert.equal(getHSLColorStr('keyword', 'red', 1), 'hsla(0, 100%, 50%, 1)');
   });
