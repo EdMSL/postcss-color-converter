@@ -3,6 +3,7 @@ const {
   getRGBColorStr,
   getHSLColorStr,
   getHEXColorStr,
+  convertHEXAlphaValueToNumber,
 } = require('./utils');
 const {
   DEFAULT_HEX_ALPHA,
@@ -18,12 +19,12 @@ const convertingHEXColor = (node, options) => {
 
   if (options.outputColorFormat === RGB_COLOR) {
     node.value = options.alwaysAlpha || colorObj.hexAlpha !== DEFAULT_HEX_ALPHA
-      ? getRGBColorStr(HEX_COLOR, colorObj.hexColor, colorObj.hexAlpha)
-      : getRGBColorStr(HEX_COLOR, colorObj.hexColor);
+      ? getRGBColorStr(HEX_COLOR, colorObj.hexColor, convertHEXAlphaValueToNumber(colorObj.hexAlpha))
+      : getRGBColorStr(HEX_COLOR, colorObj.hexColor, undefined, options.isUseModernSyntax);
   } else if (options.outputColorFormat === HSL_COLOR) {
     node.value = options.alwaysAlpha || colorObj.hexAlpha !== DEFAULT_HEX_ALPHA
-      ? getHSLColorStr(HEX_COLOR, colorObj.hexColor, colorObj.hexAlpha)
-      : getHSLColorStr(HEX_COLOR, colorObj.hexColor);
+      ? getHSLColorStr(HEX_COLOR, colorObj.hexColor, convertHEXAlphaValueToNumber(colorObj.hexAlpha), options.isUseModernSyntax)
+      : getHSLColorStr(HEX_COLOR, colorObj.hexColor, undefined, options.isUseModernSyntax);
   }
 
   return node;
@@ -31,7 +32,13 @@ const convertingHEXColor = (node, options) => {
 
 const convertingRGBColor = (node, options) => {
   const newNode = node.clone({ type: 'word' });
-  const [r, , g, , b, , a] = node.nodes;
+  let r,g,b,a;
+
+  if (node.nodes.join(' ').includes(',')) {
+    [r, , g, , b, , a] = node.nodes;
+  } else {
+    [r, g, b, , a] = node.nodes;
+  }
 
   if (options.outputColorFormat === HEX_COLOR) {
     newNode.value = getHEXColorStr(
@@ -43,13 +50,15 @@ const convertingRGBColor = (node, options) => {
     newNode.value = getHSLColorStr(
       RGB_COLOR,
       [+r.value, +g.value, +b.value],
-      ((a && +a.value) || (options.alwaysAlpha && DEFAULT_ALPHA)),
+      ((a && a.value) || (options.alwaysAlpha && DEFAULT_ALPHA)),
+      options.isUseModernSyntax,
     );
   } else if (options.outputColorFormat === RGB_COLOR) {
     newNode.value = getRGBColorStr(
       RGB_COLOR,
       [+r.value, +g.value, +b.value],
-      (a && +a.value) || (options.alwaysAlpha && DEFAULT_ALPHA),
+      (a && a.value) || (options.alwaysAlpha && DEFAULT_ALPHA),
+      options.isUseModernSyntax,
     );
   }
 
@@ -60,7 +69,13 @@ const convertingRGBColor = (node, options) => {
 
 const convertingHSLColor = (node, options) => {
   const newNode = node.clone({ type: 'word' });
-  const [h, , s, , l, , a] = node.nodes;
+  let h,s,l,a;
+
+  if (node.nodes.join(' ').includes(',')) {
+    [h, , s, , l, , a] = node.nodes;
+  } else {
+    [h, s, l, , a] = node.nodes;
+  }
 
   if (options.outputColorFormat === HEX_COLOR) {
     newNode.value = getHEXColorStr(
@@ -72,13 +87,15 @@ const convertingHSLColor = (node, options) => {
     newNode.value = getRGBColorStr(
       HSL_COLOR,
       [+h.value, +s.value, +l.value],
-      ((a && +a.value) || (options.alwaysAlpha && DEFAULT_ALPHA)),
+      ((a && a.value) || (options.alwaysAlpha && DEFAULT_ALPHA)),
+      options.isUseModernSyntax,
     );
   } else if (options.outputColorFormat === HSL_COLOR) {
     newNode.value = getHSLColorStr(
       HSL_COLOR,
       [+h.value, +s.value, +l.value],
-      (a && +a.value) || (options.alwaysAlpha && DEFAULT_ALPHA),
+      (a && a.value) || (options.alwaysAlpha && DEFAULT_ALPHA),
+      options.isUseModernSyntax,
     );
   }
 
@@ -98,12 +115,14 @@ const convertingKeywordColor = (node, options) => {
       KEYWORD_COLOR,
       node.value,
       options.alwaysAlpha && DEFAULT_ALPHA,
+      options.isUseModernSyntax,
     );
   } else if (options.outputColorFormat === HSL_COLOR) {
     node.value = getHSLColorStr(
       KEYWORD_COLOR,
       node.value,
       options.alwaysAlpha && DEFAULT_ALPHA,
+      options.isUseModernSyntax,
     );
   }
 

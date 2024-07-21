@@ -45,50 +45,48 @@ const getHEXColorStr = (inputColorFormat, color, alpha) => (
     : `#${ convert[inputColorFormat].hex(color) }`.toLowerCase()
 );
 
-const getRGBColorStr = (inputColorFormat, color, alpha) => {
-  if (inputColorFormat === HEX_COLOR) {
-    return alpha
-      ? `rgba(${ convert[inputColorFormat].rgb(color).join(', ') }, ${ convertHEXAlphaValueToNumber(alpha) })`
-      : `rgb(${ convert[inputColorFormat].rgb(color).join(', ') })`;
+const getRGBColorArr = (color, inputColorFormat) =>
+  inputColorFormat !== RGB_COLOR
+    ? convert[inputColorFormat].rgb(color)
+    : color;
+
+const getRGBColorStr = (inputColorFormat, color, alpha, isUseModernSyntax) => {
+  const colorStr = getRGBColorArr(color, inputColorFormat).join(isUseModernSyntax ? ' ' : ', ');
+
+  if (isUseModernSyntax) {
+    return `rgb(${ colorStr }${alpha ? ` / ${alpha}` : ''})`;
   }
 
-  if (inputColorFormat === HSL_COLOR || inputColorFormat === KEYWORD_COLOR) {
-    return alpha
-      ? `rgba(${ convert[inputColorFormat].rgb(color).join(', ') }, ${ alpha })`
-      : `rgb(${ convert[inputColorFormat].rgb(color).join(', ') })`;
-  }
-
-  return `rgba(${ color.join(', ') }, ${ alpha })`;
+  return alpha
+    ? `rgba(${ colorStr }, ${ alpha })`
+    : `rgb(${ colorStr })`;
 };
 
-const getHSLStr = (color, inputColorFormat) => {
+const getHSLArr = (color, inputColorFormat) => {
   const colorArr = inputColorFormat !== HSL_COLOR
     ? convert[inputColorFormat].hsl(color)
     : color;
-  return `${ colorArr[0] }, ${ colorArr[1] }%, ${ colorArr[2] }%`;
+
+  return [colorArr[0].toString(), `${colorArr[1]}%`, `${colorArr[2]}%`];
 };
 
-const getHSLColorStr = (inputColorFormat, color, alpha) => {
-  const colorStr = getHSLStr(color, inputColorFormat);
+const getHSLColorStr = (inputColorFormat, color, alpha, isUseModernSyntax) => {
+  const colorStr = getHSLArr(color, inputColorFormat).join(isUseModernSyntax ? ' ' : ', ');
 
-  if (inputColorFormat === HEX_COLOR) {
-    return alpha
-      ? `hsla(${ colorStr }, ${ convertHEXAlphaValueToNumber(alpha) })`
-      : `hsl(${ colorStr })`;
+  if (isUseModernSyntax) {
+    return `hsl(${ colorStr }${alpha ? ` / ${alpha}` : ''})`;
   }
 
-  if (inputColorFormat === RGB_COLOR || inputColorFormat === KEYWORD_COLOR) {
-    return alpha
-      ? `hsla(${ colorStr }, ${ alpha })`
-      : `hsl(${ colorStr })`;
-  }
-
-  return `hsla(${ colorStr }, ${ alpha })`;
+  return alpha
+    ? `hsla(${ colorStr }, ${ alpha })`
+    : `hsl(${ colorStr })`;
 };
+
 
 module.exports = {
   parseHEXAColor,
   getRGBColorStr,
   getHSLColorStr,
   getHEXColorStr,
+  convertHEXAlphaValueToNumber,
 };

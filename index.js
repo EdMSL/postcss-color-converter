@@ -24,6 +24,7 @@ const defaultOptions = {
   outputColorFormat: '',
   alwaysAlpha: false,
   ignore: [],
+  isUseModernSyntax: false,
 };
 
 module.exports = (options = {}) => {
