@@ -60,7 +60,12 @@ module.exports = (options = {}) => {
             } else if (
               (
                 !currentOptions.ignore.includes(RGB_COLOR) &&
-                (currentOptions.alwaysAlpha || currentOptions.outputColorFormat !== RGB_COLOR)
+                (
+                  currentOptions.alwaysAlpha ||
+                  currentOptions.outputColorFormat !== RGB_COLOR ||
+                  currentOptions.isUseModernSyntax ||
+                  (!currentOptions.isUseModernSyntax && currentOptions.outputColorFormat === RGB_COLOR)
+                )
               ) &&
               (node.name === 'rgb' || node.name === 'rgba') &&
               !specValuesInParamsRegExp.test(node.params)
@@ -70,7 +75,12 @@ module.exports = (options = {}) => {
             } else if (
               (
                 !currentOptions.ignore.includes(HSL_COLOR) &&
-                (currentOptions.alwaysAlpha || currentOptions.outputColorFormat !== HSL_COLOR)
+                (
+                  currentOptions.alwaysAlpha ||
+                  currentOptions.outputColorFormat !== HSL_COLOR ||
+                  currentOptions.isUseModernSyntax ||
+                  (!currentOptions.isUseModernSyntax && currentOptions.outputColorFormat === HSL_COLOR)
+                )
               ) &&
               (node.name === 'hsl' || node.name === 'hsla') &&
               !specValuesInParamsRegExp.test(node.params)
