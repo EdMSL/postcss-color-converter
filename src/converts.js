@@ -81,7 +81,7 @@ const convertingHSLColor = (node, options) => {
     newNode.value = getHEXColorStr(
       HSL_COLOR,
       [+h.value, +s.value, +l.value],
-      ((a && +a.value !== DEFAULT_ALPHA && +a.value)),
+      ((a && +a.value !== DEFAULT_ALPHA && a.value)),
     );
   } else if (options.outputColorFormat === RGB_COLOR) {
     newNode.value = getRGBColorStr(
