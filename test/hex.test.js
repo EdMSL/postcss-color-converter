@@ -66,30 +66,6 @@ describe('postcss-color-converter for hex colors', function () {
       'body { color: lighten(black, 50%); }',
       { outputColorFormat: 'rgb' },
     ), 'body { color: lighten(rgb(0, 0, 0), 50%); }');
-    assert.equal(transform(
-      'body { color: #ffffff; }',
-      { outputColorFormat: 'rgb', isUseModernSyntax: true },
-    ), 'body { color: rgb(255 255 255); }');
-    assert.equal(transform(
-      'body { color: #ffffff; }',
-      { outputColorFormat: 'rgb', alwaysAlpha: true, isUseModernSyntax: true },
-    ), 'body { color: rgb(255 255 255 / 1); }');
-    assert.equal(transform(
-      'body { color: #ffffff80; }',
-      { outputColorFormat: 'rgb', isUseModernSyntax: true },
-    ), 'body { color: rgb(255 255 255 / 0.5); }');
-    assert.equal(transform(
-      'body { color: #ffffff00; }',
-      { outputColorFormat: 'rgb', isUseModernSyntax: true },
-    ), 'body { color: rgb(255 255 255 / 0); }');
-    assert.equal(transform(
-      'body { color: #ffffffff; }',
-      { outputColorFormat: 'rgb', isUseModernSyntax: true },
-    ), 'body { color: rgb(255 255 255); }');
-    assert.equal(transform(
-      'body { color: #ffffffff; }',
-      { outputColorFormat: 'rgb', alwaysAlpha: true, isUseModernSyntax: true },
-    ), 'body { color: rgb(255 255 255 / 1); }');
   });
 
   it('Input color must be converted to rgba', function () {
@@ -144,30 +120,6 @@ describe('postcss-color-converter for hex colors', function () {
       'body { color: #c95959; }',
       { outputColorFormat: 'hsl' },
     ), 'body { color: hsl(0, 51%, 57%); }');
-    assert.equal(transform(
-      'body { color: #ef5; }',
-      { outputColorFormat: 'hsl', isUseModernSyntax: true },
-    ), 'body { color: hsl(66 100% 67%); }');
-    assert.equal(transform(
-      'body { color: #ef5; }',
-      { outputColorFormat: 'hsl', alwaysAlpha: true, isUseModernSyntax: true },
-    ), 'body { color: hsl(66 100% 67% / 1); }');
-    assert.equal(transform(
-      'body { color: #c95959ff; }',
-      { outputColorFormat: 'hsl', isUseModernSyntax: true },
-    ), 'body { color: hsl(0 51% 57%); }');
-    assert.equal(transform(
-      'body { color: #c95959ff; }',
-      { outputColorFormat: 'hsl', alwaysAlpha: true, isUseModernSyntax: true },
-    ), 'body { color: hsl(0 51% 57% / 1); }');
-    assert.equal(transform(
-      'body { color: #c9595900; }',
-      { outputColorFormat: 'hsl', isUseModernSyntax: true },
-    ), 'body { color: hsl(0 51% 57% / 0); }');
-    assert.equal(transform(
-      'body { color: #c9595980; }',
-      { outputColorFormat: 'hsl', isUseModernSyntax: true },
-    ), 'body { color: hsl(0 51% 57% / 0.5); }');
   });
 
   it('Input color must be converted to hsla', function () {

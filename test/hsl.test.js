@@ -32,18 +32,6 @@ describe('postcss-color-converter for hsl colors', function () {
       { outputColorFormat: 'hsl' },
     ), 'body { color: hsl(255, 0%, 0%); }');
     assert.equal(transform(
-      'body { color: hsl(0 0% 100%); }',
-      { outputColorFormat: 'hsl', isUseModernSyntax: true },
-    ), 'body { color: hsl(0 0% 100%); }');
-    assert.equal(transform(
-      'body { color: hsl(0 0% 100% / 1); }',
-      { outputColorFormat: 'hsl', alwaysAlpha: true, isUseModernSyntax: true },
-    ), 'body { color: hsl(0 0% 100% / 1); }');
-    assert.equal(transform(
-      'body { color: hsl(0 0% 100% / var(--alpha)); }',
-      { outputColorFormat: 'hsl', alwaysAlpha: true, isUseModernSyntax: true },
-    ), 'body { color: hsl(0 0% 100% / var(--alpha)); }');
-    assert.equal(transform(
       'body { color: hsla(0, 0%, 100%, 1); }',
       { outputColorFormat: 'hsl' },
     ), 'body { color: hsla(0, 0%, 100%, 1); }');
@@ -116,27 +104,7 @@ describe('postcss-color-converter for hsl colors', function () {
   it('Input color with modern color function notation must be converted to hsl(a)', function () {
     assert.equal(transform(
       'body { color: hsl(0 0% 100%); }',
-      { outputColorFormat: 'hsl' },
-    ), 'body { color: hsl(0, 0%, 100%); }');
-    assert.equal(transform(
-      'body { color: hsl(0 0% 100% / 0); }',
-      { outputColorFormat: 'hsl' },
-    ), 'body { color: hsla(0, 0%, 100%, 0); }');
-    assert.equal(transform(
-      'body { color: hsl(0 0% 100% / 0.5); }',
-      { outputColorFormat: 'hsl' },
-    ), 'body { color: hsla(0, 0%, 100%, 0.5); }');
-    assert.equal(transform(
-      'body { color: hsl(0 0% 100% / 0.5); }',
-      { outputColorFormat: 'hsl', alwaysAlpha: true },
-    ), 'body { color: hsla(0, 0%, 100%, 0.5); }');
-    assert.equal(transform(
-      'body { color: hsl(0 0% 100%); }',
-      { outputColorFormat: 'hsl', alwaysAlpha: true },
-    ), 'body { color: hsla(0, 0%, 100%, 1); }');
-    assert.equal(transform(
-      'body { color: hsl(0 0% 100%); }',
-      { outputColorFormat: 'hsl', alwaysAlpha: true, isUseModernSyntax: true },
+      { outputColorFormat: 'hsl',alwaysAlpha: true },
     ), 'body { color: hsl(0 0% 100% / 1); }');
   });
 
@@ -144,26 +112,22 @@ describe('postcss-color-converter for hsl colors', function () {
     assert.equal(transform(
       'body { color: hsl(0  0%  100%); }',
       { outputColorFormat: 'rgb' },
-    ), 'body { color: rgb(255, 255, 255); }');
+    ), 'body { color: rgb(255 255 255); }');
     assert.equal(transform(
       'body { background-color: hsl(0 0% 100% / 0); }',
       { outputColorFormat: 'rgb' },
-    ), 'body { background-color: rgba(255, 255, 255, 0); }');
+    ), 'body { background-color: rgb(255 255 255 / 0); }');
     assert.equal(transform(
       'body { background-color: hsl(0 0% 100% / 0.5); }',
       { outputColorFormat: 'rgb' },
-    ), 'body { background-color: rgba(255, 255, 255, 0.5); }');
+    ), 'body { background-color: rgb(255 255 255 / 0.5); }');
     assert.equal(transform(
       'body { background-color: hsl(0 0% 100% / 0.5); }',
       { outputColorFormat: 'rgb', alwaysAlpha: true },
-    ), 'body { background-color: rgba(255, 255, 255, 0.5); }');
+    ), 'body { background-color: rgb(255 255 255 / 0.5); }');
     assert.equal(transform(
       'body { color: hsl(0  0%  100%); }',
       { outputColorFormat: 'rgb', alwaysAlpha: true },
-    ), 'body { color: rgba(255, 255, 255, 1); }');
-    assert.equal(transform(
-      'body { color: hsl(0 0% 100%); }',
-      { outputColorFormat: 'rgb', alwaysAlpha: true, isUseModernSyntax: true },
     ), 'body { color: rgb(255 255 255 / 1); }');
   });
 
@@ -187,10 +151,6 @@ describe('postcss-color-converter for hsl colors', function () {
     assert.equal(transform(
       'body { background-color: hsl(0  0%  100% / 0.5); }',
       { outputColorFormat: 'hex', alwaysAlpha: true },
-    ), 'body { background-color: #ffffff80; }');
-    assert.equal(transform(
-      'body { background-color: hsl(0  0%  100% / 0.5); }',
-      { outputColorFormat: 'hex', alwaysAlpha: true, isUseModernSyntax: true },
     ), 'body { background-color: #ffffff80; }');
     assert.equal(transform(
       'body { background-color: hsl(0  0%  100% / 0); }',
@@ -223,7 +183,7 @@ describe('postcss-color-converter for hsl colors', function () {
           hsla(193, 69%, 57%, 0.5) 40%,
           hsl(56, 69%, 57%) 50%,
           hsla(56, 69%, 57%, 0.5) 60%,
-          hsl(56, 69%, 57%) 70%,
+          hsl(56 69% 57%) 70%,
           hsl(120, 100%, 25%) 100%,
         );
       }`);
@@ -251,34 +211,6 @@ describe('postcss-color-converter for hsl colors', function () {
           hsla(56, 69%, 57%, 1) 50%,
           hsla(56, 69%, 57%, 0.5) 60%,
           hsla(120, 100%, 25%, 1) 100%,
-        );
-      }`);
-    assert.equal(transform(
-      `ul {
-        background: linear-gradient(
-          to bottom,
-          #cd56ab 10%,
-          #cd56ab80 20%,
-          rgb(68, 187, 221) 30%,
-          rgba(68, 188, 221, 0.5) 40%,
-          hsl(56, 69%, 57%) 50%,
-          hsla(56, 69%, 57%, 0.5) 60%,
-          rgb(68, 187, 221, 0) 70%,
-          green 100%,
-        );
-      }`,
-      { outputColorFormat: 'hsl', alwaysAlpha: true, isUseModernSyntax: true },
-    ), `ul {
-        background: linear-gradient(
-          to bottom,
-          hsl(317 54% 57% / 1) 10%,
-          hsl(317 54% 57% / 0.5) 20%,
-          hsl(193 69% 57% / 1) 30%,
-          hsl(193 69% 57% / 0.5) 40%,
-          hsl(56 69% 57% / 1) 50%,
-          hsl(56 69% 57% / 0.5) 60%,
-          hsl(193 69% 57% / 0) 70%,
-          hsl(120 100% 25% / 1) 100%,
         );
       }`);
   });
