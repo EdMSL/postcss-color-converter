@@ -87,6 +87,14 @@ describe('postcss-color-converter for rgb colors', function () {
       { outputColorFormat: 'rgb', alwaysAlpha: true, isUseModernSyntax: true },
     ), 'body { color: rgb(255 255 255 / 0); }');
     assert.equal(transform(
+      'body { background-color: rgb(255 255 255 / 0.5); }',
+      { outputColorFormat: 'rgb', alwaysAlpha: true, isUseModernSyntax: true },
+    ), 'body { background-color: rgb(255 255 255 / 0.5); }');
+    assert.equal(transform(
+      'body { background-color: rgb(255 255 255 / 0.5); }',
+      { outputColorFormat: 'rgb', isUseModernSyntax: true },
+    ), 'body { background-color: rgb(255 255 255 / 0.5); }');
+    assert.equal(transform(
       'body { color: rgba(255, 255, 255, 0); }',
       { outputColorFormat: 'rgb', isUseModernSyntax: true },
     ), 'body { color: rgb(255 255 255 / 0); }');
@@ -121,6 +129,14 @@ describe('postcss-color-converter for rgb colors', function () {
       'body { $green: rgb(0, 255, 0); }',
       { outputColorFormat: 'hex' },
     ), 'body { $green: #00ff00; }');
+    assert.equal(transform(
+      'body { color: rgba(255, 255, 255, 1); }',
+      { outputColorFormat: 'hex' },
+    ), 'body { color: #ffffff; }');
+    assert.equal(transform(
+      'body { color: rgb(255, 255, 255); }',
+      { outputColorFormat: 'hex', alwaysAlpha: true },
+    ), 'body { color: #ffffff; }');
   });
 
   it('Input color must be converted to hexa', function () {
@@ -136,14 +152,6 @@ describe('postcss-color-converter for rgb colors', function () {
       'body { color: rgba(255, 255, 255, 0.5); }',
       { outputColorFormat: 'hex', alwaysAlpha: true },
     ), 'body { color: #ffffff80; }');
-    assert.equal(transform(
-      'body { color: rgba(255, 255, 255, 1); }',
-      { outputColorFormat: 'hex' },
-    ), 'body { color: #ffffff; }');
-    assert.equal(transform(
-      'body { color: rgb(255, 255, 255); }',
-      { outputColorFormat: 'hex', alwaysAlpha: true },
-    ), 'body { color: #ffffff; }');
   });
 
   it('Input color must be converted to hsl', function () {
@@ -238,10 +246,6 @@ describe('postcss-color-converter for rgb colors', function () {
     ), 'body { background-color: rgba(255, 255, 255, 0.5); }');
     assert.equal(transform(
       'body { background-color: rgb(255 255 255 / 0.5); }',
-      { outputColorFormat: 'rgb', alwaysAlpha: true, isUseModernSyntax: true },
-    ), 'body { background-color: rgb(255 255 255 / 0.5); }');
-    assert.equal(transform(
-      'body { background-color: rgb(255 255 255 / 0.5); }',
       { outputColorFormat: 'rgb', alwaysAlpha: true },
     ), 'body { background-color: rgba(255, 255, 255, 0.5); }');
     assert.equal(transform(
@@ -252,6 +256,29 @@ describe('postcss-color-converter for rgb colors', function () {
       'body { background-color: rgb(255 255 255); }',
       { outputColorFormat: 'rgb', alwaysAlpha: true, isUseModernSyntax: true },
     ), 'body { background-color: rgb(255 255 255 / 1); }');
+  });
+
+  it('Input color with modern color function notation must be converted to hex(a)', function () {
+    assert.equal(transform(
+      'body { background-color: rgb(255 255 255); }',
+      { outputColorFormat: 'hex' },
+    ), 'body { background-color: #ffffff; }');
+    assert.equal(transform(
+      'body { background-color: rgb(255 255 255 / 1); }',
+      { outputColorFormat: 'hex', alwaysAlpha: true },
+    ), 'body { background-color: #ffffff; }');
+    assert.equal(transform(
+      'body { background-color: rgb(255 255 255 / 0.5); }',
+      { outputColorFormat: 'hex' },
+    ), 'body { background-color: #ffffff80; }');
+    assert.equal(transform(
+      'body { background-color: rgb(255 255 255 / 0.5); }',
+      { outputColorFormat: 'hex', alwaysAlpha: true },
+    ), 'body { background-color: #ffffff80; }');
+    assert.equal(transform(
+      'body { background-color: rgb(255 255 255 / 0.5); }',
+      { outputColorFormat: 'hex', alwaysAlpha: true, isUseModernSyntax: true },
+    ), 'body { background-color: #ffffff80; }');
   });
 
   it('All input colors must be correct converted to rgb(a)', function () {
