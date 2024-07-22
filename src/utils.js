@@ -35,7 +35,7 @@ const parseHEXAColor = color => {
   };
 };
 
-const convertHEXAlphaValueToNumber = value => Number((parseInt(value, 16) / 255).toFixed(2));
+const convertHEXAlphaValueToNumber = value => Number((parseInt(value, 16) / 255).toFixed(2)).toString();
 
 const convertNumberAlphaValueToHEX = value => {
   let result = Math.round((value * 255)).toString(16);
