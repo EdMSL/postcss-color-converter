@@ -32,21 +32,72 @@ describe('postcss-color-converter for rgb colors', function () {
       { outputColorFormat: 'rgb' },
     ), 'body { color: rgba(100, $green, 56, 0.6); }');
     assert.equal(transform(
+      'body { color: rgb(255 255 $red / 0.5); }',
+      { outputColorFormat: 'rgb',isUseModernSyntax: true },
+    ), 'body { color: rgb(255 255 $red / 0.5); }');
+    assert.equal(transform(
+      'body { color: rgb(255 255 255); }',
+      { outputColorFormat: 'rgb', isUseModernSyntax: true },
+    ), 'body { color: rgb(255 255 255); }');
+    assert.equal(transform(
       'body { color: rgb(255 255 255 / 1); }',
-      { outputColorFormat: 'rgb' },
+      { outputColorFormat: 'rgb', isUseModernSyntax: true },
     ), 'body { color: rgb(255 255 255 / 1); }');
     assert.equal(transform(
-      'body { color: rgb(255 255 255 / 0); }',
-      { outputColorFormat: 'rgb' },
-    ), 'body { color: rgb(255 255 255 / 0); }');
+      'body { color: rgb(255 255 255 / 1); }',
+      { outputColorFormat: 'rgb', alwaysAlpha: true, isUseModernSyntax: true },
+    ), 'body { color: rgb(255 255 255 / 1); }');
     assert.equal(transform(
-      'body { color: rgb(255 255 255 / 0.5); }',
-      { outputColorFormat: 'rgb' },
+      'body { color: rgb(100 50 56 / var(--alpha)); }',
+      { outputColorFormat: 'rgb', alwaysAlpha: true },
+    ), 'body { color: rgb(100 50 56 / var(--alpha)); }');
+    assert.equal(transform(
+      'body { color: rgb(100 50 56 / var(--alpha)); }',
+      { outputColorFormat: 'rgb', isUseModernSyntax: true },
+    ), 'body { color: rgb(100 50 56 / var(--alpha)); }');
+    assert.equal(transform(
+      'body { color: rgb(100 50 56 / var(--alpha)); }',
+      { outputColorFormat: 'rgb', alwaysAlpha: true, isUseModernSyntax: true },
+    ), 'body { color: rgb(100 50 56 / var(--alpha)); }');
+  });
+
+  it('Input color must be converted to rgb(a)', function () {
+    assert.equal(transform(
+      'body { color: rgb(255, 255, 255); }',
+      { outputColorFormat: 'rgb', alwaysAlpha: true },
+    ), 'body { color: rgba(255, 255, 255, 1); }');
+    assert.equal(transform(
+      'body { color: rgb(255, 255, 255); }',
+      { outputColorFormat: 'rgb', isUseModernSyntax: true },
+    ), 'body { color: rgb(255 255 255); }');
+    assert.equal(transform(
+      'body { color: rgb(255, 255, 255); }',
+      { outputColorFormat: 'rgb', alwaysAlpha: true, isUseModernSyntax: true },
+    ), 'body { color: rgb(255 255 255 / 1); }');
+    assert.equal(transform(
+      'body { color: rgba(255, 255, 255, 0.5); }',
+      { outputColorFormat: 'rgb', isUseModernSyntax: true },
     ), 'body { color: rgb(255 255 255 / 0.5); }');
     assert.equal(transform(
-      'body { color: rgb(255 255 $red / 0.5); }',
-      { outputColorFormat: 'rgb' },
-    ), 'body { color: rgb(255 255 $red / 0.5); }');
+      'body { color: rgba(255, 255, 255, 0.5); }',
+      { outputColorFormat: 'rgb', alwaysAlpha: true, isUseModernSyntax: true },
+    ), 'body { color: rgb(255 255 255 / 0.5); }');
+    assert.equal(transform(
+      'body { color: rgba(255, 255, 255, 0); }',
+      { outputColorFormat: 'rgb', alwaysAlpha: true, isUseModernSyntax: true },
+    ), 'body { color: rgb(255 255 255 / 0); }');
+    assert.equal(transform(
+      'body { color: rgba(255, 255, 255, 0); }',
+      { outputColorFormat: 'rgb', isUseModernSyntax: true },
+    ), 'body { color: rgb(255 255 255 / 0); }');
+    assert.equal(transform(
+      'body { color: rgba(255, 255, 255, 1); }',
+      { outputColorFormat: 'rgb', isUseModernSyntax: true },
+    ), 'body { color: rgb(255 255 255 / 1); }');
+    assert.equal(transform(
+      'body { color: rgba(255, 255, 255, 1); }',
+      { outputColorFormat: 'rgb', alwaysAlpha: true, isUseModernSyntax: true },
+    ), 'body { color: rgb(255 255 255 / 1); }');
   });
 
   it('Input color must be converted to hex', function () {
@@ -100,6 +151,26 @@ describe('postcss-color-converter for rgb colors', function () {
       'body { color: rgb(255, 255, 255); }',
       { outputColorFormat: 'hsl' },
     ), 'body { color: hsl(0, 0%, 100%); }');
+    assert.equal(transform(
+      'body { color: rgb(253, 254, 255); }',
+      { outputColorFormat: 'hsl' },
+    ), 'body { color: hsl(210, 100%, 100%); }');
+    assert.equal(transform(
+      'body { color: rgb(253, 254, 255); }',
+      { outputColorFormat: 'hsl', isUseModernSyntax: true },
+    ), 'body { color: hsl(210 100% 100%); }');
+    assert.equal(transform(
+      'body { color: rgb(253, 254, 255); }',
+      { outputColorFormat: 'hsl', alwaysAlpha: true, isUseModernSyntax: true },
+    ), 'body { color: hsl(210 100% 100% / 1); }');
+    assert.equal(transform(
+      'body { color: rgb(253, 254, 255, 0.5); }',
+      { outputColorFormat: 'hsl', isUseModernSyntax: true },
+    ), 'body { color: hsl(210 100% 100% / 0.5); }');
+    assert.equal(transform(
+      'body { color: rgb(253, 254, 255, 0.5); }',
+      { outputColorFormat: 'hsl', alwaysAlpha: true, isUseModernSyntax: true },
+    ), 'body { color: hsl(210 100% 100% / 0.5); }');
   });
 
   it('Input color must be converted to hsla', function () {
@@ -117,7 +188,7 @@ describe('postcss-color-converter for rgb colors', function () {
     ), 'body { color: hsla(0, 0%, 100%, 1); }');
   });
 
-  it('Input color with modern color function notation must be converted to hsl', function () {
+  it('Input color with modern color function notation must be converted to hsl(a)', function () {
     assert.equal(transform(
       'body { background-color: rgb(255 255 255 / 0); }',
       { outputColorFormat: 'hsl' },
@@ -129,7 +200,7 @@ describe('postcss-color-converter for rgb colors', function () {
     assert.equal(transform(
       'body { color: rgb(255 255 255); }',
       { outputColorFormat: 'hsl' },
-    ), 'body { color: hsla(0, 0%, 100%); }');
+    ), 'body { color: hsl(0, 0%, 100%); }');
     assert.equal(transform(
       'body { color: rgb(255 255 255); }',
       { outputColorFormat: 'hsl', alwaysAlpha: true },
@@ -152,6 +223,37 @@ describe('postcss-color-converter for rgb colors', function () {
     ), 'body { color: hsl(210 100% 100% / 0.5); }');
   });
 
+  it('Input color with modern color function notation must be converted to rgb(a)', function () {
+    assert.equal(transform(
+      'body { background-color: rgb(255 255 255); }',
+      { outputColorFormat: 'rgb' },
+    ), 'body { background-color: rgb(255, 255, 255); }');
+    assert.equal(transform(
+      'body { background-color: rgb(255 255 255 / 0); }',
+      { outputColorFormat: 'rgb' },
+    ), 'body { background-color: rgba(255, 255, 255, 0); }');
+    assert.equal(transform(
+      'body { background-color: rgb(255 255 255 / 0.5); }',
+      { outputColorFormat: 'rgb' },
+    ), 'body { background-color: rgba(255, 255, 255, 0.5); }');
+    assert.equal(transform(
+      'body { background-color: rgb(255 255 255 / 0.5); }',
+      { outputColorFormat: 'rgb', alwaysAlpha: true, isUseModernSyntax: true },
+    ), 'body { background-color: rgb(255 255 255 / 0.5); }');
+    assert.equal(transform(
+      'body { background-color: rgb(255 255 255 / 0.5); }',
+      { outputColorFormat: 'rgb', alwaysAlpha: true },
+    ), 'body { background-color: rgba(255, 255, 255, 0.5); }');
+    assert.equal(transform(
+      'body { background-color: rgb(255 255 255); }',
+      { outputColorFormat: 'rgb', alwaysAlpha: true },
+    ), 'body { background-color: rgba(255, 255, 255, 1); }');
+    assert.equal(transform(
+      'body { background-color: rgb(255 255 255); }',
+      { outputColorFormat: 'rgb', alwaysAlpha: true, isUseModernSyntax: true },
+    ), 'body { background-color: rgb(255 255 255 / 1); }');
+  });
+
   it('All input colors must be correct converted to rgb(a)', function () {
     assert.equal(transform(
       `ul {
@@ -163,6 +265,7 @@ describe('postcss-color-converter for rgb colors', function () {
           rgba(68, 188, 221, 0.5) 40%,
           hsl(56, 69%, 57%) 50%,
           hsla(56, 69%, 57%, 0.5) 60%,
+          rgb(255 255 255) 70%,
           green 100%,
         );
       }`,
@@ -176,6 +279,7 @@ describe('postcss-color-converter for rgb colors', function () {
           rgba(68, 188, 221, 0.5) 40%,
           rgb(221, 211, 70) 50%,
           rgba(221, 211, 70, 0.5) 60%,
+          rgb(255, 255, 255) 70%,
           rgb(0, 128, 0) 100%,
         );
       }`);
@@ -189,6 +293,7 @@ describe('postcss-color-converter for rgb colors', function () {
           rgba(68, 188, 221, 0.5) 40%,
           hsl(56, 69%, 57%) 50%,
           hsla(56, 69%, 57%, 0.5) 60%,
+          rgb(255 255 255) 70%,
           green 100%,
         );
       }`,
@@ -202,6 +307,7 @@ describe('postcss-color-converter for rgb colors', function () {
           rgba(68, 188, 221, 0.5) 40%,
           rgba(221, 211, 70, 1) 50%,
           rgba(221, 211, 70, 0.5) 60%,
+          rgba(255, 255, 255, 1) 70%,
           rgba(0, 128, 0, 1) 100%,
         );
       }`);
