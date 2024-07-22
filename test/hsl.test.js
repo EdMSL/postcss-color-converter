@@ -43,6 +43,10 @@ describe('postcss-color-converter for hsl colors', function () {
       'body { color: hsl(0 0% 100% / var(--alpha)); }',
       { outputColorFormat: 'hsl', alwaysAlpha: true, isUseModernSyntax: true },
     ), 'body { color: hsl(0 0% 100% / var(--alpha)); }');
+    assert.equal(transform(
+      'body { color: hsla(0, 0%, 100%, 1); }',
+      { outputColorFormat: 'hsl' },
+    ), 'body { color: hsla(0, 0%, 100%, 1); }');
   });
 
   it('Input color must be converted to hex', function () {

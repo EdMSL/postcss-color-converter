@@ -44,6 +44,10 @@ describe('postcss-color-converter for rgb colors', function () {
       { outputColorFormat: 'rgb', isUseModernSyntax: true },
     ), 'body { color: rgb(255 255 255 / 1); }');
     assert.equal(transform(
+      'body { color: rgba(255, 255, 255, 1); }',
+      { outputColorFormat: 'rgb' },
+    ), 'body { color: rgba(255, 255, 255, 1); }');
+    assert.equal(transform(
       'body { color: rgb(255 255 255 / 1); }',
       { outputColorFormat: 'rgb', alwaysAlpha: true, isUseModernSyntax: true },
     ), 'body { color: rgb(255 255 255 / 1); }');
