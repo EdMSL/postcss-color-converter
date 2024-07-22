@@ -37,7 +37,15 @@ const parseHEXAColor = color => {
 
 const convertHEXAlphaValueToNumber = value => Number((parseInt(value, 16) / 255).toFixed(2));
 
-const convertNumberAlphaValueToHEX = value => Math.round((value * 255)).toString(16);
+const convertNumberAlphaValueToHEX = value => {
+  let result = Math.round((value * 255)).toString(16);
+
+  if (result == '0') {
+    result = '00';
+  }
+
+  return result;
+};
 
 const getHEXColorStr = (inputColorFormat, color, alpha) => (
   alpha
@@ -89,4 +97,5 @@ module.exports = {
   getHSLColorStr,
   getHEXColorStr,
   convertHEXAlphaValueToNumber,
+  convertNumberAlphaValueToHEX,
 };

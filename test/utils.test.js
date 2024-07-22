@@ -5,6 +5,7 @@ const {
   getHSLColorStr,
   getHEXColorStr,
   convertHEXAlphaValueToNumber,
+  convertNumberAlphaValueToHEX,
 } = require('../src/utils');
 
 /* eslint-disable prefer-arrow-callback, func-names */
@@ -53,5 +54,11 @@ describe('Test convert functions', function () {
     assert.equal(getHEXColorStr('rgb', [255, 255, 255], 0.5), '#ffffff80');
     assert.equal(getHEXColorStr('hsl', [36, 69, 54], 0.63), '#db9a39a1');
     assert.equal(getHEXColorStr('keyword', 'red', 1), '#ff0000ff');
+  });
+
+  it('Color must be correct converted to hexa', function () {
+    assert.equal(convertNumberAlphaValueToHEX(0), '00');
+    assert.equal(convertNumberAlphaValueToHEX(0.5), '80');
+    assert.equal(convertNumberAlphaValueToHEX(1), 'ff');
   });
 });
