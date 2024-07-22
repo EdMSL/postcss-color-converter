@@ -24,7 +24,6 @@ const defaultOptions = {
   outputColorFormat: '',
   alwaysAlpha: false,
   ignore: [],
-  isUseModernSyntax: false,
 };
 
 module.exports = (options = {}) => {
@@ -62,9 +61,7 @@ module.exports = (options = {}) => {
                 !currentOptions.ignore.includes(RGB_COLOR) &&
                 (
                   currentOptions.alwaysAlpha ||
-                  currentOptions.outputColorFormat !== RGB_COLOR ||
-                  currentOptions.isUseModernSyntax ||
-                  (!currentOptions.isUseModernSyntax && currentOptions.outputColorFormat === RGB_COLOR)
+                  currentOptions.outputColorFormat !== RGB_COLOR
                 )
               ) &&
               (node.name === 'rgb' || node.name === 'rgba') &&
@@ -77,9 +74,7 @@ module.exports = (options = {}) => {
                 !currentOptions.ignore.includes(HSL_COLOR) &&
                 (
                   currentOptions.alwaysAlpha ||
-                  currentOptions.outputColorFormat !== HSL_COLOR ||
-                  currentOptions.isUseModernSyntax ||
-                  (!currentOptions.isUseModernSyntax && currentOptions.outputColorFormat === HSL_COLOR)
+                  currentOptions.outputColorFormat !== HSL_COLOR
                 )
               ) &&
               (node.name === 'hsl' || node.name === 'hsla') &&

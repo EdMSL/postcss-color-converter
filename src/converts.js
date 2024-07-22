@@ -18,13 +18,17 @@ const convertingHEXColor = (node, options) => {
   const colorObj = parseHEXAColor(node.value);
 
   if (options.outputColorFormat === RGB_COLOR) {
-    node.value = options.alwaysAlpha || colorObj.hexAlpha !== DEFAULT_HEX_ALPHA
-      ? getRGBColorStr(HEX_COLOR, colorObj.hexColor, convertHEXAlphaValueToNumber(colorObj.hexAlpha))
-      : getRGBColorStr(HEX_COLOR, colorObj.hexColor, undefined, options.isUseModernSyntax);
+    node.value = getRGBColorStr(
+      HEX_COLOR,
+      colorObj.hexColor,
+      options.alwaysAlpha || colorObj.hexAlpha !== DEFAULT_HEX_ALPHA ? convertHEXAlphaValueToNumber(colorObj.hexAlpha) : false,
+    )
   } else if (options.outputColorFormat === HSL_COLOR) {
-    node.value = options.alwaysAlpha || colorObj.hexAlpha !== DEFAULT_HEX_ALPHA
-      ? getHSLColorStr(HEX_COLOR, colorObj.hexColor, convertHEXAlphaValueToNumber(colorObj.hexAlpha), options.isUseModernSyntax)
-      : getHSLColorStr(HEX_COLOR, colorObj.hexColor, undefined, options.isUseModernSyntax);
+    node.value = getHSLColorStr(
+      HEX_COLOR,
+      colorObj.hexColor,
+      options.alwaysAlpha || colorObj.hexAlpha !== DEFAULT_HEX_ALPHA ? convertHEXAlphaValueToNumber(colorObj.hexAlpha) : false,
+    );
   }
 
   return node;
@@ -32,9 +36,10 @@ const convertingHEXColor = (node, options) => {
 
 const convertingRGBColor = (node, options) => {
   const newNode = node.clone({ type: 'word' });
+  const isModernSyntax = !node.nodes.join(' ').includes(',');
   let r,g,b,a;
 
-  if (node.nodes.join(' ').includes(',')) {
+  if (!isModernSyntax) {
     [r, , g, , b, , a] = node.nodes;
   } else {
     [r, g, b, , a] = node.nodes;
@@ -51,14 +56,14 @@ const convertingRGBColor = (node, options) => {
       RGB_COLOR,
       [+r.value, +g.value, +b.value],
       ((a && a.value) || (options.alwaysAlpha && DEFAULT_ALPHA)),
-      options.isUseModernSyntax,
+      isModernSyntax
     );
   } else if (options.outputColorFormat === RGB_COLOR) {
     newNode.value = getRGBColorStr(
       RGB_COLOR,
       [+r.value, +g.value, +b.value],
       (a && a.value) || (options.alwaysAlpha && DEFAULT_ALPHA),
-      options.isUseModernSyntax,
+      isModernSyntax
     );
   }
 
@@ -70,8 +75,9 @@ const convertingRGBColor = (node, options) => {
 const convertingHSLColor = (node, options) => {
   const newNode = node.clone({ type: 'word' });
   let h,s,l,a;
+  const isModernSyntax = !node.nodes.join(' ').includes(',');
 
-  if (node.nodes.join(' ').includes(',')) {
+  if (!isModernSyntax) {
     [h, , s, , l, , a] = node.nodes;
   } else {
     [h, s, l, , a] = node.nodes;
@@ -88,14 +94,14 @@ const convertingHSLColor = (node, options) => {
       HSL_COLOR,
       [+h.value, +s.value, +l.value],
       ((a && a.value) || (options.alwaysAlpha && DEFAULT_ALPHA)),
-      options.isUseModernSyntax,
+      isModernSyntax
     );
   } else if (options.outputColorFormat === HSL_COLOR) {
     newNode.value = getHSLColorStr(
       HSL_COLOR,
       [+h.value, +s.value, +l.value],
       (a && a.value) || (options.alwaysAlpha && DEFAULT_ALPHA),
-      options.isUseModernSyntax,
+      isModernSyntax
     );
   }
 
