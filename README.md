@@ -1,6 +1,6 @@
 # postcss-color-converter
 
-> [PostCSS](https://github.com/postcss/postcss) plugin to convert HEX, RGB, HSL and keyword colors between themselves (without transform to keyword color format). Uses [color-convert](https://www.npmjs.com/package/color-convert) under hood. Support Sass(SCSS) ([postcss-scss](https://www.npmjs.com/package/postcss-scss) or [postcss-sass](https://www.npmjs.com/package/postcss-sass) need) and CSS variables.
+> [PostCSS](https://github.com/postcss/postcss) plugin to convert HEX, RGB, HSL and keyword colors between themselves (without transform to keyword color format). Uses [color-convert](https://www.npmjs.com/package/color-convert) under hood. Supports modern color function notation ([specification](https://drafts.csswg.org/css-color/#the-hsl-notation)), Sass(SCSS) ([postcss-scss](https://www.npmjs.com/package/postcss-scss) or [postcss-sass](https://www.npmjs.com/package/postcss-sass) needed) and CSS variables.
 
 ## Installation
 ```console
@@ -53,7 +53,7 @@ Then:
 npm run postcss
 ```
 
-Please refer to [PostCSS documentation](https://github.com/postcss/postcss#usage) for you current environment.
+Please refer to [PostCSS documentation](https://github.com/postcss/postcss#usage) for your current environment.
 
 ## Options
 
@@ -68,7 +68,7 @@ Set output color format. Don't forget set this parameter.
 Type: `String[]`<br>
 Available values: `hex, rgb, hsl, keyword`<br>
 Default: `[]`<br>
-Array of color formats, which you do not want to convert.
+Array of color formats, which you don't want to convert.
 
 #### `alwaysAlpha`
 Type: `Boolean`<br>
@@ -86,7 +86,7 @@ colorConverter({
 
 ## Examples
 
-Using this `input.css` and `input.scss` with option `outputColorFormat`: 'rgb':
+Using these `input.css` and `input.scss` with `outputColorFormat`: 'rgb' option:
 
 ```css
 body {
@@ -107,7 +107,7 @@ p {
 }
 ```
 
-you will get:
+you'll get:
 
 ```css
 body {
@@ -136,7 +136,7 @@ $ npm i
 $ npm run postcss
 ```
 
-Then go to `test/fixtures` folder and see `common.test.scss` file.
+Then go to the `test/fixtures` folder and see the `common.test.scss` file.
 
 ## Contributing
 
