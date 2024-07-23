@@ -152,7 +152,7 @@ describe('postcss-color-converter for rgb colors', function () {
     ), 'body { color: hsla(0, 0%, 100%, 1); }');
   });
 
-  it('Input color with modern color function notation must be converted to hsl(a)', function () {
+  it('Input color with modern color function notation must be converted to hsl', function () {
     assert.equal(transform(
       'body { background-color: rgb(255 255 255 / 0); }',
       { outputColorFormat: 'hsl' },
@@ -171,7 +171,7 @@ describe('postcss-color-converter for rgb colors', function () {
     ), 'body { background-color: hsl(0 0% 100% / 1); }');
   });
 
-  it('Input color with modern color function notation must be converted to rgb(a)', function () {
+  it('Input color with modern color function notation must be converted to rgb', function () {
     assert.equal(transform(
       'body { background-color: rgb(255 255 255); }',
       { outputColorFormat: 'rgb', alwaysAlpha: true },

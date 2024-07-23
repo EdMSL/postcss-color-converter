@@ -32,6 +32,18 @@ describe('postcss-color-converter for hsl colors', function () {
       { outputColorFormat: 'hsl' },
     ), 'body { color: hsl(255, 0%, 0%); }');
     assert.equal(transform(
+      'body { color: hsl(10 0% 0%); }',
+      { outputColorFormat: 'hsl' },
+    ), 'body { color: hsl(10 0% 0%); }');
+    assert.equal(transform(
+      'body { color: hsl(10 0% 0% / 1); }',
+      { outputColorFormat: 'hsl' },
+    ), 'body { color: hsl(10 0% 0% / 1); }');
+    assert.equal(transform(
+      'body { color: hsl(10 0% 0% / 0); }',
+      { outputColorFormat: 'hsl' },
+    ), 'body { color: hsl(10 0% 0% / 0); }');
+    assert.equal(transform(
       'body { color: hsla(0, 0%, 100%, 1); }',
       { outputColorFormat: 'hsl' },
     ), 'body { color: hsla(0, 0%, 100%, 1); }');
