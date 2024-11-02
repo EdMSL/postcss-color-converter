@@ -68,24 +68,34 @@ Please refer to [PostCSS documentation](https://github.com/postcss/postcss#usage
 
 #### `outputColorFormat`
 
-Type: `String`<br>
-_Required_<br>
-Available values: `hex, rgb, hsl`<br>
-Default: ''<br>
+Type: `String`
+
+_Required_
+
+Available values: `hex, rgb, hsl`
+
+Default: ''
+
 Set output color format. Don't forget set this parameter.
 
 #### `ignore`
 
-Type: `String[]`<br>
-Available values: `hex, rgb, hsl, keyword`<br>
-Default: `[]`<br>
+Type: `String[]`
+
+Available values: `hex, rgb, hsl, keyword`
+
+Default: `[]`
+
 Array of color formats, which you don't want to convert.
 
 #### `alwaysAlpha`
 
-Type: `Boolean`<br>
-Default: `false`<br>
-If `true`, output RGB and HSL colors will always have alpha chanel value (which will be equal to 1), even if converted from color without alpha chanel. This parameter does not apply to HEX color.<br>
+Type: `Boolean`
+
+Default: `false`
+
+If `true`, output RGB and HSL colors will always have alpha chanel value (which will be equal to 1), even if converted from color without alpha chanel. This parameter does not apply to HEX color.
+
 If `ignore` includes `outputColorFormat` color format, this parameter will be ignore.
 
 ```js
