@@ -3,9 +3,11 @@
 > [PostCSS](https://github.com/postcss/postcss) plugin to convert HEX, RGB, HSL and keyword colors between themselves (without transform to keyword color format). Uses [color-convert](https://www.npmjs.com/package/color-convert) under hood. Supports modern color function notation ([specification](https://drafts.csswg.org/css-color/#the-hsl-notation)), Sass(SCSS) ([postcss-scss](https://www.npmjs.com/package/postcss-scss) or [postcss-sass](https://www.npmjs.com/package/postcss-sass) needed) and CSS variables.
 
 ## Installation
+
 ```console
-$ npm install postcss postcss-color-converter --save-dev
+npm install postcss postcss-color-converter --save-dev
 ```
+
 ## Usage
 
 ```js
@@ -25,10 +27,13 @@ var output = postcss()
 ```
 
 More preferable to use it through the PostCSS CLI
+
 ```console
 npm install postcss-cli --save-dev
 ```
+
 Use plugin in your postcss.config.mjs configuration file:
+
 ```js
 var colorConverter = require('postcss-color-converter');
 
@@ -40,7 +45,9 @@ module.exports = {
   ]
 }
 ```
+
 Use npm script in `package.json`, such as:
+
 ```json
 {
   "scripts": {
@@ -48,7 +55,9 @@ Use npm script in `package.json`, such as:
   }
 }
 ```
+
 Then:
+
 ```console
 npm run postcss
 ```
@@ -58,6 +67,7 @@ Please refer to [PostCSS documentation](https://github.com/postcss/postcss#usage
 ## Options
 
 #### `outputColorFormat`
+
 Type: `String`<br>
 _Required_<br>
 Available values: `hex, rgb, hsl`<br>
@@ -65,12 +75,14 @@ Default: ''<br>
 Set output color format. Don't forget set this parameter.
 
 #### `ignore`
+
 Type: `String[]`<br>
 Available values: `hex, rgb, hsl, keyword`<br>
 Default: `[]`<br>
 Array of color formats, which you don't want to convert.
 
 #### `alwaysAlpha`
+
 Type: `Boolean`<br>
 Default: `false`<br>
 If `true`, output RGB and HSL colors will always have alpha chanel value (which will be equal to 1), even if converted from color without alpha chanel. This parameter does not apply to HEX color.<br>
@@ -101,6 +113,7 @@ body {
     30px 30px 0 0 rgb(123, 123, 123);
 }
 ```
+
 ```scss
 p {
   $darkRed: #6009;
@@ -132,8 +145,8 @@ p {
 Checkout [tests](test) for more examples or clone this repository and use:
 
 ```console
-$ npm i
-$ npm run postcss
+npm i
+npm run postcss
 ```
 
 Then go to the `test/fixtures` folder and see the `common.test.scss` file.
@@ -142,7 +155,6 @@ Then go to the `test/fixtures` folder and see the `common.test.scss` file.
 
 This is my first open-source work and my English is not very good, so if you find inaccuracies or errors in the documentation, then let me know.
 Pull requests are always welcome. Pull requests must be accompanied by passing automated tests (`$ npm test`). For bugs and feature requests, please create an issue.
-
 
 ## [Changelog](CHANGELOG.md)
 
