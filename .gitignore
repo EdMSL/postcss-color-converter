@@ -3,3 +3,6 @@ npm-debug.log
 yarn-error.log
 *.css
 test/test.js
+.idea/
+.reports/
+junit-report.xml

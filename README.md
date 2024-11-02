@@ -28,7 +28,7 @@ More preferable to use it through the PostCSS CLI
 ```console
 npm install postcss-cli --save-dev
 ```
-Use plugin in your postcss.config.js configuration file:
+Use plugin in your postcss.config.mjs configuration file:
 ```js
 var colorConverter = require('postcss-color-converter');
 
@@ -44,7 +44,7 @@ Use npm script in `package.json`, such as:
 ```json
 {
   "scripts": {
-    "postcss": "postcss ./src/styles/*.css --config ./postcss.config.js -r"
+    "postcss": "postcss ./src/styles/*.css --config ./postcss.config.mjs -r"
   }
 }
 ```

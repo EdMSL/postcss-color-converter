@@ -1,0 +1,92 @@
+# https://docs.github.com/en/github/administering-a-repository/configuration-options-for-dependency-updates
+
+# file-version: 1.0
+
+version: 2
+
+updates:
+  - package-ecosystem: "npm"
+
+    directory: "/"
+
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+      time: "04:00"
+      timezone: "Europe/Berlin"
+
+    groups:
+      security-updates:
+        applies-to: "security-updates"
+        patterns:
+          - "*"
+      version-updates:
+        applies-to: "version-updates"
+        patterns:
+          - "*"
+
+    open-pull-requests-limit: 10
+
+    reviewers:
+      - "mimmi20"
+
+    assignees:
+      - "mimmi20"
+
+    labels:
+      - "dependencies"
+
+    versioning-strategy: "increase"
+
+    target-branch: "master"
+
+    commit-message:
+      include: "scope"
+      prefix: "npm"
+
+    # Disable rebasing for all pull requests
+    rebase-strategy: "disabled"
+
+  - package-ecosystem: "github-actions"
+
+    directory: "/"
+
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+      time: "04:00"
+      timezone: "Europe/Berlin"
+
+    groups:
+      # Specify a name for the group, which will be used in pull request titles
+      # and branch names
+      security-updates:
+        applies-to: "security-updates"
+        patterns:
+          - "*"
+      version-updates:
+        applies-to: "version-updates"
+        patterns:
+          - "*"
+
+    open-pull-requests-limit: 10
+
+    reviewers:
+      - "mimmi20"
+
+    assignees:
+      - "mimmi20"
+
+    labels:
+      - "dependencies"
+
+    target-branch: "master"
+
+    commit-message:
+      prefix: "github-actions"
+
+    ignore:
+      - dependency-name: "mimmi20/ci"
+
+    # Disable rebasing for all pull requests
+    rebase-strategy: "disabled"

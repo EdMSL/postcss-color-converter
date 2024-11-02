@@ -1,6 +1,6 @@
-const plugin = require('../../index');
+import plugin from '../../index.js';
 
-module.exports = {
+export default {
   syntax: 'postcss-scss',
   plugins: [
     plugin({
