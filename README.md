@@ -66,11 +66,9 @@ Please refer to [PostCSS documentation](https://github.com/postcss/postcss#usage
 
 ## Options
 
-#### `outputColorFormat`
+### `outputColorFormat`
 
-Type: `String`
-
-_Required_
+Type: `String` _Required_
 
 Available values: `hex, rgb, hsl`
 
@@ -78,7 +76,7 @@ Default: ''
 
 Set output color format. Don't forget set this parameter.
 
-#### `ignore`
+### `ignore`
 
 Type: `String[]`
 
@@ -88,7 +86,7 @@ Default: `[]`
 
 Array of color formats, which you don't want to convert.
 
-#### `alwaysAlpha`
+### `alwaysAlpha`
 
 Type: `Boolean`
 
