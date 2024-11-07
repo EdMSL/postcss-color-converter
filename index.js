@@ -18,6 +18,7 @@ const colorNames = Object.keys(colors);
 const colorFormats = [HEX_COLOR, RGB_COLOR, HSL_COLOR, KEYWORD_COLOR];
 
 const propsWithColorRegExp = /(background|border|shadow|color|fill|outline|@|--|\$)/;
+const ignoredValuesRegExp = /(url)/;
 const specValuesInParamsRegExp = /(\$|calc|var)/;
 
 const defaultOptions = {
@@ -44,7 +45,7 @@ module.exports = (options = {}) => {
     postcssPlugin: 'postcss-color-converter',
     Declaration (decl) {
       if (
-        decl.prop && propsWithColorRegExp.test(decl.prop) && decl.value
+        decl.prop && propsWithColorRegExp.test(decl.prop) && decl.value && !ignoredValuesRegExp.test(decl.value)
       ) {
         let valueObj = valueParser.parse(decl.value, { ignoreUnknownWords: true });
 
