@@ -22,3 +22,6 @@ Migrate to PostCSS 8.0 API.
 ## 1.1.1 (July 23, 2024)
 Fix incorrect conversion for `rgb()` and `hsl()` color functions with modern notation ([issue](https://github.com/EdMSL/postcss-color-converter/issues/18)).<br>
 Update packages to fix secure vulnerabilities.
+
+## 1.1.2 (November 8, 2024)
+Added ignored words for property values.
