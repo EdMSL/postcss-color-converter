@@ -24,4 +24,4 @@ Fix incorrect conversion for `rgb()` and `hsl()` color functions with modern not
 Update packages to fix secure vulnerabilities.
 
 ## 1.1.2 (November 8, 2024)
-Added ignored words for property values.
+Added ignored words for property values ([issue](https://github.com/EdMSL/postcss-color-converter/issues/20)).
