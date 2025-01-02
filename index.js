@@ -9,6 +9,7 @@ const colorNames = Object.keys(colors);
 const colorFormats = [HEX_COLOR, RGB_COLOR, HSL_COLOR, KEYWORD_COLOR];
 
 const propsWithColorRegExp = /(background|border|shadow|color|fill|outline|@|--|\$)/;
+const ignoredValuesRegExp = /(url)/;
 const specValuesInParamsRegExp = /(\$|calc|var)/;
 
 const defaultOptions = {
@@ -34,7 +35,7 @@ const plugin = (options = {}) => {
   return {
     postcssPlugin: 'postcss-color-converter',
     Declaration(decl) {
-      if (!decl || !decl.prop || !decl.value || !propsWithColorRegExp.test(decl.prop)) {
+      if (!decl || !decl.prop || !decl.value || !propsWithColorRegExp.test(decl.prop) || ignoredValuesRegExp.test(decl.value)) {
         return;
       }
 
