@@ -1,4 +1,4 @@
-const convert = require('color-convert');
+const convert = require('color-convert').default;
 
 const {
   DEFAULT_HEX_ALPHA,
