@@ -25,15 +25,15 @@
     "url": "https://github.com/EdMSL/postcss-color-converter/issues"
   },
   "dependencies": {
-    "color-convert": "^3.1.0",
+    "color-convert": "^2.0.1",
     "color-name": "~1.1.4",
     "postcss-values-parser": "^5.0.0"
   },
   "devDependencies": {
-    "@logux/eslint-config": "^33.0.0",
-    "chai": "4.2.0",
+    "@logux/eslint-config": "55.2.1",
+    "chai": "4.5.0",
     "clean-publish": "^4.0.0",
-    "eslint": "8.9.0",
+    "eslint": "8.57.0",
     "eslint-config-postcss": "^3.0.7",
     "eslint-config-standard": "^14.1.0",
     "eslint-plugin-es5": "^1.4.1",
