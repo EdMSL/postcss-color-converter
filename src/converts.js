@@ -11,6 +11,7 @@ const {
   HEX_COLOR,
   RGB_COLOR,
   HSL_COLOR,
+  OKLCH_COLOR,
   KEYWORD_COLOR,
 } = require('./constants');
 
@@ -110,6 +111,44 @@ const convertingHSLColor = (node, options) => {
   return node;
 };
 
+const convertingOKLCHColor = (node, options) => {
+  const newNode = node.clone({ type: 'word' });
+  let l,c,h,a;
+  const isModernSyntax = !node.nodes.join(' ').includes(',');
+
+  if (!isModernSyntax) {
+    [l, , c, , h, , a] = node.nodes;
+  } else {
+    [l, c, h, , a] = node.nodes;
+  }
+
+  if (options.outputColorFormat === HEX_COLOR) {
+    newNode.value = getHEXColorStr(
+      OKLCH_COLOR,
+      [+l.value, +c.value, +h.value],
+      ((a && +a.value !== DEFAULT_ALPHA && a.value)),
+    );
+  } else if (options.outputColorFormat === RGB_COLOR) {
+    newNode.value = getRGBColorStr(
+      OKLCH_COLOR,
+      [+l.value, +c.value, +h.value],
+      ((a && a.value) || (options.alwaysAlpha && DEFAULT_ALPHA)),
+      false
+    );
+  } else if (options.outputColorFormat === HSL_COLOR) {
+    newNode.value = getHSLColorStr(
+      OKLCH_COLOR,
+      [+l.value, +h.value, +c.value],
+      (a && a.value) || (options.alwaysAlpha && DEFAULT_ALPHA),
+      false
+    );
+  }
+
+  node.replaceWith(newNode);
+
+  return node;
+};
+
 const convertingKeywordColor = (node, options) => {
   if (options.outputColorFormat === HEX_COLOR) {
     node.value = getHEXColorStr(
@@ -139,5 +178,6 @@ module.exports = {
   convertingHEXColor,
   convertingRGBColor,
   convertingHSLColor,
+  convertingOKLCHColor,
   convertingKeywordColor,
 };

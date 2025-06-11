@@ -5,17 +5,19 @@ const {
   convertingHEXColor,
   convertingRGBColor,
   convertingHSLColor,
+  convertingOKLCHColor,
   convertingKeywordColor,
 } = require('./src/converts');
 const {
   HEX_COLOR,
   RGB_COLOR,
   HSL_COLOR,
+  OKLCH_COLOR,
   KEYWORD_COLOR,
 } = require('./src/constants');
 
 const colorNames = Object.keys(colors);
-const colorFormats = [HEX_COLOR, RGB_COLOR, HSL_COLOR, KEYWORD_COLOR];
+const colorFormats = [HEX_COLOR, RGB_COLOR, HSL_COLOR, OKLCH_COLOR, KEYWORD_COLOR];
 
 const propsWithColorRegExp = /(background|border|shadow|color|fill|outline|@|--|\$)/;
 const ignoredValuesRegExp = /(url)/;
@@ -50,7 +52,7 @@ module.exports = (options = {}) => {
         let valueObj = valueParser.parse(decl.value, { ignoreUnknownWords: true });
 
         valueObj.walk(node => {
-          if (node.isColor) {
+          if (node.isColor || node.name === OKLCH_COLOR) {
             if (
               !currentOptions.ignore.includes(HEX_COLOR) &&
               currentOptions.outputColorFormat !== HEX_COLOR &&
@@ -82,6 +84,18 @@ module.exports = (options = {}) => {
               !specValuesInParamsRegExp.test(node.params)
             ) {
               node = convertingHSLColor(node, currentOptions);
+            } else if (
+              (
+                !currentOptions.ignore.includes(OKLCH_COLOR) &&
+                (
+                  currentOptions.alwaysAlpha ||
+                  currentOptions.outputColorFormat !== OKLCH_COLOR
+                )
+              ) &&
+              (node.name === 'oklch') &&
+              !specValuesInParamsRegExp.test(node.params)
+            ) {
+              node = convertingOKLCHColor(node, currentOptions);
             } else if (
               !currentOptions.ignore.includes(KEYWORD_COLOR) &&
               colorNames.includes(node.value)

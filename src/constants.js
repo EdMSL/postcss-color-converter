@@ -4,5 +4,6 @@ module.exports = {
   HEX_COLOR: 'hex',
   RGB_COLOR: 'rgb',
   HSL_COLOR: 'hsl',
+  OKLCH_COLOR: 'oklch',
   KEYWORD_COLOR: 'keyword',
 };
