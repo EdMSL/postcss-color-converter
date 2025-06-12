@@ -1,7 +1,7 @@
 {
   "name": "postcss-color-converter",
   "version": "1.1.2",
-  "description": "PostCSS plugin for convert colors.",
+  "description": "Post CSS plugin for color conversion.",
   "keywords": [
     "postcss-plugin",
     "color",
@@ -14,7 +14,7 @@
     "pack": "npm pack",
     "release": "npm login && npx clean-publish"
   },
-  "author": "Eduard Trayt <eduard2011rus@gmail.com> (https://github.com/EdMSL)",
+  "author": "Eduard Trait <eduard2011rus@gmail.com> (https://github.com/EdMSL)",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -27,28 +27,28 @@
   "dependencies": {
     "color-convert": "^2.0.1",
     "color-name": "~1.1.4",
-    "postcss-values-parser": "^5.0.0"
+    "postcss-values-parser": "^6.0.2"
   },
   "devDependencies": {
     "@logux/eslint-config": "55.2.1",
     "chai": "4.5.0",
     "clean-publish": "^4.0.0",
     "eslint": "8.57.0",
-    "eslint-config-postcss": "^3.0.7",
+    "eslint-config-postcss": "4.0.0",
     "eslint-config-standard": "^14.1.0",
     "eslint-plugin-es5": "^1.4.1",
     "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-jest": "^22.19.0",
+    "eslint-plugin-jest": "^28.13.3",
     "eslint-plugin-node": "^10.0.0",
     "eslint-plugin-prefer-let": "^1.0.1",
-    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-promise": "^7.2.1",
     "eslint-plugin-security": "^1.4.0",
     "eslint-plugin-standard": "^4.0.1",
-    "eslint-plugin-unicorn": "^12.1.0",
+    "eslint-plugin-unicorn": "50.0.0",
     "mocha": "11.1.0",
     "postcss": "^8.0.0",
     "postcss-cli": "^8.3.1",
-    "postcss-scss": "^3.0.5"
+    "postcss-scss": "^4.0.9"
   },
   "peerDependencies": {
     "postcss": "^8.0.0"
