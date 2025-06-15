@@ -17,9 +17,9 @@ import {
 const colorNames = Object.keys(colors);
 const colorFormats = [HEX_COLOR, RGB_COLOR, HSL_COLOR, KEYWORD_COLOR];
 
-const propertiesWithColorRegExp = /(background|border|shadow|color|fill|outline|@|--|\$)/;
+const propsWithColorRegExp = /(background|border|shadow|color|fill|outline|@|--|\$)/;
 const ignoredValuesRegExp = /(url)/;
-const specValuesInParametersRegExp = /(\$|calc|var)/;
+const specValuesInParamsRegExp = /(\$|calc|var)/;
 
 const defaultOptions = {
   outputColorFormat: '',
@@ -45,7 +45,7 @@ const plugin = (options = {}) => {
     postcssPlugin: 'postcss-color-converter',
     Declaration (decl) {
       if (
-        !decl.prop || !propertiesWithColorRegExp.test(decl.prop) || !decl.value || ignoredValuesRegExp.test(decl.value)
+        !decl.prop || !propsWithColorRegExp.test(decl.prop) || !decl.value || ignoredValuesRegExp.test(decl.value)
       ) {
         return;
       }
@@ -75,7 +75,7 @@ const plugin = (options = {}) => {
             )
           ) &&
           (node.name === 'rgb' || node.name === 'rgba') &&
-          !specValuesInParametersRegExp.test(node.params)
+          !specValuesInParamsRegExp.test(node.params)
 
         ) {
           node = convertingRGBColor(node, currentOptions);
@@ -91,7 +91,7 @@ const plugin = (options = {}) => {
             )
           ) &&
           (node.name === 'hsl' || node.name === 'hsla') &&
-          !specValuesInParametersRegExp.test(node.params)
+          !specValuesInParamsRegExp.test(node.params)
         ) {
           node = convertingHSLColor(node, currentOptions);
           return;
