@@ -1,14 +1,13 @@
-const { assert } = require('chai');
+import { assert } from 'chai';
+import { describe, it } from 'mocha';
 
-const {
+import {
   getRGBColorStr,
   getHSLColorStr,
   getHEXColorStr,
   convertHEXAlphaValueToNumber,
   convertNumberAlphaValueToHEX,
-} = require('../src/utils');
-
-/* eslint-disable prefer-arrow-callback, func-names */
+} from '../src/utils.js';
 
 describe('Test convert functions', function () {
   it('Color must be correct converted to rgb', function () {

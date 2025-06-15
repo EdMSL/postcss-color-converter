@@ -1,14 +1,12 @@
-const convert = require('color-convert');
+import convert from 'color-convert';
 
-const {
+import {
   DEFAULT_HEX_ALPHA,
-  HEX_COLOR,
   RGB_COLOR,
   HSL_COLOR,
-  KEYWORD_COLOR,
-} = require('./constants');
+} from './constants.js';
 
-const parseHEXAColor = color => {
+export function parseHEXAColor(color) {
   const newColor = color.slice(1);
   let hexColor;
   let hexAlpha;
@@ -33,69 +31,68 @@ const parseHEXAColor = color => {
     hexColor,
     hexAlpha,
   };
-};
+}
 
-const convertHEXAlphaValueToNumber = value => Number((parseInt(value, 16) / 255).toFixed(2)).toString();
+export function convertHEXAlphaValueToNumber(value) {return Number((Number.parseInt(value, 16) / 255).toFixed(2)).toString();}
 
-const convertNumberAlphaValueToHEX = value => {
+export function convertNumberAlphaValueToHEX(value) {
   let result = Math.round((value * 255)).toString(16);
 
-  if (result == '0') {
+  if (result === '0') {
     result = '00';
   }
 
   return result;
-};
+}
 
-const getHEXColorStr = (inputColorFormat, color, alpha) => (
-  alpha
-    ? `#${ convert[inputColorFormat].hex(color) }${ convertNumberAlphaValueToHEX(+alpha) }`.toLowerCase()
-    : `#${ convert[inputColorFormat].hex(color) }`.toLowerCase()
-);
-
-const getRGBColorArr = (color, inputColorFormat) =>
-  inputColorFormat !== RGB_COLOR
-    ? convert[inputColorFormat].rgb(color)
-    : color;
-
-const getRGBColorStr = (inputColorFormat, color, alpha, isUseModernSyntax) => {
-  const colorStr = getRGBColorArr(color, inputColorFormat).join(isUseModernSyntax ? ' ' : ', ');
-
-  if (isUseModernSyntax) {
-    return `rgb(${ colorStr }${alpha ? ` / ${alpha}` : ''})`;
-  }
+export function getHEXColorStr(inputColorFormat, color, alpha) {
+  const newColor = '#' + convert[inputColorFormat].hex(color);
 
   return alpha
-    ? `rgba(${ colorStr }, ${ alpha })`
-    : `rgb(${ colorStr })`;
-};
+    ? (newColor + convertNumberAlphaValueToHEX(+alpha)).toLowerCase()
+    : newColor.toLowerCase();
+}
 
-const getHSLArr = (color, inputColorFormat) => {
-  const colorArr = inputColorFormat !== HSL_COLOR
-    ? convert[inputColorFormat].hsl(color)
-    : color;
+export function getRGBColorArr(color, inputColorFormat) {
+  return inputColorFormat === RGB_COLOR
+    ? color
+    : convert[inputColorFormat].rgb(color);
+}
 
-  return [colorArr[0].toString(), `${colorArr[1]}%`, `${colorArr[2]}%`];
-};
+export function getRGBColorStr(inputColorFormat, color, alpha, isUseModernSyntax) {
+  const join = isUseModernSyntax
+? ' '
+: ', ';
+  const colorString = getRGBColorArr(color, inputColorFormat).join(join);
 
-const getHSLColorStr = (inputColorFormat, color, alpha, isUseModernSyntax) => {
-  const colorStr = getHSLArr(color, inputColorFormat).join(isUseModernSyntax ? ' ' : ', ');
-
-  if (isUseModernSyntax) {
-    return `hsl(${ colorStr }${alpha ? ` / ${alpha}` : ''})`;
+  if (alpha) {
+    return isUseModernSyntax
+      ? `rgb(${ colorString } / ${ alpha })`
+      : `rgba(${ colorString }, ${ alpha })`;
   }
 
-  return alpha
-    ? `hsla(${ colorStr }, ${ alpha })`
-    : `hsl(${ colorStr })`;
-};
+  return `rgb(${ colorString })`;
+}
 
+export function getHSLArr(color, inputColorFormat) {
+  const colorArray = inputColorFormat === HSL_COLOR
+    ? color
+    : convert[inputColorFormat].hsl(color);
 
-module.exports = {
-  parseHEXAColor,
-  getRGBColorStr,
-  getHSLColorStr,
-  getHEXColorStr,
-  convertHEXAlphaValueToNumber,
-  convertNumberAlphaValueToHEX,
-};
+  return [colorArray[0].toString(), `${colorArray[1]}%`, `${colorArray[2]}%`];
+}
+
+export function getHSLColorStr(inputColorFormat, color, alpha, isUseModernSyntax) {
+  const join = isUseModernSyntax
+? ' '
+: ', ';
+  const colorString = getHSLArr(color, inputColorFormat).join(join);
+
+  if (alpha) {
+    return isUseModernSyntax
+      ? `hsl(${ colorString } / ${ alpha })`
+      : `hsla(${ colorString }, ${ alpha })`;
+  }
+
+  return `hsl(${ colorString })`;
+}

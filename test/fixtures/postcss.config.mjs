@@ -1,6 +1,8 @@
-const plugin = require('../../index');
+/* global process */
 
-module.exports = {
+import plugin from '../../index.js';
+
+export default  {
   syntax: 'postcss-scss',
   plugins: [
     plugin({
@@ -9,4 +11,4 @@ module.exports = {
       ignore: [],
     }),
   ],
-};
+}

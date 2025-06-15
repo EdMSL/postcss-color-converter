@@ -1,25 +1,25 @@
-const valueParser = require('postcss-values-parser');
-const colors = require('color-name');
+import valueParser from 'postcss-values-parser';
+import colors from 'color-name';
 
-const {
+import {
   convertingHEXColor,
   convertingRGBColor,
   convertingHSLColor,
   convertingKeywordColor,
-} = require('./src/converts');
-const {
+} from './src/converts.js';
+import {
   HEX_COLOR,
   RGB_COLOR,
   HSL_COLOR,
   KEYWORD_COLOR,
-} = require('./src/constants');
+} from './src/constants.js';
 
 const colorNames = Object.keys(colors);
 const colorFormats = [HEX_COLOR, RGB_COLOR, HSL_COLOR, KEYWORD_COLOR];
 
-const propsWithColorRegExp = /(background|border|shadow|color|fill|outline|@|--|\$)/;
+const propertiesWithColorRegExp = /(background|border|shadow|color|fill|outline|@|--|\$)/;
 const ignoredValuesRegExp = /(url)/;
-const specValuesInParamsRegExp = /(\$|calc|var)/;
+const specValuesInParametersRegExp = /(\$|calc|var)/;
 
 const defaultOptions = {
   outputColorFormat: '',
@@ -27,74 +27,89 @@ const defaultOptions = {
   ignore: [],
 };
 
-module.exports = (options = {}) => {
+const plugin = (options = {}) => {
   const currentOptions = {
     ...defaultOptions,
     ...options,
   };
 
   if (!currentOptions.outputColorFormat) {
-    throw new Error(`'outputColorFormat' option is undefined.`)
+    throw new Error(`'outputColorFormat' option is undefined.`);
   }
 
   if (!colorFormats.includes(currentOptions.outputColorFormat)) {
-    throw new Error(`The specified value of 'outputColorFormat' is not contained in [${colorFormats.join()}].`)
+    throw new Error(`The specified value of 'outputColorFormat' is not contained in [${colorFormats.join(',')}].`);
   }
 
   return {
     postcssPlugin: 'postcss-color-converter',
     Declaration (decl) {
       if (
-        decl.prop && propsWithColorRegExp.test(decl.prop) && decl.value && !ignoredValuesRegExp.test(decl.value)
+        !decl.prop || !propertiesWithColorRegExp.test(decl.prop) || !decl.value || ignoredValuesRegExp.test(decl.value)
       ) {
-        let valueObj = valueParser.parse(decl.value, { ignoreUnknownWords: true });
-
-        valueObj.walk(node => {
-          if (node.isColor) {
-            if (
-              !currentOptions.ignore.includes(HEX_COLOR) &&
-              currentOptions.outputColorFormat !== HEX_COLOR &&
-              node.isHex
-            ) {
-              node = convertingHEXColor(node, currentOptions);
-            } else if (
-              (
-                !currentOptions.ignore.includes(RGB_COLOR) &&
-                (
-                  currentOptions.alwaysAlpha ||
-                  currentOptions.outputColorFormat !== RGB_COLOR
-                )
-              ) &&
-              (node.name === 'rgb' || node.name === 'rgba') &&
-              !specValuesInParamsRegExp.test(node.params)
-
-            ) {
-              node = convertingRGBColor(node, currentOptions);
-            } else if (
-              (
-                !currentOptions.ignore.includes(HSL_COLOR) &&
-                (
-                  currentOptions.alwaysAlpha ||
-                  currentOptions.outputColorFormat !== HSL_COLOR
-                )
-              ) &&
-              (node.name === 'hsl' || node.name === 'hsla') &&
-              !specValuesInParamsRegExp.test(node.params)
-            ) {
-              node = convertingHSLColor(node, currentOptions);
-            } else if (
-              !currentOptions.ignore.includes(KEYWORD_COLOR) &&
-              colorNames.includes(node.value)
-            ) {
-              node = convertingKeywordColor(node, currentOptions);
-            }
-          }
-        });
-
-        decl.value = valueObj.toString();
+        return;
       }
-    }
+
+      let valueObject = valueParser.parse(decl.value, { ignoreUnknownWords: true });
+
+      valueObject.walk(node => {
+        if (!node.isColor) {
+          return;
+        }
+
+        if (
+          !currentOptions.ignore.includes(HEX_COLOR) &&
+          currentOptions.outputColorFormat !== HEX_COLOR &&
+          node.isHex
+        ) {
+          node = convertingHEXColor(node, currentOptions);
+          return;
+        }
+
+        if (
+          (
+            !currentOptions.ignore.includes(RGB_COLOR) &&
+            (
+              currentOptions.alwaysAlpha ||
+              currentOptions.outputColorFormat !== RGB_COLOR
+            )
+          ) &&
+          (node.name === 'rgb' || node.name === 'rgba') &&
+          !specValuesInParametersRegExp.test(node.params)
+
+        ) {
+          node = convertingRGBColor(node, currentOptions);
+          return;
+        }
+
+        if (
+          (
+            !currentOptions.ignore.includes(HSL_COLOR) &&
+            (
+              currentOptions.alwaysAlpha ||
+              currentOptions.outputColorFormat !== HSL_COLOR
+            )
+          ) &&
+          (node.name === 'hsl' || node.name === 'hsla') &&
+          !specValuesInParametersRegExp.test(node.params)
+        ) {
+          node = convertingHSLColor(node, currentOptions);
+          return;
+        }
+
+        if (
+          !currentOptions.ignore.includes(KEYWORD_COLOR) &&
+          colorNames.includes(node.value)
+        ) {
+          node = convertingKeywordColor(node, currentOptions);
+        }
+      });
+
+      decl.value = valueObject.toString();
+    },
   };
 };
 
-module.exports.postcss = true;
+plugin.postcss = true;
+
+export default plugin;

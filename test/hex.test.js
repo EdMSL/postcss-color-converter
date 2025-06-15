@@ -1,15 +1,14 @@
-const postcss = require('postcss');
-const { assert } = require('chai');
+import postcss from 'postcss';
+import { assert } from 'chai';
+import { describe, it } from 'mocha';
 
-const plugin = require('../index');
+import plugin from '../index.js';
 
-/* eslint-disable prefer-arrow-callback, func-names */
+function transform (source, options) {
+  return postcss([plugin(options)]).process(source).css;
+}
 
 describe('postcss-color-converter for hex colors', function () {
-  function transform (source, opts) {
-    return postcss([plugin(opts)]).process(source).css;
-  }
-
   it('Input color should not be converted', function () {
     assert.equal(transform(
       'body { color: #ffffff; }',
