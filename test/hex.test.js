@@ -70,6 +70,22 @@ describe('postcss-color-converter for hex colors', function () {
       'body { color: #ccfff; }',
       { outputColorFormat: 'hex', alwaysAlpha: true },
     ), 'body { color: #ccfff; }');
+    assert.equal(transform(
+      'body { color: #ccfffff; }',
+      { outputColorFormat: 'hex' },
+    ), 'body { color: #ccfffff; }');
+    assert.equal(transform(
+      'body { color: #ccfffff; }',
+      { outputColorFormat: 'hex', alwaysAlpha: true },
+    ), 'body { color: #ccfffff; }');
+    assert.equal(transform(
+      'body { color: #ccffffffa; }',
+      { outputColorFormat: 'hex' },
+    ), 'body { color: #ccffffffa; }');
+    assert.equal(transform(
+      'body { color: #ccffffffa; }',
+      { outputColorFormat: 'hex', alwaysAlpha: true },
+    ), 'body { color: #ccffffffa; }');
   });
 
   it('Input color must be converted to rgb', function () {

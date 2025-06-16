@@ -39,19 +39,26 @@ module.exports = (options = {}) => {
 
   return {
     postcssPlugin: 'postcss-color-converter',
-    Declaration (decl) {
+    Declaration(decl) {
       if (
-        decl.prop && propsWithColorRegExp.test(decl.prop) && decl.value && !ignoredValuesRegExp.test(decl.value)
+        decl.prop &&
+        decl.value &&
+        propsWithColorRegExp.test(decl.prop) &&
+        !ignoredValuesRegExp.test(decl.value)
       ) {
         let valueObj = valueParser.parse(decl.value, { ignoreUnknownWords: true });
 
         valueObj.walk(node => {
-          if (node.isColor) {
+          if (
+            node.isColor &&
+            ///BUG -0 value in a color function parameters interprets as a valid. Issue https://github.com/gilbarbara/colorizr/issues/19
+            isValidColor(node.type === 'func' ? node.name + node.params : node.value)
+          ) {
             let inputColorFormat;
 
             if (node.isHex) {
               inputColorFormat = HEX_COLOR;
-            } else if (!node.isHex && node.type === 'word' && isValidColor(node.value)) {
+            } else if (!node.isHex && node.type === 'word') {
               inputColorFormat = KEYWORD_COLOR;
             } else if (node.name === 'rgb' || node.name === 'rgba') {
               inputColorFormat = RGB_COLOR;
@@ -62,13 +69,16 @@ module.exports = (options = {}) => {
             if (
               inputColorFormat &&
               !currentOptions.ignore.includes(inputColorFormat) &&
-              !((inputColorFormat === RGB_COLOR || inputColorFormat === HSL_COLOR) && specValuesInParamsRegExp.test(node.params)) &&
+              !(
+                (inputColorFormat === RGB_COLOR || inputColorFormat === HSL_COLOR) &&
+                specValuesInParamsRegExp.test(node.params)
+              ) &&
               (
                 currentOptions.alwaysAlpha ||
                 currentOptions.outputColorFormat !== inputColorFormat
               )
             ) {
-                node = convertColor(node, inputColorFormat, currentOptions);
+              node = convertColor(node, inputColorFormat, currentOptions);
             }
           }
         });

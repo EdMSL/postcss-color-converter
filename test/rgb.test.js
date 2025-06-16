@@ -65,6 +65,29 @@ describe('postcss-color-converter for rgb colors', function () {
     ), 'body { color: rgb(100 50 56 / var(--alpha)); }');
   });
 
+  it('Invalid input color should not be converted', function () {
+    assert.equal(transform(
+      'body { color: rgb(355, 255, 255); }',
+      { outputColorFormat: 'hex' },
+    ), 'body { color: rgb(355, 255, 255); }');
+    assert.equal(transform(
+      'body { color: rgb(-55, 255, 255); }',
+      { outputColorFormat: 'hex' },
+    ), 'body { color: rgb(-55, 255, 255); }');
+    assert.equal(transform(
+      'body { color: rgb(10, 20, -0); }',
+      { outputColorFormat: 'hex' },
+    ), 'body { color: rgb(10, 20, -0); }');
+    assert.equal(transform(
+      'body { color: rgb(10, -0, 255); }',
+      { outputColorFormat: 'hex' },
+    ), 'body { color: rgb(10, -0, 255); }');
+    assert.equal(transform(
+      'body { color: rgb(-0, 255, 255); }',
+      { outputColorFormat: 'hex' },
+    ), 'body { color: rgb(-0, 255, 255); }');
+  });
+
   it('Input color must be converted to rgba', function () {
     assert.equal(transform(
       'body { color: rgb(255, 255, 255); }',

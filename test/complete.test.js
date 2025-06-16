@@ -27,6 +27,25 @@ describe('Various complete test', function () {
       'body { color: green; }',
       { outputColorFormat: 'rgb', alwaysAlpha: true },
     ), 'body { color: rgba(0, 128, 0, 1); }');
+    assert.equal(transform(
+      'body { color: fuchsia; }',
+      { outputColorFormat: 'hsl' },
+    ), 'body { color: hsl(300, 100%, 50%); }');
+    assert.equal(transform(
+      'body { color: fuchsia; }',
+      { outputColorFormat: 'hsl', alwaysAlpha: true },
+    ), 'body { color: hsla(300, 100%, 50%, 1); }');
+  });
+
+  it('Invalid keyword color should not be converted', function () {
+    assert.equal(transform(
+      'body { color: greens; }',
+      { outputColorFormat: 'rgb', alwaysAlpha: true },
+    ), 'body { color: greens; }');
+    assert.equal(transform(
+      'body { color: aquablue; }',
+      { outputColorFormat: 'rgb', alwaysAlpha: true },
+    ), 'body { color: aquablue; }');
   });
 
   it('All input colors must be correct converted to hex(a)', function () {

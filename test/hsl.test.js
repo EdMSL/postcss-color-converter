@@ -49,6 +49,33 @@ describe('postcss-color-converter for hsl colors', function () {
     ), 'body { color: hsla(0, 0%, 100%, 1); }');
   });
 
+  it('Invalid input color should not be converted', function () {
+    assert.equal(transform(
+      'body { color: hsl(0, 0%, 120%); }',
+      { outputColorFormat: 'hex' },
+    ), 'body { color: hsl(0, 0%, 120%); }');
+    assert.equal(transform(
+      'body { color: hsl(-0, 0%, 10%); }',
+      { outputColorFormat: 'hex' },
+    ), 'body { color: hsl(-0, 0%, 10%); }');
+    assert.equal(transform(
+      'body { color: hsl(0, -100%, 10%); }',
+      { outputColorFormat: 'hex' },
+    ), 'body { color: hsl(0, -100%, 10%); }');
+    assert.equal(transform(
+      'body { color: hsl(-10, 0%, 10%); }',
+      { outputColorFormat: 'hex' },
+    ), 'body { color: hsl(-10, 0%, 10%); }');
+    assert.equal(transform(
+      'body { color: hsl(0, 110%, 100%); }',
+      { outputColorFormat: 'hex' },
+    ), 'body { color: hsl(0, 110%, 100%); }');
+    assert.equal(transform(
+      'body { color: hsl(361, 10%, 100%); }',
+      { outputColorFormat: 'hex' },
+    ), 'body { color: hsl(361, 10%, 100%); }');
+  });
+
   it('Input color must be converted to hex', function () {
     assert.equal(transform(
       'body { color: hsl(0, 0%, 100%); }',
