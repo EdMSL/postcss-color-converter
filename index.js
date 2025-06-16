@@ -1,11 +1,8 @@
 const valueParser = require('postcss-values-parser');
-const colors = require('color-name');
+const { isValidColor } = require('colorizr');
 
 const {
-  convertingHEXColor,
-  convertingRGBColor,
-  convertingHSLColor,
-  convertingKeywordColor,
+  convertColor,
 } = require('./src/converts');
 const {
   HEX_COLOR,
@@ -14,7 +11,6 @@ const {
   KEYWORD_COLOR,
 } = require('./src/constants');
 
-const colorNames = Object.keys(colors);
 const colorFormats = [HEX_COLOR, RGB_COLOR, HSL_COLOR, KEYWORD_COLOR];
 
 const propsWithColorRegExp = /(background|border|shadow|color|fill|outline|@|--|\$)/;
@@ -51,42 +47,28 @@ module.exports = (options = {}) => {
 
         valueObj.walk(node => {
           if (node.isColor) {
-            if (
-              !currentOptions.ignore.includes(HEX_COLOR) &&
-              currentOptions.outputColorFormat !== HEX_COLOR &&
-              node.isHex
-            ) {
-              node = convertingHEXColor(node, currentOptions);
-            } else if (
-              (
-                !currentOptions.ignore.includes(RGB_COLOR) &&
-                (
-                  currentOptions.alwaysAlpha ||
-                  currentOptions.outputColorFormat !== RGB_COLOR
-                )
-              ) &&
-              (node.name === 'rgb' || node.name === 'rgba') &&
-              !specValuesInParamsRegExp.test(node.params)
+            let inputColorFormat;
 
-            ) {
-              node = convertingRGBColor(node, currentOptions);
-            } else if (
+            if (node.isHex) {
+              inputColorFormat = HEX_COLOR;
+            } else if (!node.isHex && node.type === 'word' && isValidColor(node.value)) {
+              inputColorFormat = KEYWORD_COLOR;
+            } else if (node.name === 'rgb' || node.name === 'rgba') {
+              inputColorFormat = RGB_COLOR;
+            } else if (node.name === 'hsl' || node.name === 'hsla') {
+              inputColorFormat = HSL_COLOR;
+            }
+
+            if (
+              inputColorFormat &&
+              !currentOptions.ignore.includes(inputColorFormat) &&
+              !((inputColorFormat === RGB_COLOR || inputColorFormat === HSL_COLOR) && specValuesInParamsRegExp.test(node.params)) &&
               (
-                !currentOptions.ignore.includes(HSL_COLOR) &&
-                (
-                  currentOptions.alwaysAlpha ||
-                  currentOptions.outputColorFormat !== HSL_COLOR
-                )
-              ) &&
-              (node.name === 'hsl' || node.name === 'hsla') &&
-              !specValuesInParamsRegExp.test(node.params)
+                currentOptions.alwaysAlpha ||
+                currentOptions.outputColorFormat !== inputColorFormat
+              )
             ) {
-              node = convertingHSLColor(node, currentOptions);
-            } else if (
-              !currentOptions.ignore.includes(KEYWORD_COLOR) &&
-              colorNames.includes(node.value)
-            ) {
-              node = convertingKeywordColor(node, currentOptions);
+                node = convertColor(node, inputColorFormat, currentOptions);
             }
           }
         });
