@@ -10,6 +10,25 @@ describe('Various complete test', function () {
     return postcss([plugin(opts)]).process(source).css;
   }
 
+  it('Input keyword colors must be correct converted', function () {
+    assert.equal(transform(
+      'body { color: blue; }',
+      { outputColorFormat: 'hex' },
+    ), 'body { color: #0000ff; }');
+    assert.equal(transform(
+      'body { color: blue; }',
+      { outputColorFormat: 'hex', alwaysAlpha: true },
+    ), 'body { color: #0000ff; }');
+    assert.equal(transform(
+      'body { color: green; }',
+      { outputColorFormat: 'rgb' },
+    ), 'body { color: rgb(0, 128, 0); }');
+    assert.equal(transform(
+      'body { color: green; }',
+      { outputColorFormat: 'rgb', alwaysAlpha: true },
+    ), 'body { color: rgba(0, 128, 0, 1); }');
+  });
+
   it('All input colors must be correct converted to hex(a)', function () {
     assert.equal(transform(
       `
