@@ -26,7 +26,6 @@
   },
   "dependencies": {
     "color-convert": "^2.0.1",
-    "color-name": "~1.1.4",
     "colorizr": "^3.0.8",
     "postcss-values-parser": "^6.0.2"
   },

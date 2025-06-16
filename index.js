@@ -1,13 +1,7 @@
 const valueParser = require('postcss-values-parser');
 const { isValidColor } = require('colorizr');
 
-// const colors = require('color-name');
-
 const {
-  // convertHEXColor,
-  // convertRGBColor,
-  // convertHSLColor,
-  // convertKeywordColor,
   convertColor,
 } = require('./src/converts');
 const {
@@ -17,7 +11,6 @@ const {
   KEYWORD_COLOR,
 } = require('./src/constants');
 
-// const colorNames = Object.keys(colors);
 const colorFormats = [HEX_COLOR, RGB_COLOR, HSL_COLOR, KEYWORD_COLOR];
 
 const propsWithColorRegExp = /(background|border|shadow|color|fill|outline|@|--|\$)/;
@@ -69,63 +62,13 @@ module.exports = (options = {}) => {
             if (
               inputColorFormat &&
               !currentOptions.ignore.includes(inputColorFormat) &&
+              !((inputColorFormat === RGB_COLOR || inputColorFormat === HSL_COLOR) && specValuesInParamsRegExp.test(node.params)) &&
               (
-                (currentOptions.alwaysAlpha ||
-                currentOptions.outputColorFormat !== inputColorFormat) && ((inputColorFormat !== KEYWORD_COLOR || inputColorFormat !== HEX_COLOR) &&!specValuesInParamsRegExp.test(node.params))
+                currentOptions.alwaysAlpha ||
+                currentOptions.outputColorFormat !== inputColorFormat
               )
-
-              // ((inputColorFormat === RGB_COLOR || inputColorFormat === HSL_COLOR) && !specValuesInParamsRegExp.test(node.params))
             ) {
-
                 node = convertColor(node, inputColorFormat, currentOptions);
-              // if (
-              //   // !currentOptions.ignore.includes(HEX_COLOR) &&
-              //   currentOptions.outputColorFormat !== HEX_COLOR &&
-              //   node.isHex
-              // ) {
-              //   // node = convertColor(node, HEX_COLOR, currentOptions);
-              //   node = convertColor(node, inputColorFormat, currentOptions);
-              //   // node = convertHEXColor(node, currentOptions);
-              // } else if (
-              //   // (
-              //   //   // !currentOptions.ignore.includes(RGB_COLOR) &&
-              //   //   (
-              //   //     currentOptions.alwaysAlpha ||
-              //   //     currentOptions.outputColorFormat !== RGB_COLOR
-              //   //   )
-              //   // ) &&
-              //   // (node.name === 'rgb' || node.name === 'rgba') &&
-              //   // !specValuesInParamsRegExp.test(node.params)
-
-              // ) {
-              //   // node = convertColor(node, RGB_COLOR, currentOptions);
-              //   node = convertColor(node, inputColorFormat, currentOptions);
-              //   // node = convertRGBColor(node, currentOptions);
-              // } else if (
-              //   // (
-              //   //   // !currentOptions.ignore.includes(HSL_COLOR) &&
-              //   //   (
-              //   //     currentOptions.alwaysAlpha ||
-              //   //     currentOptions.outputColorFormat !== HSL_COLOR
-              //   //   )
-              //   // ) &&
-              //   (node.name === 'hsl' || node.name === 'hsla') &&
-              //   !specValuesInParamsRegExp.test(node.params)
-              // ) {
-              //   // node = convertColor(node, HSL_COLOR, currentOptions);
-              //   node = convertColor(node, inputColorFormat, currentOptions);
-              //   // node = convertHSLColor(node, currentOptions);
-              // } else if (
-              //   inputColorFormat === KEYWORD_COLOR
-              //   // !currentOptions.ignore.includes(KEYWORD_COLOR) &&
-              //   // node.type === 'word' && !node.isHex &&
-              //   // isValidColor(node.value)
-              //   // colorNames.includes(node.value)
-              // ) {
-              //   // node = convertColor(node, KEYWORD_COLOR, currentOptions);
-              //   node = convertColor(node, inputColorFormat, currentOptions);
-              //   // node = convertKeywordColor(node, currentOptions);
-              // }
             }
           }
         });
