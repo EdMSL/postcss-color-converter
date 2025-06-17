@@ -8,7 +8,7 @@
     "converter"
   ],
   "scripts": {
-    "test": "mocha ./test/utils.test.js",
+    "test": "mocha ./test/*.test.js",
     "lint": "eslint --config ./.eslintrc-full.js **/*.js --fix",
     "postcss": "postcss ./test/fixtures/*.test.{css,scss} --config ./test/fixtures/postcss.config.js -r",
     "pack": "npm pack",

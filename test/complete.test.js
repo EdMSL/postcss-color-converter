@@ -35,6 +35,14 @@ describe('Various complete test', function () {
       'body { color: fuchsia; }',
       { outputColorFormat: 'hsl', alwaysAlpha: true },
     ), 'body { color: hsla(300, 100%, 50%, 1); }');
+    assert.equal(transform(
+      'body { color: tomato; }',
+      { outputColorFormat: 'oklch' },
+    ), 'body { color: oklch(0.69622 0.19552 32.32128); }');
+    assert.equal(transform(
+      'body { color: tomato; }',
+      { outputColorFormat: 'oklch', alwaysAlpha: true },
+    ), 'body { color: oklch(0.69622 0.19552 32.32128 / 1); }');
   });
 
   it('Invalid keyword color should not be converted', function () {

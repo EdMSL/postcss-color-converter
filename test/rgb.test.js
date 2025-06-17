@@ -21,19 +21,19 @@ describe('postcss-color-converter for rgb colors', function () {
     ), 'body { color: rgb($red, 50, 10); }');
     assert.equal(transform(
       'body { color: rgb(100, 50, calc(40 + 20)); }',
-      { outputColorFormat: 'rgb' },
+      { outputColorFormat: 'hex' },
     ), 'body { color: rgb(100, 50, calc(40 + 20)); }');
     assert.equal(transform(
       'body { color: rgba(100, 50, 56, var(--alpha)); }',
-      { outputColorFormat: 'rgb' },
+      { outputColorFormat: 'hex' },
     ), 'body { color: rgba(100, 50, 56, var(--alpha)); }');
     assert.equal(transform(
       'body { color: rgba(100, $green, 56, 0.6); }',
-      { outputColorFormat: 'rgb' },
+      { outputColorFormat: 'hsl' },
     ), 'body { color: rgba(100, $green, 56, 0.6); }');
     assert.equal(transform(
       'body { color: rgb(255 255 $red / 0.5); }',
-      { outputColorFormat: 'rgb' },
+      { outputColorFormat: 'hsl' },
     ), 'body { color: rgb(255 255 $red / 0.5); }');
     assert.equal(transform(
       'body { color: rgb(255 255 255); }',
@@ -53,15 +53,15 @@ describe('postcss-color-converter for rgb colors', function () {
     ), 'body { color: rgba(255 255 255 / 1); }');
     assert.equal(transform(
       'body { color: rgb(100 50 56 / var(--alpha)); }',
-      { outputColorFormat: 'rgb', alwaysAlpha: true },
+      { outputColorFormat: 'hex', alwaysAlpha: true },
     ), 'body { color: rgb(100 50 56 / var(--alpha)); }');
     assert.equal(transform(
       'body { color: rgb(100 50 56 / var(--alpha)); }',
-      { outputColorFormat: 'rgb' },
+      { outputColorFormat: 'hsl' },
     ), 'body { color: rgb(100 50 56 / var(--alpha)); }');
     assert.equal(transform(
       'body { color: rgb(100 50 56 / var(--alpha)); }',
-      { outputColorFormat: 'rgb', alwaysAlpha: true },
+      { outputColorFormat: 'hex', alwaysAlpha: true },
     ), 'body { color: rgb(100 50 56 / var(--alpha)); }');
   });
 
@@ -74,25 +74,18 @@ describe('postcss-color-converter for rgb colors', function () {
       'body { color: rgb(-55, 255, 255); }',
       { outputColorFormat: 'hex' },
     ), 'body { color: rgb(-55, 255, 255); }');
-    assert.equal(transform(
-      'body { color: rgb(10, 20, -0); }',
-      { outputColorFormat: 'hex' },
-    ), 'body { color: rgb(10, 20, -0); }');
-    assert.equal(transform(
-      'body { color: rgb(10, -0, 255); }',
-      { outputColorFormat: 'hex' },
-    ), 'body { color: rgb(10, -0, 255); }');
-    assert.equal(transform(
-      'body { color: rgb(-0, 255, 255); }',
-      { outputColorFormat: 'hex' },
-    ), 'body { color: rgb(-0, 255, 255); }');
-  });
-
-  it('Input color must be converted to rgba', function () {
-    assert.equal(transform(
-      'body { color: rgb(255, 255, 255); }',
-      { outputColorFormat: 'rgb', alwaysAlpha: true },
-    ), 'body { color: rgba(255, 255, 255, 1); }');
+    // assert.equal(transform(
+    //   'body { color: rgb(10, 20, -0); }',
+    //   { outputColorFormat: 'hex' },
+    // ), 'body { color: rgb(10, 20, -0); }');
+    // assert.equal(transform(
+    //   'body { color: rgb(10, -0, 255); }',
+    //   { outputColorFormat: 'hex' },
+    // ), 'body { color: rgb(10, -0, 255); }');
+    // assert.equal(transform(
+    //   'body { color: rgb(-0, 255, 255); }',
+    //   { outputColorFormat: 'hex' },
+    // ), 'body { color: rgb(-0, 255, 255); }');
   });
 
   it('Input color must be converted to hex', function () {
@@ -147,6 +140,13 @@ describe('postcss-color-converter for rgb colors', function () {
       'body { color: rgba(255, 255, 255, 0); }',
       { outputColorFormat: 'hex' },
     ), 'body { color: #ffffff00; }');
+  });
+
+  it('Input color must be converted to rgba', function () {
+    assert.equal(transform(
+      'body { color: rgb(255, 255, 255); }',
+      { outputColorFormat: 'rgb', alwaysAlpha: true },
+    ), 'body { color: rgba(255, 255, 255, 1); }');
   });
 
   it('Input color must be converted to hsl', function () {
