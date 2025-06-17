@@ -45,6 +45,49 @@ describe('postcss-color-converter for hex colors', function () {
     ), 'body { color: #cccccc22; }');
   });
 
+  it('Invalid input color should not be converted', function () {
+    assert.equal(transform(
+      'body { color: #ccccc22; }',
+      { outputColorFormat: 'hex', alwaysAlpha: true },
+    ), 'body { color: #ccccc22; }');
+    assert.equal(transform(
+      'body { color: #ccccc22; }',
+      { outputColorFormat: 'hex' },
+    ), 'body { color: #ccccc22; }');
+    assert.equal(transform(
+      'body { color: #cc; }',
+      { outputColorFormat: 'hex', alwaysAlpha: true },
+    ), 'body { color: #cc; }');
+    assert.equal(transform(
+      'body { color: #cc; }',
+      { outputColorFormat: 'hex' },
+    ), 'body { color: #cc; }');
+    assert.equal(transform(
+      'body { color: #ccfff; }',
+      { outputColorFormat: 'hex' },
+    ), 'body { color: #ccfff; }');
+    assert.equal(transform(
+      'body { color: #ccfff; }',
+      { outputColorFormat: 'hex', alwaysAlpha: true },
+    ), 'body { color: #ccfff; }');
+    assert.equal(transform(
+      'body { color: #ccfffff; }',
+      { outputColorFormat: 'hex' },
+    ), 'body { color: #ccfffff; }');
+    assert.equal(transform(
+      'body { color: #ccfffff; }',
+      { outputColorFormat: 'hex', alwaysAlpha: true },
+    ), 'body { color: #ccfffff; }');
+    assert.equal(transform(
+      'body { color: #ccffffffa; }',
+      { outputColorFormat: 'hex' },
+    ), 'body { color: #ccffffffa; }');
+    assert.equal(transform(
+      'body { color: #ccffffffa; }',
+      { outputColorFormat: 'hex', alwaysAlpha: true },
+    ), 'body { color: #ccffffffa; }');
+  });
+
   it('Input color must be converted to rgb', function () {
     assert.equal(transform(
       'body { color: #ffffff; }',

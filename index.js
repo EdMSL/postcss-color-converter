@@ -1,12 +1,8 @@
 const valueParser = require('postcss-values-parser');
-const colors = require('color-name');
+const { isValidColor } = require('colorizr');
 
 const {
-  convertingHEXColor,
-  convertingRGBColor,
-  convertingHSLColor,
-  convertingOKLCHColor,
-  convertingKeywordColor,
+  convertColor,
 } = require('./src/converts');
 const {
   HEX_COLOR,
@@ -16,8 +12,7 @@ const {
   KEYWORD_COLOR,
 } = require('./src/constants');
 
-const colorNames = Object.keys(colors);
-const colorFormats = [HEX_COLOR, RGB_COLOR, HSL_COLOR, OKLCH_COLOR, KEYWORD_COLOR];
+const colorFormats = [HEX_COLOR, RGB_COLOR, HSL_COLOR, KEYWORD_COLOR];
 
 const propsWithColorRegExp = /(background|border|shadow|color|fill|outline|@|--|\$)/;
 const ignoredValuesRegExp = /(url)/;
@@ -45,62 +40,46 @@ module.exports = (options = {}) => {
 
   return {
     postcssPlugin: 'postcss-color-converter',
-    Declaration (decl) {
+    Declaration(decl) {
       if (
-        decl.prop && propsWithColorRegExp.test(decl.prop) && decl.value && !ignoredValuesRegExp.test(decl.value)
+        decl.prop &&
+        decl.value &&
+        propsWithColorRegExp.test(decl.prop) &&
+        !ignoredValuesRegExp.test(decl.value)
       ) {
         let valueObj = valueParser.parse(decl.value, { ignoreUnknownWords: true });
 
         valueObj.walk(node => {
-          if (node.isColor || node.name === OKLCH_COLOR) {
-            if (
-              !currentOptions.ignore.includes(HEX_COLOR) &&
-              currentOptions.outputColorFormat !== HEX_COLOR &&
-              node.isHex
-            ) {
-              node = convertingHEXColor(node, currentOptions);
-            } else if (
-              (
-                !currentOptions.ignore.includes(RGB_COLOR) &&
-                (
-                  currentOptions.alwaysAlpha ||
-                  currentOptions.outputColorFormat !== RGB_COLOR
-                )
-              ) &&
-              (node.name === 'rgb' || node.name === 'rgba') &&
-              !specValuesInParamsRegExp.test(node.params)
+          if (
+            node.isColor &&
+            ///BUG -0 value in a color function parameters interprets as a valid. Issue https://github.com/gilbarbara/colorizr/issues/19
+            isValidColor(node.type === 'func' ? node.name + node.params : node.value)
+          ) {
+            let inputColorFormat;
 
-            ) {
-              node = convertingRGBColor(node, currentOptions);
-            } else if (
-              (
-                !currentOptions.ignore.includes(HSL_COLOR) &&
-                (
-                  currentOptions.alwaysAlpha ||
-                  currentOptions.outputColorFormat !== HSL_COLOR
-                )
+            if (node.isHex) {
+              inputColorFormat = HEX_COLOR;
+            } else if (!node.isHex && node.type === 'word') {
+              inputColorFormat = KEYWORD_COLOR;
+            } else if (node.name === 'rgb' || node.name === 'rgba') {
+              inputColorFormat = RGB_COLOR;
+            } else if (node.name === 'hsl' || node.name === 'hsla') {
+              inputColorFormat = HSL_COLOR;
+            }
+
+            if (
+              inputColorFormat &&
+              !currentOptions.ignore.includes(inputColorFormat) &&
+              !(
+                (inputColorFormat === RGB_COLOR || inputColorFormat === HSL_COLOR) &&
+                specValuesInParamsRegExp.test(node.params)
               ) &&
-              (node.name === 'hsl' || node.name === 'hsla') &&
-              !specValuesInParamsRegExp.test(node.params)
-            ) {
-              node = convertingHSLColor(node, currentOptions);
-            } else if (
               (
-                !currentOptions.ignore.includes(OKLCH_COLOR) &&
-                (
-                  currentOptions.alwaysAlpha ||
-                  currentOptions.outputColorFormat !== OKLCH_COLOR
-                )
-              ) &&
-              (node.name === 'oklch') &&
-              !specValuesInParamsRegExp.test(node.params)
+                currentOptions.alwaysAlpha ||
+                currentOptions.outputColorFormat !== inputColorFormat
+              )
             ) {
-              node = convertingOKLCHColor(node, currentOptions);
-            } else if (
-              !currentOptions.ignore.includes(KEYWORD_COLOR) &&
-              colorNames.includes(node.value)
-            ) {
-              node = convertingKeywordColor(node, currentOptions);
+              node = convertColor(node, inputColorFormat, currentOptions);
             }
           }
         });
