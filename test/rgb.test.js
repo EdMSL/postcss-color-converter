@@ -175,6 +175,49 @@ describe('postcss-color-converter for rgb colors', function () {
     ), 'body { color: hsla(0, 0%, 100%, 1); }');
   });
 
+  it('Input color must be converted to oklch', function () {
+    assert.equal(transform(
+      'body { color: rgba(255, 255, 255, 0.5); }',
+      { outputColorFormat: 'oklch' },
+    ), 'body { color: oklch(1 0 0 / 0.5); }');
+    assert.equal(transform(
+      'body { color: rgb(255, 255, 255); }',
+      { outputColorFormat: 'oklch', alwaysAlpha: true },
+    ), 'body { color: oklch(1 0 0 / 1); }');
+    assert.equal(transform(
+      'body { color: rgb(255, 255, 255, 0.5); }',
+      { outputColorFormat: 'oklch', alwaysAlpha: true },
+    ), 'body { color: oklch(1 0 0 / 0.5); }');
+    assert.equal(transform(
+      'body { color: rgb(55, 105, 200); }',
+      { outputColorFormat: 'oklch' },
+    ), 'body { color: oklch(0.53755 0.15767 261.75889); }');
+    assert.equal(transform(
+      'body { color: rgb(37, 15, 70); }',
+      { outputColorFormat: 'oklch' },
+    ), 'body { color: oklch(0.23863 0.09672 296.64188); }');
+    assert.equal(transform(
+      'body { color: rgb(37, 15, 70); }',
+      { outputColorFormat: 'oklch', alwaysAlpha: true },
+    ), 'body { color: oklch(0.23863 0.09672 296.64188 / 1); }');
+    assert.equal(transform(
+      'body { color: rgba(17, 168, 13, 0.9); }',
+      { outputColorFormat: 'oklch' },
+    ), 'body { color: oklch(0.6354 0.21145 142.44562 / 0.9); }');
+    assert.equal(transform(
+      'body { color: rgba(17, 168, 13, 0.9); }',
+      { outputColorFormat: 'oklch', alwaysAlpha: true },
+    ), 'body { color: oklch(0.6354 0.21145 142.44562 / 0.9); }');
+    assert.equal(transform(
+      'body { color: rgba(0, 0, 0, 0); }',
+      { outputColorFormat: 'oklch' },
+    ), 'body { color: oklch(0 0 0 / 0); }');
+    assert.equal(transform(
+      'body { color: rgba(0, 0, 0, 0); }',
+      { outputColorFormat: 'oklch', alwaysAlpha: true },
+    ), 'body { color: oklch(0 0 0 / 0); }');
+  });
+
   it('Input color with modern color function notation must be converted to hsla', function () {
     assert.equal(transform(
       'body { background-color: rgb(255 255 255 / 0); }',

@@ -140,6 +140,25 @@ describe('postcss-color-converter for hsl colors', function () {
     ), 'body { color: rgba(255, 255, 255, 0.5); }');
   });
 
+  it('Input color must be converted to oklch', function () {
+    assert.equal(transform(
+      'body { color: hsla(0, 0%, 100%, 0.5); }',
+      { outputColorFormat: 'oklch' },
+    ), 'body { color: oklch(1 0 0 / 0.5); }');
+    assert.equal(transform(
+      'body { color: hsl(0, 0%, 100%); }',
+      { outputColorFormat: 'oklch', alwaysAlpha: true },
+    ), 'body { color: oklch(1 0 0 / 1); }');
+    assert.equal(transform(
+      'body { background: hsl(50 80% 40%); }',
+      { outputColorFormat: 'oklch' },
+    ), 'body { background: oklch(0.69747 0.13926 95.67047); }');
+    assert.equal(transform(
+      'body { background: hsl(0 80% 50% / 25%); }',
+      { outputColorFormat: 'oklch' },
+    ), 'body { background: oklch(0.58861 0.23047 28.23964 / 0.25); }');
+  });
+
   it('Input color with modern color function notation must be converted to hsl(a)', function () {
     assert.equal(transform(
       'body { color: hsl(0 0% 100%); }',

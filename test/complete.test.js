@@ -131,6 +131,27 @@ describe('Various complete test', function () {
       `);
   });
 
+  it('All input colors must be correct converted to oklch', function () {
+    assert.equal(transform(
+      `
+      padding: 10px;
+      color: yellow;
+      $abc: #0ca1b4;
+      box-shadow: 0 0 0 white, 0 0 0 rgba(255, 0, 0, 0.5);
+      -webkit-box-shadow: 0 0 0 MediumSpringGreen, 0 0 0 rgba(255 248 220 / 0.5);
+      border: 1px dotted saturate(#c695, 20%);
+      `,
+      { outputColorFormat: 'oklch' },
+    ), `
+      padding: 10px;
+      color: oklch(0.96798 0.21101 109.76944);
+      $abc: oklch(0.65008 0.11069 209.70572);
+      box-shadow: 0 0 0 oklch(1 0 0), 0 0 0 oklch(0.62796 0.25768 29.23494 / 0.5);
+      -webkit-box-shadow: 0 0 0 oklch(0.86681 0.20675 156.90475), 0 0 0 oklch(0.9773 0.03726 95.43669 / 0.5);
+      border: 1px dotted saturate(oklch(0.64537 0.14134 350.50702 / 0.33), 20%);
+      `);
+  });
+
   it('Only keyword colors must be correct converted to rgb', function () {
     assert.equal(transform(
       `
@@ -139,14 +160,16 @@ describe('Various complete test', function () {
       box-shadow: 0 0 0 red, 0 0 0 rgba(255, 0, 0, 0.5);
       border-color: #fcc;
       border-right-color: lighten(black, 50%);
+      background-color: oklch(1 0 0 / 0.5);
       `,
-      { outputColorFormat: 'rgb', ignore: ['hex', 'rgb', 'hsl'] },
+      { outputColorFormat: 'rgb', ignore: ['hex', 'rgb', 'hsl', 'oklch'] },
     ), `
       color: rgb(255, 0, 0);
       outline-color: hsla(0, 0%, 100%, 0.5);
       box-shadow: 0 0 0 rgb(255, 0, 0), 0 0 0 rgba(255, 0, 0, 0.5);
       border-color: #fcc;
       border-right-color: lighten(rgb(0, 0, 0), 50%);
+      background-color: oklch(1 0 0 / 0.5);
       `);
   });
 
@@ -187,6 +210,29 @@ describe('Various complete test', function () {
       border-color: #fcc;
       fill: #8c5a14;
       text-decoration-color: #000000;
+      `);
+  });
+
+  it('Only hex and keyword colors must be converted to oklch', function () {
+    assert.equal(transform(
+      `
+      color: DeepPink;
+      outline-color: hsla(0, 0%, 100%, 0.35);
+      box-shadow: 0 0 0 gold, 0 0 0 GoldenRod, 0 0 0 rgb(218, 165, 102);
+      border-color: #fc2c;
+      fill: rgb(140, 90, 20);
+      text-decoration-color: #fcfeff00;
+      background: oklch(0.456 0.12 100.59);
+      `,
+      { outputColorFormat: 'oklch', ignore: ['hsl', 'rgb', 'oklch'], alwaysAlpha: true },
+    ), `
+      color: oklch(0.65493 0.26134 356.94458 / 1);
+      outline-color: hsla(0, 0%, 100%, 0.35);
+      box-shadow: 0 0 0 oklch(0.88677 0.18219 95.33195 / 1), 0 0 0 oklch(0.75157 0.14694 83.98793 / 1), 0 0 0 rgb(218, 165, 102);
+      border-color: oklch(0.86587 0.17084 89.57408 / 0.8);
+      fill: rgb(140, 90, 20);
+      text-decoration-color: oklch(0.9958 0.00251 228.87852 / 0);
+      background: oklch(0.456 0.12 100.59);
       `);
   });
 

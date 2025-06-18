@@ -136,6 +136,13 @@ describe('postcss-color-converter for oklch colors', function () {
     ), 'body { color: rgb(0 228 75); }');
   });
 
+  it('Input color must be converted to hsl', function () {
+    assert.equal(transform(
+      'body { color: oklch(1 0 0); }',
+      { outputColorFormat: 'hsl' },
+    ), 'body { color: hsl(0 0% 100%); }');
+  });
+
   // it('Input color must be converted to rgba', function () {
   //   assert.equal(transform(
   //     'body { color: hsla(0, 0%, 100%, 0.5); }',

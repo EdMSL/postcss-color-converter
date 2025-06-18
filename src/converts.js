@@ -112,7 +112,12 @@ const convertColor = (node, inputColorFormat, options) => {
 
   const newNode = node.clone({ type: 'word' });
 
-  newNode.value = getFormattedString(colorData, options.outputColorFormat, alpha, isUseModernSyntax);
+  newNode.value = getFormattedString(
+    colorData,
+    options.outputColorFormat,
+    alpha > 1 ? alpha / 100 : alpha,
+    isUseModernSyntax,
+  );
 
   return node.replaceWith(newNode);
 }
