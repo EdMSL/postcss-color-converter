@@ -80,17 +80,6 @@ describe('postcss-color-converter for oklch colors', function () {
     ), 'body { color: oklch(0.401 0.123 5o / 1); }');
   });
 
-  it('Input color must be converted to hexa', function () {
-    assert.equal(transform(
-      'body { color: oklch(0.401 0.123 21.57 / 0.5); }',
-      { outputColorFormat: 'hex' },
-    ), 'body { color: #7d242980; }');
-    assert.equal(transform(
-      'body { color: oklch(0.401 0.123 21.57 / 0.5); }',
-      { outputColorFormat: 'hex', alwaysAlpha: true },
-    ), 'body { color: #7d242980; }');
-  })
-
   it('Input color must be converted to hex', function () {
     assert.equal(transform(
       'body { color: oklch(1 0 0); }',
@@ -124,9 +113,9 @@ describe('postcss-color-converter for oklch colors', function () {
       { outputColorFormat: 'hex' },
     ), 'body { color: #7d242980; }');
     assert.equal(transform(
-      'body { color: oklch(0.401 0.123 21.57); }',
+      'body { color: oklch(0.401 0.123 21.57 / 0.24); }',
       { outputColorFormat: 'hex', alwaysAlpha: true },
-    ), 'body { color: #7d2429; }');
+    ), 'body { color: #7d24293d; }');
   });
 
   it('Input color must be converted to rgb', function () {
@@ -134,6 +123,33 @@ describe('postcss-color-converter for oklch colors', function () {
       'body { color: oklch(0.8 0.2458 146); }',
       { outputColorFormat: 'rgb' },
     ), 'body { color: rgb(0 228 75); }');
+    assert.equal(transform(
+      'body { color: oklch(0.5609 0.2034 7.43); }',
+      { outputColorFormat: 'rgb' },
+    ), 'body { color: rgb(206 37 95); }');
+    assert.equal(transform(
+      'body { color: oklch(0.77416 0.13155 237.58927); }',
+      { outputColorFormat: 'rgb' },
+    ), 'body { color: rgb(87 193 255); }');
+  });
+
+  it('Input color must be converted to rgba', function () {
+    assert.equal(transform(
+      'body { color: oklch(0.8 0.2458 146 / 0.35); }',
+      { outputColorFormat: 'rgb' },
+    ), 'body { color: rgba(0 228 75 / 0.35); }');
+    assert.equal(transform(
+      'body { color: oklch(0.5609 0.2034 7.43 / 0.81); }',
+      { outputColorFormat: 'rgb' },
+    ), 'body { color: rgba(206 37 95 / 0.81); }');
+    assert.equal(transform(
+      'body { color: oklch(0.5609 0.2034 7.43); }',
+      { outputColorFormat: 'rgb', alwaysAlpha: true },
+    ), 'body { color: rgba(206 37 95 / 1); }');
+    assert.equal(transform(
+      'body { color: oklch(0.77416 0.13155 237.58927 / 0.44); }',
+      { outputColorFormat: 'rgb' },
+    ), 'body { color: rgba(87 193 255 / 0.44); }');
   });
 
   it('Input color must be converted to hsl', function () {
@@ -141,79 +157,34 @@ describe('postcss-color-converter for oklch colors', function () {
       'body { color: oklch(1 0 0); }',
       { outputColorFormat: 'hsl' },
     ), 'body { color: hsl(0 0% 100%); }');
+    assert.equal(transform(
+      'body { color: oklch(0.2863 0.0548 173.36); }',
+      { outputColorFormat: 'hsl' },
+    ), 'body { color: hsl(167 100% 10%); }');
+    assert.equal(transform(
+      'body { background: oklch(0.82839 0.15701 171.96382); }',
+      { outputColorFormat: 'hsl' },
+    ), 'body { background: hsl(167 81% 51%); }');
   });
 
-  // it('Input color must be converted to rgba', function () {
-  //   assert.equal(transform(
-  //     'body { color: hsla(0, 0%, 100%, 0.5); }',
-  //     { outputColorFormat: 'rgb' },
-  //   ), 'body { color: rgba(255, 255, 255, 0.5); }');
-  //   assert.equal(transform(
-  //     'body { color: hsl(0, 0%, 100%); }',
-  //     { outputColorFormat: 'rgb', alwaysAlpha: true },
-  //   ), 'body { color: rgba(255, 255, 255, 1); }');
-  //   assert.equal(transform(
-  //     'body { color: hsla(0, 0%, 100%, 0.5); }',
-  //     { outputColorFormat: 'rgb', alwaysAlpha: true },
-  //   ), 'body { color: rgba(255, 255, 255, 0.5); }');
-  // });
-
-  // it('Input color with modern color function notation must be converted to hsl(a)', function () {
-  //   assert.equal(transform(
-  //     'body { color: hsl(0 0% 100%); }',
-  //     { outputColorFormat: 'hsl',alwaysAlpha: true },
-  //   ), 'body { color: hsl(0 0% 100% / 1); }');
-  // });
-
-  // it('Input color with modern color function notation must be converted to rgb(a)', function () {
-  //   assert.equal(transform(
-  //     'body { color: hsl(0  0%  100%); }',
-  //     { outputColorFormat: 'rgb' },
-  //   ), 'body { color: rgb(255 255 255); }');
-  //   assert.equal(transform(
-  //     'body { background-color: hsl(0 0% 100% / 0); }',
-  //     { outputColorFormat: 'rgb' },
-  //   ), 'body { background-color: rgb(255 255 255 / 0); }');
-  //   assert.equal(transform(
-  //     'body { background-color: hsl(0 0% 100% / 0.5); }',
-  //     { outputColorFormat: 'rgb' },
-  //   ), 'body { background-color: rgb(255 255 255 / 0.5); }');
-  //   assert.equal(transform(
-  //     'body { background-color: hsl(0 0% 100% / 0.5); }',
-  //     { outputColorFormat: 'rgb', alwaysAlpha: true },
-  //   ), 'body { background-color: rgb(255 255 255 / 0.5); }');
-  //   assert.equal(transform(
-  //     'body { color: hsl(0  0%  100%); }',
-  //     { outputColorFormat: 'rgb', alwaysAlpha: true },
-  //   ), 'body { color: rgb(255 255 255 / 1); }');
-  // });
-
-  // it('Input color with modern color function notation must be converted to hex(a)', function () {
-  //   assert.equal(transform(
-  //     'body { background-color: hsl(0  0%  100%); }',
-  //     { outputColorFormat: 'hex' },
-  //   ), 'body { background-color: #ffffff; }');
-  //   assert.equal(transform(
-  //     'body { background-color: hsl(0  0%  100% / 1); }',
-  //     { outputColorFormat: 'hex' },
-  //   ), 'body { background-color: #ffffff; }');
-  //   assert.equal(transform(
-  //     'body { background-color: hsl(0  0%  100% / 1); }',
-  //     { outputColorFormat: 'hex', alwaysAlpha: true },
-  //   ), 'body { background-color: #ffffff; }');
-  //   assert.equal(transform(
-  //     'body { background-color: hsl(0  0%  100% / 0.5); }',
-  //     { outputColorFormat: 'hex' },
-  //   ), 'body { background-color: #ffffff80; }');
-  //   assert.equal(transform(
-  //     'body { background-color: hsl(0  0%  100% / 0.5); }',
-  //     { outputColorFormat: 'hex', alwaysAlpha: true },
-  //   ), 'body { background-color: #ffffff80; }');
-  //   assert.equal(transform(
-  //     'body { background-color: hsl(0  0%  100% / 0); }',
-  //     { outputColorFormat: 'hex' },
-  //   ), 'body { background-color: #ffffff00; }');
-  // });
+  it('Input color must be converted to hsla', function () {
+    assert.equal(transform(
+      'body { color: oklch(1 0 0 / 0.46); }',
+      { outputColorFormat: 'hsl' },
+    ), 'body { color: hsla(0 0% 100% / 0.46); }');
+    assert.equal(transform(
+      'body { color: oklch(0.2863 0.0548 173.36 / 0.27); }',
+      { outputColorFormat: 'hsl' },
+    ), 'body { color: hsla(167 100% 10% / 0.27); }');
+    assert.equal(transform(
+      'body { color: oklch(0.2863 0.0548 173.36); }',
+      { outputColorFormat: 'hsl', alwaysAlpha: true },
+    ), 'body { color: hsla(167 100% 10% / 1); }');
+    assert.equal(transform(
+      'body { background: oklch(0.82839 0.15701 171.96382 / 0.72); }',
+      { outputColorFormat: 'hsl' },
+    ), 'body { background: hsla(167 81% 51% / 0.72); }');
+  });
 
   it('All input colors must be correct converted to hsl(a)', function () {
     assert.equal(transform(
@@ -227,6 +198,8 @@ describe('postcss-color-converter for oklch colors', function () {
           hsl(56, 69%, 57%) 50%,
           hsla(56, 69%, 57%, 0.5) 60%,
           hsl(56 69% 57%) 70%,
+          oklch(0.85 0.1567 105.23) 80%,
+          oklch(0.7398 0.1144 220.63 / 0.1) 90%,
           green 100%,
         );
       }`,
@@ -241,6 +214,8 @@ describe('postcss-color-converter for oklch colors', function () {
           hsl(56, 69%, 57%) 50%,
           hsla(56, 69%, 57%, 0.5) 60%,
           hsl(56 69% 57%) 70%,
+          hsl(56 69% 57%) 80%,
+          hsla(193 69% 57% / 0.1) 90%,
           hsl(120, 100%, 25%) 100%,
         );
       }`);
@@ -254,6 +229,7 @@ describe('postcss-color-converter for oklch colors', function () {
           rgba(68, 188, 221, 0.5) 40%,
           hsl(56, 69%, 57%) 50%,
           hsla(56, 69%, 57%, 0.5) 60%,
+          oklch(0.85 0.1567 105.23) 70%,
           green 100%,
         );
       }`,
@@ -267,6 +243,7 @@ describe('postcss-color-converter for oklch colors', function () {
           hsla(193, 69%, 57%, 0.5) 40%,
           hsla(56, 69%, 57%, 1) 50%,
           hsla(56, 69%, 57%, 0.5) 60%,
+          hsla(56 69% 57% / 1) 70%,
           hsla(120, 100%, 25%, 1) 100%,
         );
       }`);

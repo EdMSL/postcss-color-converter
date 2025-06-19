@@ -54,10 +54,6 @@ describe('postcss-color-converter for hsl colors', function () {
       'body { color: hsl(0, 0%, 120%); }',
       { outputColorFormat: 'hex' },
     ), 'body { color: hsl(0, 0%, 120%); }');
-    // assert.equal(transform(
-    //   'body { color: hsl(-0, 0%, 10%); }',
-    //   { outputColorFormat: 'hex' },
-    // ), 'body { color: hsl(-0, 0%, 10%); }');
     assert.equal(transform(
       'body { color: hsl(0, -100%, 10%); }',
       { outputColorFormat: 'hex' },
@@ -228,6 +224,7 @@ describe('postcss-color-converter for hsl colors', function () {
           hsl(56, 69%, 57%) 50%,
           hsla(56, 69%, 57%, 0.5) 60%,
           hsl(56 69% 57%) 70%,
+          oklch(0.5237 0.0962 124.94) 80%,
           green 100%,
         );
       }`,
@@ -242,6 +239,7 @@ describe('postcss-color-converter for hsl colors', function () {
           hsl(56, 69%, 57%) 50%,
           hsla(56, 69%, 57%, 0.5) 60%,
           hsl(56 69% 57%) 70%,
+          hsl(80 40% 32%) 80%,
           hsl(120, 100%, 25%) 100%,
         );
       }`);
@@ -255,6 +253,7 @@ describe('postcss-color-converter for hsl colors', function () {
           rgba(68, 188, 221, 0.5) 40%,
           hsl(56, 69%, 57%) 50%,
           hsla(56, 69%, 57%, 0.5) 60%,
+          oklch(0.5237 0.0962 124.94) 70%,
           green 100%,
         );
       }`,
@@ -268,6 +267,7 @@ describe('postcss-color-converter for hsl colors', function () {
           hsla(193, 69%, 57%, 0.5) 40%,
           hsla(56, 69%, 57%, 1) 50%,
           hsla(56, 69%, 57%, 0.5) 60%,
+          hsla(80 40% 32% / 1) 70%,
           hsla(120, 100%, 25%, 1) 100%,
         );
       }`);

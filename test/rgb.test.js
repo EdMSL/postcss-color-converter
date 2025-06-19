@@ -74,18 +74,18 @@ describe('postcss-color-converter for rgb colors', function () {
       'body { color: rgb(-55, 255, 255); }',
       { outputColorFormat: 'hex' },
     ), 'body { color: rgb(-55, 255, 255); }');
-    // assert.equal(transform(
-    //   'body { color: rgb(10, 20, -0); }',
-    //   { outputColorFormat: 'hex' },
-    // ), 'body { color: rgb(10, 20, -0); }');
-    // assert.equal(transform(
-    //   'body { color: rgb(10, -0, 255); }',
-    //   { outputColorFormat: 'hex' },
-    // ), 'body { color: rgb(10, -0, 255); }');
-    // assert.equal(transform(
-    //   'body { color: rgb(-0, 255, 255); }',
-    //   { outputColorFormat: 'hex' },
-    // ), 'body { color: rgb(-0, 255, 255); }');
+    assert.equal(transform(
+      'body { color: rgb(55, o55, 255); }',
+      { outputColorFormat: 'hex' },
+    ), 'body { color: rgb(55, o55, 255); }');
+    assert.equal(transform(
+      'body { color: rgb(255, 255, 255, 255, 1); }',
+      { outputColorFormat: 'hex' },
+    ), 'body { color: rgb(255, 255, 255, 255, 1); }');
+    assert.equal(transform(
+      'body { color: rgb(255 255 255 \\ 1); }',
+      { outputColorFormat: 'hex' },
+    ), 'body { color: rgb(255 255 255 \\ 1); }');
   });
 
   it('Input color must be converted to hex', function () {
@@ -283,6 +283,7 @@ describe('postcss-color-converter for rgb colors', function () {
           hsl(56, 69%, 57%) 50%,
           hsla(56, 69%, 57%, 0.5) 60%,
           rgb(255 255 255) 70%,
+          oklch(0.401 0.123 21.57 / 0.5) 80%,
           green 100%,
         );
       }`,
@@ -297,6 +298,7 @@ describe('postcss-color-converter for rgb colors', function () {
           rgb(221, 211, 70) 50%,
           rgba(221, 211, 70, 0.5) 60%,
           rgb(255 255 255) 70%,
+          rgba(125 36 41 / 0.5) 80%,
           rgb(0, 128, 0) 100%,
         );
       }`);
@@ -311,6 +313,7 @@ describe('postcss-color-converter for rgb colors', function () {
           hsl(56, 69%, 57%) 50%,
           hsla(56, 69%, 57%, 0.5) 60%,
           rgb(255 255 255) 70%,
+          oklch(0.6354 0.21145 142.44562) 80%,
           green 100%,
         );
       }`,
@@ -325,6 +328,7 @@ describe('postcss-color-converter for rgb colors', function () {
           rgba(221, 211, 70, 1) 50%,
           rgba(221, 211, 70, 0.5) 60%,
           rgba(255 255 255 / 1) 70%,
+          rgba(17 168 13 / 1) 80%,
           rgba(0, 128, 0, 1) 100%,
         );
       }`);
