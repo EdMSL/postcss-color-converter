@@ -4,6 +4,7 @@ const {
   HEX_COLOR,
   RGB_COLOR,
   HSL_COLOR,
+  OKLAB_COLOR,
   OKLCH_COLOR,
   KEYWORD_COLOR,
 } = require('./constants');
@@ -25,8 +26,10 @@ const getFormattedString = (
       return isUseModernSyntax
         ? `${outputFormat}${alpha !== undefined ? 'a' : ''}(${Math.round(colorData.h)} ${Math.round(colorData.s)}% ${Math.round(colorData.l)}%${alpha !== undefined ? ` / ${alpha}` : ''})`
         : `${outputFormat}${alpha !== undefined ? 'a' : ''}(${Math.round(colorData.h)}, ${Math.round(colorData.s)}%, ${Math.round(colorData.l)}%${alpha !== undefined ? `, ${alpha}` : ''})`
+    case OKLAB_COLOR:
+      return `${outputFormat}(${colorData.l} ${colorData.a} ${colorData.b}${alpha !== undefined ? ` / ${alpha}` : ''})`;
     case OKLCH_COLOR:
-        return `${outputFormat}(${colorData.l} ${colorData.c} ${colorData.h}${alpha !== undefined ? ` / ${alpha}` : ''})`
+      return `${outputFormat}(${colorData.l} ${colorData.c} ${colorData.h}${alpha !== undefined ? ` / ${alpha}` : ''})`;
     default:
       break;
   }
@@ -91,6 +94,19 @@ const convertColor = (node, inputColorFormat, options) => {
         colorData = { h: +c1.value, s: +c2.value, l: +c3.value};
       } else {
         colorData = colorFn[`hsl2${options.outputColorFormat}`]([+c1.value, +c2.value, +c3.value])
+      }
+
+      break;
+    case OKLAB_COLOR:
+      [c1, c2, c3, , alpha] = node.nodes;
+
+
+      alpha = alpha && alpha.value !== undefined ? +alpha.value : options.alwaysAlpha ? 1 : undefined;
+
+      if (options.outputColorFormat === OKLAB_COLOR) {
+        colorData = { l: +c1.value, a: +c2.value, b: +c3.value};
+      } else {
+        colorData = colorFn[`oklab2${options.outputColorFormat}`]([+c1.value, +c2.value, +c3.value])
       }
 
       break;
