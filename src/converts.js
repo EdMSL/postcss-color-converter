@@ -100,7 +100,6 @@ const convertColor = (node, inputColorFormat, options) => {
     case OKLAB_COLOR:
       [c1, c2, c3, , alpha] = node.nodes;
 
-
       alpha = alpha && alpha.value !== undefined ? +alpha.value : options.alwaysAlpha ? 1 : undefined;
 
       if (options.outputColorFormat === OKLAB_COLOR) {

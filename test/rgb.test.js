@@ -218,6 +218,21 @@ describe('postcss-color-converter for rgb colors', function () {
     ), 'body { color: oklch(0 0 0 / 0); }');
   });
 
+  it('Input color must be converted to oklab', function () {
+    assert.equal(transform(
+      'body { color: rgb(0, 0, 0); }',
+      { outputColorFormat: 'oklab' },
+    ), 'body { color: oklab(0 0 0); }');
+    assert.equal(transform(
+      'body { color: rgba(255, 255, 255, 0.5); }',
+      { outputColorFormat: 'oklab' },
+    ), 'body { color: oklab(1 0 0 / 0.5); }');
+    assert.equal(transform(
+      'body { color: rgb(14, 72, 199); }',
+      { outputColorFormat: 'oklab' },
+    ), 'body { color: oklab(0.45812 -0.02566 -0.20357); }');
+  });
+
   it('Input color with modern color function notation must be converted to hsla', function () {
     assert.equal(transform(
       'body { background-color: rgb(255 255 255 / 0); }',

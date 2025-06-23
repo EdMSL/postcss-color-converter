@@ -43,16 +43,24 @@ describe('Various complete test', function () {
       'body { color: tomato; }',
       { outputColorFormat: 'oklch', alwaysAlpha: true },
     ), 'body { color: oklch(0.69622 0.19552 32.32128 / 1); }');
+    assert.equal(transform(
+      'body { color: red; }',
+      { outputColorFormat: 'oklab' },
+    ), 'body { color: oklab(0.62796 0.22486 0.12585); }');
+    assert.equal(transform(
+      'body { color: red; }',
+      { outputColorFormat: 'oklab', alwaysAlpha: true },
+    ), 'body { color: oklab(0.62796 0.22486 0.12585 / 1); }');
   });
 
   it('Invalid keyword color should not be converted', function () {
     assert.equal(transform(
       'body { color: greens; }',
-      { outputColorFormat: 'rgb', alwaysAlpha: true },
+      { outputColorFormat: 'rgb' },
     ), 'body { color: greens; }');
     assert.equal(transform(
       'body { color: aquablue; }',
-      { outputColorFormat: 'rgb', alwaysAlpha: true },
+      { outputColorFormat: 'hsl', alwaysAlpha: true },
     ), 'body { color: aquablue; }');
   });
 

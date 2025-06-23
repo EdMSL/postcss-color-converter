@@ -75,6 +75,10 @@ describe('postcss-color-converter for oklch colors', function () {
       { outputColorFormat: 'rgb' },
     ), 'body { color: oklch(0.401 -0.123 21.57); }');
     assert.equal(transform(
+      'body { color: oklch(0.401 - 0.123 21.57); }',
+      { outputColorFormat: 'rgb' },
+    ), 'body { color: oklch(0.401 - 0.123 21.57); }');
+    assert.equal(transform(
       'body { color: oklch(0.401 0.123 5o / 1); }',
       { outputColorFormat: 'rgb' },
     ), 'body { color: oklch(0.401 0.123 5o / 1); }');
@@ -102,7 +106,7 @@ describe('postcss-color-converter for oklch colors', function () {
       { outputColorFormat: 'hex' },
     ), 'body { --red: #ff0000; }');
     assert.equal(transform(
-      'body { $blue: oklch(0.452 0.313214 264.052); }',
+      'body { $blue: oklch(0.452 0.313214 264.052 / 1); }',
       { outputColorFormat: 'hex' },
     ), 'body { $blue: #0000ff; }');
   });
@@ -186,7 +190,7 @@ describe('postcss-color-converter for oklch colors', function () {
     ), 'body { background: hsla(167 81% 51% / 0.72); }');
   });
 
-  it('All input colors must be correct converted to hsl(a)', function () {
+  it('All input colors must be correct converted to oklch', function () {
     assert.equal(transform(
       `ul {
         background: linear-gradient(
@@ -226,25 +230,25 @@ describe('postcss-color-converter for oklch colors', function () {
           #cd56ab 10%,
           #cd56ab80 20%,
           rgb(68, 187, 221) 30%,
-          rgba(68, 188, 221, 0.5) 40%,
+          rgba(68, 187, 221, 0.5) 40%,
           hsl(56, 69%, 57%) 50%,
           hsla(56, 69%, 57%, 0.5) 60%,
           oklch(0.85 0.1567 105.23) 70%,
           green 100%,
         );
       }`,
-      { outputColorFormat: 'hsl', alwaysAlpha: true },
+      { outputColorFormat: 'oklch', alwaysAlpha: true },
     ), `ul {
         background: linear-gradient(
           to bottom,
-          hsla(317, 54%, 57%, 1) 10%,
-          hsla(317, 54%, 57%, 0.5) 20%,
-          hsla(193, 69%, 57%, 1) 30%,
-          hsla(193, 69%, 57%, 0.5) 40%,
-          hsla(56, 69%, 57%, 1) 50%,
-          hsla(56, 69%, 57%, 0.5) 60%,
-          hsla(56 69% 57% / 1) 70%,
-          hsla(120, 100%, 25%, 1) 100%,
+          oklch(0.63224 0.17882 340.13323 / 1) 10%,
+          oklch(0.63224 0.17882 340.13323 / 0.5) 20%,
+          oklch(0.73979 0.11435 220.62738 / 1) 30%,
+          oklch(0.73979 0.11435 220.62738 / 0.5) 40%,
+          oklch(0.85023 0.15659 105.25833 / 1) 50%,
+          oklch(0.85023 0.15659 105.25833 / 0.5) 60%,
+          oklch(0.85 0.1567 105.23 / 1) 70%,
+          oklch(0.51975 0.17686 142.49383 / 1) 100%,
         );
       }`);
   });
