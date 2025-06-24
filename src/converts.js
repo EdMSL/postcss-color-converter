@@ -103,9 +103,9 @@ const convertColor = (node, inputColorFormat, options) => {
       alpha = alpha && alpha.value !== undefined ? +alpha.value : options.alwaysAlpha ? 1 : undefined;
 
       if (options.outputColorFormat === OKLAB_COLOR) {
-        colorData = { l: +c1.value, a: +c2.value, b: +c3.value};
+        colorData = { l: +c1.value > 1 ? +c1.value / 100 : +c1.value, a: +c2.value, b: +c3.value};
       } else {
-        colorData = colorFn[`oklab2${options.outputColorFormat}`]([+c1.value, +c2.value, +c3.value])
+        colorData = colorFn[`oklab2${options.outputColorFormat}`]([+c1.value > 1 ? +c1.value / 100 : +c1.value, +c2.value, +c3.value])
       }
 
       break;
@@ -115,9 +115,9 @@ const convertColor = (node, inputColorFormat, options) => {
       alpha = alpha && alpha.value !== undefined ? +alpha.value : options.alwaysAlpha ? 1 : undefined;
 
       if (options.outputColorFormat === OKLCH_COLOR) {
-        colorData = { l: +c1.value, c: +c2.value, h: +c3.value};
+        colorData = { l: +c1.value > 1 ? +c1.value / 100 : +c1.value, c: +c2.value, h: +c3.value};
       } else {
-        colorData = colorFn[`oklch2${options.outputColorFormat}`]([+c1.value, +c2.value, +c3.value])
+        colorData = colorFn[`oklch2${options.outputColorFormat}`]([+c1.value > 1 ? +c1.value / 100 : +c1.value, +c2.value, +c3.value])
       }
 
       break;
