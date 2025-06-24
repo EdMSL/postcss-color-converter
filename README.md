@@ -1,6 +1,6 @@
 # postcss-color-converter
 
-> [PostCSS](https://github.com/postcss/postcss) plugin to convert HEX, RGB, HSL and keyword colors between themselves (without transform to keyword color format). Uses [color-convert](https://www.npmjs.com/package/color-convert) under hood. Supports modern color function notation ([specification](https://drafts.csswg.org/css-color/#the-hsl-notation)), Sass(SCSS) ([postcss-scss](https://www.npmjs.com/package/postcss-scss) or [postcss-sass](https://www.npmjs.com/package/postcss-sass) needed) and CSS variables.
+> [PostCSS](https://github.com/postcss/postcss) plugin to convert HEX, RGB, HSL, Oklch, Oklab and keyword colors between themselves (without transform to keyword color format). Uses [colorizr](https://www.npmjs.com/package/colorizr) under hood. Supports modern color function notation ([specification](https://drafts.csswg.org/css-color/#the-hsl-notation)), Sass(SCSS) ([postcss-scss](https://www.npmjs.com/package/postcss-scss) or [postcss-sass](https://www.npmjs.com/package/postcss-sass) needed) and CSS variables.
 
 ## Installation
 ```console
@@ -60,13 +60,13 @@ Please refer to [PostCSS documentation](https://github.com/postcss/postcss#usage
 #### `outputColorFormat`
 Type: `String`<br>
 _Required_<br>
-Available values: `hex, rgb, hsl`<br>
+Available values: `hex, rgb, hsl, oklch, oklab`<br>
 Default: ''<br>
 Set output color format. Don't forget set this parameter.
 
 #### `ignore`
 Type: `String[]`<br>
-Available values: `hex, rgb, hsl, keyword`<br>
+Available values: `hex, rgb, hsl, oklch, oklab, keyword`<br>
 Default: `[]`<br>
 Array of color formats, which you don't want to convert.
 
@@ -99,6 +99,9 @@ body {
     10px 10px 0 0 green,
     20px 20px 0 0 #00000080,
     30px 30px 0 0 rgb(123, 123, 123);
+  border: 10px solid oklch(0.63 0.26 29.5);
+  outline: 1px solid oklab(87% -0.23 0.18);
+
 }
 ```
 ```scss
@@ -120,6 +123,8 @@ body {
     10px 10px 0 0 rgb(0, 128, 0),
     20px 20px 0 0 rgba(0, 0, 0, 0.5),
     30px 30px 0 0 rgb(123, 123, 123);
+  border: 10px solid rgb(255 0 0);
+  outline: 1px solid rgb(0 255 0);
 }
 ```
 

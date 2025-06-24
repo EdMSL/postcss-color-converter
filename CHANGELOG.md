@@ -25,3 +25,7 @@ Update packages to fix secure vulnerabilities.
 
 ## 1.1.2 (November 8, 2024)
 Added ignored words for property values ([issue](https://github.com/EdMSL/postcss-color-converter/issues/20)).
+
+## 1.2.0 (June 24, 2025)
+Add support for Oklch and Oklab colors.
+Replace color-convert package with colorizr.
