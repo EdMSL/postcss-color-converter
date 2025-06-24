@@ -169,6 +169,96 @@ describe('postcss-color-converter for oklab colors', function () {
       { outputColorFormat: 'hsl', alwaysAlpha: true },
     ), 'body { color: hsla(221 87% 42% / 1); }');
   });
+
+  it('Input color must be converted to oklch', function () {
+    assert.equal(transform(
+      'body { color: oklab(0.47 0.18 0.05); }',
+      { outputColorFormat: 'oklch' },
+    ), 'body { color: oklch(0.47 0.18682 15.52411); }');
+    assert.equal(transform(
+      'body { color: oklab(0.47 0.18 0.05); }',
+      { outputColorFormat: 'oklch', alwaysAlpha: true },
+    ), 'body { color: oklch(0.47 0.18682 15.52411 / 1); }');
+    assert.equal(transform(
+      'body { color: oklab(0.86 -0.02194 0.17866); }',
+      { outputColorFormat: 'oklch' },
+    ), 'body { color: oklch(0.86 0.18 97.00105); }');
+    assert.equal(transform(
+      'body { color: oklab(0.86 -0.02194 0.17866); }',
+      { outputColorFormat: 'oklch', alwaysAlpha: true },
+    ), 'body { color: oklch(0.86 0.18 97.00105 / 1); }');
+    assert.equal(transform(
+      'body { color: oklab(69% 0.13 0.14); }',
+      { outputColorFormat: 'oklch' },
+    ), 'body { color: oklch(0.69 0.19105 47.1211); }');
+  });
+
+  it('All input colors must be correct converted to oklab', function () {
+    assert.equal(transform(
+      `ul {
+        background: linear-gradient(
+          to bottom,
+          #cd56ab 10%,
+          #cd56ab80 20%,
+          rgb(68, 187, 221) 30%,
+          rgba(68, 187, 221, 0.5) 40%,
+          hsl(56, 69%, 57%) 50%,
+          hsla(56, 69%, 57%, 0.5) 60%,
+          oklch(0.3875 0.2608 266.85) 70%,
+          oklch(0.5609 0.2034 7.43 / 0.89) 80%,
+          oklab(0.91191 -0.15203 0.17893) 90%,
+          green 100%,
+        );
+      }`,
+      { outputColorFormat: 'oklab' },
+    ), `ul {
+        background: linear-gradient(
+          to bottom,
+          oklab(0.63224 0.16818 -0.06077) 10%,
+          oklab(0.63224 0.16818 -0.06077 / 0.5) 20%,
+          oklab(0.73979 -0.08679 -0.07446) 30%,
+          oklab(0.73979 -0.08679 -0.07446 / 0.5) 40%,
+          oklab(0.85023 -0.04121 0.15107) 50%,
+          oklab(0.85023 -0.04121 0.15107 / 0.5) 60%,
+          oklab(0.3875 -0.01433 -0.26041) 70%,
+          oklab(0.5609 0.20169 0.0263 / 0.89) 80%,
+          oklab(0.91191 -0.15203 0.17893) 90%,
+          oklab(0.51975 -0.1403 0.10768) 100%,
+        );
+      }`);
+    assert.equal(transform(
+      `ul {
+        background: linear-gradient(
+          to bottom,
+          #cd56ab 10%,
+          #cd56ab80 20%,
+          rgb(68, 187, 221) 30%,
+          rgba(68, 187, 221, 0.5) 40%,
+          hsl(56, 69%, 57%) 50%,
+          hsla(56, 69%, 57%, 0.5) 60%,
+          oklch(0.3875 0.2608 266.85) 70%,
+          oklch(0.5609 0.2034 7.43 / 0.89) 80%,
+          oklab(0.91191 -0.15203 0.17893) 90%,
+          green 100%,
+        );
+      }`,
+      { outputColorFormat: 'oklab', alwaysAlpha: true },
+    ), `ul {
+        background: linear-gradient(
+          to bottom,
+          oklab(0.63224 0.16818 -0.06077 / 1) 10%,
+          oklab(0.63224 0.16818 -0.06077 / 0.5) 20%,
+          oklab(0.73979 -0.08679 -0.07446 / 1) 30%,
+          oklab(0.73979 -0.08679 -0.07446 / 0.5) 40%,
+          oklab(0.85023 -0.04121 0.15107 / 1) 50%,
+          oklab(0.85023 -0.04121 0.15107 / 0.5) 60%,
+          oklab(0.3875 -0.01433 -0.26041 / 1) 70%,
+          oklab(0.5609 0.20169 0.0263 / 0.89) 80%,
+          oklab(0.91191 -0.15203 0.17893 / 1) 90%,
+          oklab(0.51975 -0.1403 0.10768 / 1) 100%,
+        );
+      }`);
+  });
 });
 
 

@@ -244,6 +244,7 @@ describe('postcss-color-converter for hsl colors', function () {
           hsla(56, 69%, 57%, 0.5) 60%,
           hsl(56 69% 57%) 70%,
           oklch(0.5237 0.0962 124.94) 80%,
+          oklab(0.91191 -0.15203 0.17893) 90%,
           green 100%,
         );
       }`,
@@ -259,6 +260,7 @@ describe('postcss-color-converter for hsl colors', function () {
           hsla(56, 69%, 57%, 0.5) 60%,
           hsl(56 69% 57%) 70%,
           hsl(80 40% 32%) 80%,
+          hsl(84 100% 59%) 90%,
           hsl(120, 100%, 25%) 100%,
         );
       }`);
@@ -273,6 +275,7 @@ describe('postcss-color-converter for hsl colors', function () {
           hsl(56, 69%, 57%) 50%,
           hsla(56, 69%, 57%, 0.5) 60%,
           oklch(0.5237 0.0962 124.94) 70%,
+          oklab(0.91191 -0.15203 0.17893) 90%,
           green 100%,
         );
       }`,
@@ -287,6 +290,7 @@ describe('postcss-color-converter for hsl colors', function () {
           hsla(56, 69%, 57%, 1) 50%,
           hsla(56, 69%, 57%, 0.5) 60%,
           hsla(80 40% 32% / 1) 70%,
+          hsla(84 100% 59% / 1) 90%,
           hsla(120, 100%, 25%, 1) 100%,
         );
       }`);

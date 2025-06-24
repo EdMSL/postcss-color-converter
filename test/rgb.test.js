@@ -299,6 +299,7 @@ describe('postcss-color-converter for rgb colors', function () {
           hsla(56, 69%, 57%, 0.5) 60%,
           rgb(255 255 255) 70%,
           oklch(0.401 0.123 21.57 / 0.5) 80%,
+          oklab(0.91191 -0.15203 0.17893) 90%,
           green 100%,
         );
       }`,
@@ -314,6 +315,7 @@ describe('postcss-color-converter for rgb colors', function () {
           rgba(221, 211, 70, 0.5) 60%,
           rgb(255 255 255) 70%,
           rgba(125 36 41 / 0.5) 80%,
+          rgb(171 255 46) 90%,
           rgb(0, 128, 0) 100%,
         );
       }`);
@@ -329,6 +331,7 @@ describe('postcss-color-converter for rgb colors', function () {
           hsla(56, 69%, 57%, 0.5) 60%,
           rgb(255 255 255) 70%,
           oklch(0.6354 0.21145 142.44562) 80%,
+          oklab(0.91191 -0.15203 0.17893) 90%,
           green 100%,
         );
       }`,
@@ -344,6 +347,7 @@ describe('postcss-color-converter for rgb colors', function () {
           rgba(221, 211, 70, 0.5) 60%,
           rgba(255 255 255 / 1) 70%,
           rgba(17 168 13 / 1) 80%,
+          rgba(171 255 46 / 1) 90%,
           rgba(0, 128, 0, 1) 100%,
         );
       }`);

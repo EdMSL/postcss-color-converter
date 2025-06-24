@@ -13,6 +13,8 @@
   --green: #008000;
   --blue: hsl(240, 100%, 50%);
   --black: rgb(0, 0, 0);
+  --orange: oklch(0.69 0.2 43);
+  --lime: oklab(0.92 -0.14 0.19);
 }
 
 $red: red;
@@ -26,6 +28,8 @@ $almostBlack: rgb(62, 74, 86);
 $dodgerBlue: rgba(51, 121, 183, 0.589);
 $redlight: hsl(3, 48%, 55%);
 $greenlight: hsla(168, 75%, 37%, 0.747);
+$lightBlue: oklch(0.8206 0.0945 236.75);
+$grassGreen: oklab(0.65 -0.17 0.13);
 
 .a {
   $darkred: rgba(102, 0, 0, 0.6);
@@ -54,6 +58,10 @@ $greenlight: hsla(168, 75%, 37%, 0.747);
     rgba(68, 188, 221, 0.5) 40%,
     hsl(56, 69%, 57%) 50%,
     hsla(56, 69%, 57%, 0.5) 60%,
+    oklch(0.57 0.28 310) 70%,
+    oklch(57% 0.28 310 / 30%) 80%,
+    oklab(0.84 -0.18 0.07) 90%,
+    oklab(84% -0.18 0.07 / 0.85) 95%,
     green 100%,
     );
 }
@@ -64,6 +72,7 @@ $greenlight: hsla(168, 75%, 37%, 0.747);
   fill: blue;
   border-color: hsl(50%, calc(10 + 20), 10%);
   background-color: hsl(var(--hue), 100%, 20%);
+  box-shadow: oklch(0.69747 0.13926 95.67047 / 0.37);
 }
 
 .i {
@@ -97,7 +106,7 @@ $greenlight: hsla(168, 75%, 37%, 0.747);
   font-weight: 700;
   fill: rgba(calc(50 + 95), 100, 10, 0.5);
   background-color: rgba(50, 100, 10, calc(0 + 0.5));
-  background-image: linear-gradient(#1122cc 0%, hsl(240, 100%, 67%) 50%, rgba(105, 200, var(--blue), 0.5) 100%);
+  background-image: linear-gradient(#1122cc 0%, hsl(240, 100%, 67%) 25%, oklch(0.58861 0.23047 28.23964) 50%, (105, 200, var(--blue), 0.5) 100%);
 }
 
 .z {

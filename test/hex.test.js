@@ -259,5 +259,37 @@ describe('postcss-color-converter for hex colors', function () {
           #008000 100%,
         );
       }`);
+    assert.equal(transform(
+      `ul {
+        background: linear-gradient(
+          to bottom,
+          #cd56ab 10%,
+          #cd56ab80 20%,
+          rgb(68, 187, 221) 30%,
+          rgba(68, 188, 221, 0.5) 40%,
+          hsl(56, 69%, 57%) 50%,
+          hsla(56, 69%, 57%, 0.5) 60%,
+          oklch(0.3875 0.2608 266.85) 70%,
+          oklch(0.5609 0.2034 7.43 / 0.89) 80%,
+          oklab(0.91191 -0.15203 0.17893) 90%,
+          green 100%,
+        );
+      }`,
+      { outputColorFormat: 'hex', alwaysAlpha: true },
+    ), `ul {
+        background: linear-gradient(
+          to bottom,
+          #cd56ab 10%,
+          #cd56ab80 20%,
+          #44bbdd 30%,
+          #44bcdd80 40%,
+          #ddd346 50%,
+          #ddd34680 60%,
+          #1601cc 70%,
+          #ce255fe3 80%,
+          #abff2e 90%,
+          #008000 100%,
+        );
+      }`);
   });
 });
