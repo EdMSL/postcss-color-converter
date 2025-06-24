@@ -4,6 +4,8 @@ const {
   HEX_COLOR,
   RGB_COLOR,
   HSL_COLOR,
+  OKLAB_COLOR,
+  OKLCH_COLOR,
   KEYWORD_COLOR,
 } = require('./constants');
 
@@ -24,6 +26,10 @@ const getFormattedString = (
       return isUseModernSyntax
         ? `${outputFormat}${alpha !== undefined ? 'a' : ''}(${Math.round(colorData.h)} ${Math.round(colorData.s)}% ${Math.round(colorData.l)}%${alpha !== undefined ? ` / ${alpha}` : ''})`
         : `${outputFormat}${alpha !== undefined ? 'a' : ''}(${Math.round(colorData.h)}, ${Math.round(colorData.s)}%, ${Math.round(colorData.l)}%${alpha !== undefined ? `, ${alpha}` : ''})`
+    case OKLAB_COLOR:
+      return `${outputFormat}(${colorData.l} ${colorData.a} ${colorData.b}${alpha !== undefined ? ` / ${alpha}` : ''})`;
+    case OKLCH_COLOR:
+      return `${outputFormat}(${colorData.l} ${colorData.c} ${colorData.h}${alpha !== undefined ? ` / ${alpha}` : ''})`;
     default:
       break;
   }
@@ -33,7 +39,7 @@ const convertColor = (node, inputColorFormat, options) => {
   const isUseModernSyntax = node.params && !/,/.test(node.params);
 
   let colorData;
-  let alpha;
+  let c1, c2, c3, alpha;
 
   switch (inputColorFormat) {
     case KEYWORD_COLOR:
@@ -60,38 +66,58 @@ const convertColor = (node, inputColorFormat, options) => {
 
       break;
     case RGB_COLOR:
-      let r,g,b;
-
       if (!isUseModernSyntax) {
-        [r, , g, , b, , alpha] = node.nodes;
+        [c1, , c2, , c3, , alpha] = node.nodes;
       } else {
-        [r, g, b, , alpha] = node.nodes;
+        [c1, c2, c3, , alpha] = node.nodes;
       }
 
       alpha = alpha && alpha.value !== undefined ? +alpha.value : options.alwaysAlpha ? 1 : undefined;
 
       if (options.outputColorFormat === RGB_COLOR) {
-        colorData = {r: +r.value, g: +g.value, b: +b.value};
+        colorData = {r: +c1.value, g: +c2.value, b: +c3.value};
       } else {
-        colorData = colorFn[`rgb2${options.outputColorFormat}`]([+r.value, +g.value, +b.value])
+        colorData = colorFn[`rgb2${options.outputColorFormat}`]([+c1.value, +c2.value, +c3.value])
       }
 
       break;
     case HSL_COLOR:
-      let h,s,l;
-
       if (!isUseModernSyntax) {
-        [h, , s, , l, , alpha] = node.nodes;
+        [c1, , c2, , c3, , alpha] = node.nodes;
       } else {
-        [h, s, l, , alpha] = node.nodes;
+        [c1, c2, c3, , alpha] = node.nodes;
       }
 
       alpha = alpha && alpha.value !== undefined ? +alpha.value : options.alwaysAlpha ? 1 : undefined;
 
       if (options.outputColorFormat === HSL_COLOR) {
-        colorData = { h: +h.value, s: +s.value, l: +l.value};
+        colorData = { h: +c1.value, s: +c2.value, l: +c3.value};
       } else {
-        colorData = colorFn[`hsl2${options.outputColorFormat}`]([+h.value, +s.value, +l.value])
+        colorData = colorFn[`hsl2${options.outputColorFormat}`]([+c1.value, +c2.value, +c3.value])
+      }
+
+      break;
+    case OKLAB_COLOR:
+      [c1, c2, c3, , alpha] = node.nodes;
+
+      alpha = alpha && alpha.value !== undefined ? +alpha.value : options.alwaysAlpha ? 1 : undefined;
+
+      if (options.outputColorFormat === OKLAB_COLOR) {
+        colorData = { l: +c1.value > 1 ? +c1.value / 100 : +c1.value, a: +c2.value, b: +c3.value};
+      } else {
+        colorData = colorFn[`oklab2${options.outputColorFormat}`]([+c1.value > 1 ? +c1.value / 100 : +c1.value, +c2.value, +c3.value])
+      }
+
+      break;
+    case OKLCH_COLOR:
+      [c1, c2, c3, , alpha] = node.nodes;
+
+      alpha = alpha && alpha.value !== undefined ? +alpha.value : options.alwaysAlpha ? 1 : undefined;
+
+      if (options.outputColorFormat === OKLCH_COLOR) {
+        colorData = { l: +c1.value > 1 ? +c1.value / 100 : +c1.value, c: +c2.value, h: +c3.value};
+      } else {
+        colorData = colorFn[`oklch2${options.outputColorFormat}`]([+c1.value > 1 ? +c1.value / 100 : +c1.value, +c2.value, +c3.value])
       }
 
       break;
@@ -101,7 +127,12 @@ const convertColor = (node, inputColorFormat, options) => {
 
   const newNode = node.clone({ type: 'word' });
 
-  newNode.value = getFormattedString(colorData, options.outputColorFormat, alpha, isUseModernSyntax);
+  newNode.value = getFormattedString(
+    colorData,
+    options.outputColorFormat,
+    alpha > 1 ? alpha / 100 : alpha,
+    isUseModernSyntax,
+  );
 
   return node.replaceWith(newNode);
 }

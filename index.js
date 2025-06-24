@@ -8,10 +8,12 @@ const {
   HEX_COLOR,
   RGB_COLOR,
   HSL_COLOR,
+  OKLAB_COLOR,
+  OKLCH_COLOR,
   KEYWORD_COLOR,
 } = require('./src/constants');
 
-const colorFormats = [HEX_COLOR, RGB_COLOR, HSL_COLOR, KEYWORD_COLOR];
+const colorFormats = [HEX_COLOR, RGB_COLOR, HSL_COLOR, OKLAB_COLOR, OKLCH_COLOR, KEYWORD_COLOR];
 
 const propsWithColorRegExp = /(background|border|shadow|color|fill|outline|@|--|\$)/;
 const ignoredValuesRegExp = /(url)/;
@@ -50,8 +52,8 @@ module.exports = (options = {}) => {
 
         valueObj.walk(node => {
           if (
-            node.isColor &&
-            ///BUG -0 value in a color function parameters interprets as a valid. Issue https://github.com/gilbarbara/colorizr/issues/19
+            ///TODO postcss-values-parser doesn't recognize oklab and oklch as color
+            (node.isColor || node.name === 'oklch' || node.name === 'oklab') &&
             isValidColor(node.type === 'func' ? node.name + node.params : node.value)
           ) {
             let inputColorFormat;
@@ -64,13 +66,17 @@ module.exports = (options = {}) => {
               inputColorFormat = RGB_COLOR;
             } else if (node.name === 'hsl' || node.name === 'hsla') {
               inputColorFormat = HSL_COLOR;
+            } else if (node.name === 'oklab') {
+              inputColorFormat = OKLAB_COLOR;
+            } else if (node.name === 'oklch') {
+              inputColorFormat = OKLCH_COLOR;
             }
 
             if (
               inputColorFormat &&
               !currentOptions.ignore.includes(inputColorFormat) &&
               !(
-                (inputColorFormat === RGB_COLOR || inputColorFormat === HSL_COLOR) &&
+                (inputColorFormat === RGB_COLOR || inputColorFormat === HSL_COLOR || inputColorFormat === OKLAB_COLOR || inputColorFormat === OKLCH_COLOR) &&
                 specValuesInParamsRegExp.test(node.params)
               ) &&
               (

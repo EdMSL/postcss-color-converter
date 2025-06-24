@@ -184,6 +184,48 @@ describe('postcss-color-converter for hex colors', function () {
     ), 'body { color: hsla(0, 0%, 100%, 1); }');
   });
 
+  it('Input color must be converted to oklch', function () {
+    assert.equal(transform(
+      'body { color: #ef51; }',
+      { outputColorFormat: 'oklch' },
+    ), 'body { color: oklch(0.95775 0.18717 114.91111 / 0.07); }');
+    assert.equal(transform(
+      'body { color: #57C1FFa2; }',
+      { outputColorFormat: 'oklch' },
+    ), 'body { color: oklch(0.77416 0.13155 237.58927 / 0.64); }');
+    assert.equal(transform(
+      'body { color: #57c1ff; }',
+      { outputColorFormat: 'oklch' },
+    ), 'body { color: oklch(0.77416 0.13155 237.58927); }');
+    assert.equal(transform(
+      'body { color: #57C1FF; }',
+      { outputColorFormat: 'oklch', alwaysAlpha: true },
+    ), 'body { color: oklch(0.77416 0.13155 237.58927 / 1); }');
+    assert.equal(transform(
+      'body { color: #fff; }',
+      { outputColorFormat: 'oklch', alwaysAlpha: true },
+    ), 'body { color: oklch(1 0 0 / 1); }');
+  });
+
+  it('Input color must be converted to oklab', function () {
+    assert.equal(transform(
+      'body { color: #abff2e; }',
+      { outputColorFormat: 'oklab' },
+    ), 'body { color: oklab(0.91191 -0.15203 0.17893); }');
+    assert.equal(transform(
+      'body { color: #C599F0; }',
+      { outputColorFormat: 'oklab' },
+    ), 'body { color: oklab(0.7556 0.07759 -0.10386); }');
+    assert.equal(transform(
+      'body { color: #0099f557; }',
+      { outputColorFormat: 'oklab' },
+    ), 'body { color: oklab(0.663 -0.06884 -0.15771 / 0.34); }');
+    assert.equal(transform(
+      'body { color: #fe1199; }',
+      { outputColorFormat: 'oklab', alwaysAlpha: true },
+    ), 'body { color: oklab(0.65454 0.26284 -0.02378 / 1); }');
+  });
+
   it('All input colors must be correct converted to hex(a)', function () {
     assert.equal(transform(
       `ul {
@@ -195,6 +237,9 @@ describe('postcss-color-converter for hex colors', function () {
           rgba(68, 188, 221, 0.5) 40%,
           hsl(56, 69%, 57%) 50%,
           hsla(56, 69%, 57%, 0.5) 60%,
+          oklch(0.3875 0.2608 266.85) 70%,
+          oklch(0.5609 0.2034 7.43 / 0.89) 80%,
+          oklab(0.91191 -0.15203 0.17893) 90%,
           green 100%,
         );
       }`,
@@ -208,6 +253,41 @@ describe('postcss-color-converter for hex colors', function () {
           #44bcdd80 40%,
           #ddd346 50%,
           #ddd34680 60%,
+          #1601cc 70%,
+          #ce255fe3 80%,
+          #abff2e 90%,
+          #008000 100%,
+        );
+      }`);
+    assert.equal(transform(
+      `ul {
+        background: linear-gradient(
+          to bottom,
+          #cd56ab 10%,
+          #cd56ab80 20%,
+          rgb(68, 187, 221) 30%,
+          rgba(68, 188, 221, 0.5) 40%,
+          hsl(56, 69%, 57%) 50%,
+          hsla(56, 69%, 57%, 0.5) 60%,
+          oklch(0.3875 0.2608 266.85) 70%,
+          oklch(0.5609 0.2034 7.43 / 0.89) 80%,
+          oklab(0.91191 -0.15203 0.17893) 90%,
+          green 100%,
+        );
+      }`,
+      { outputColorFormat: 'hex', alwaysAlpha: true },
+    ), `ul {
+        background: linear-gradient(
+          to bottom,
+          #cd56ab 10%,
+          #cd56ab80 20%,
+          #44bbdd 30%,
+          #44bcdd80 40%,
+          #ddd346 50%,
+          #ddd34680 60%,
+          #1601cc 70%,
+          #ce255fe3 80%,
+          #abff2e 90%,
           #008000 100%,
         );
       }`);
