@@ -29,3 +29,6 @@ Added ignored words for property values ([issue](https://github.com/EdMSL/postcs
 ## 1.2.0 (June 24, 2025)
 Add support for Oklch and Oklab colors.
 Replace color-convert package with colorizr.
+
+## 1.2.1 (June 25, 2025)
+Delete color-convert plugin from dependencies.
