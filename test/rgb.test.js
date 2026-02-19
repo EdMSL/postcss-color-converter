@@ -149,6 +149,13 @@ describe('postcss-color-converter for rgb colors', function () {
     ), 'body { color: rgba(255, 255, 255, 1); }');
   });
 
+  it('Input color must ignore rgba', function () {
+    assert.equal(transform(
+      'body { color: rgba(255, 255, 255, 0.25); }',
+      { outputColorFormat: 'hex', ignore: ['rgba'] },
+    ), 'body { color: rgba(255, 255, 255, 0.25); }');
+  });
+
   it('Input color must be converted to hsl', function () {
     assert.equal(transform(
       'body { color: rgb(255, 255, 255); }',

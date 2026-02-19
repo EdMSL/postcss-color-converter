@@ -7,6 +7,7 @@ const {
 const {
   HEX_COLOR,
   RGB_COLOR,
+  RGBA_COLOR,
   HSL_COLOR,
   OKLAB_COLOR,
   OKLCH_COLOR,
@@ -62,8 +63,10 @@ module.exports = (options = {}) => {
               inputColorFormat = HEX_COLOR;
             } else if (!node.isHex && node.type === 'word') {
               inputColorFormat = KEYWORD_COLOR;
-            } else if (node.name === 'rgb' || node.name === 'rgba') {
+            } else if (node.name === 'rgb') {
               inputColorFormat = RGB_COLOR;
+            } else if (node.name === 'rgba') {
+              inputColorFormat = RGBA_COLOR;
             } else if (node.name === 'hsl' || node.name === 'hsla') {
               inputColorFormat = HSL_COLOR;
             } else if (node.name === 'oklab') {

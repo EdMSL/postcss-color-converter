@@ -3,6 +3,7 @@ const colorFn = require('colorizr');
 const {
   HEX_COLOR,
   RGB_COLOR,
+  RGBA_COLOR,
   HSL_COLOR,
   OKLAB_COLOR,
   OKLCH_COLOR,
@@ -18,6 +19,12 @@ const getFormattedString = (
   switch (outputFormat) {
     case HEX_COLOR:
       return alpha !== undefined ? colorFn.addAlphaToHex(colorData, alpha) : colorData;
+    case RGBA_COLOR:
+    case RGB_COLOR:
+      return isUseModernSyntax
+        ? `${outputFormat}${alpha !== undefined ? 'a' : ''}(${colorData.r} ${colorData.g} ${colorData.b}${alpha !== undefined ? ` / ${alpha}` : ''})`
+        : `${outputFormat}${alpha !== undefined ? 'a' : ''}(${colorData.r}, ${colorData.g}, ${colorData.b}${alpha !== undefined ? `, ${alpha}` : ''})`
+
     case RGB_COLOR:
       return isUseModernSyntax
         ? `${outputFormat}${alpha !== undefined ? 'a' : ''}(${colorData.r} ${colorData.g} ${colorData.b}${alpha !== undefined ? ` / ${alpha}` : ''})`
@@ -65,6 +72,7 @@ const convertColor = (node, inputColorFormat, options) => {
       }
 
       break;
+    case RGBA_COLOR:
     case RGB_COLOR:
       if (!isUseModernSyntax) {
         [c1, , c2, , c3, , alpha] = node.nodes;
@@ -76,6 +84,8 @@ const convertColor = (node, inputColorFormat, options) => {
 
       if (options.outputColorFormat === RGB_COLOR) {
         colorData = {r: +c1.value, g: +c2.value, b: +c3.value};
+      } else if (options.outputColorFormat === RGBA_COLOR) {
+        colorData = {r: +c1.value, g: +c2.value, b: +c3.value, a: alpha};
       } else {
         colorData = colorFn[`rgb2${options.outputColorFormat}`]([+c1.value, +c2.value, +c3.value])
       }

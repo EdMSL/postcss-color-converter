@@ -3,6 +3,7 @@ module.exports = {
   DEFAULT_ALPHA: 1,
   HEX_COLOR: 'hex',
   RGB_COLOR: 'rgb',
+  RGBA_COLOR: 'rgba',
   HSL_COLOR: 'hsl',
   OKLAB_COLOR: 'oklab',
   OKLCH_COLOR: 'oklch',
